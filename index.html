@@ -2061,15 +2061,25 @@
         <strong>Real-Time Cloud Sync Active:</strong> Product catalog, prices, categories, logo, banner, WhatsApp/Facebook links, and orders are stored in Cloud Firestore and sync automatically across all customer and admin devices.
       </div>
 
-      <!-- Admin Google Sign-In Gate -->
+      <!-- Admin Password-Only Sign-In Gate -->
       <div id="admin-login-gate" style="max-width:460px;margin:48px auto;background:var(--bg-surface);border:1px solid var(--border-hairline);border-radius:var(--radius-md);padding:28px;">
-        <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-bottom:6px;">Store Admin Verification</h2>
-        <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:18px;">Sign in with your authorized store administrator Google account to push live updates across all customer devices.</p>
+        <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-bottom:6px;">Admin Sign In</h2>
+        <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:18px;">Enter the store administrator password to unlock the PABEL SPORTS dashboard.</p>
         <div id="admin-auth-status" style="margin-bottom:16px;font-size:13.5px;"></div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <button type="button" class="btn btn-primary" id="admin-google-signin-btn">Sign in with Google</button>
-          <button type="button" class="btn btn-outline" id="admin-google-signout-btn" style="display:none;">Switch Account</button>
-        </div>
+        <form id="admin-pass-form" style="display:flex;flex-direction:column;gap:12px;">
+          <div class="form-group">
+            <label class="form-label" for="admin-pass-input">Admin Password</label>
+            <div style="display:flex;gap:8px;">
+              <input type="password" id="admin-pass-input" class="form-control" required autocomplete="current-password" placeholder="Enter admin password" />
+              <button type="button" class="btn btn-outline btn-sm" id="admin-pass-toggle" style="white-space:nowrap;">Show</button>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <button type="submit" class="btn btn-primary" id="admin-pass-submit-btn">Sign In to Admin</button>
+            <button type="button" class="btn btn-outline" id="admin-google-signin-btn" style="display:none;">Authorize Cloud Sync (Google)</button>
+            <button type="button" class="btn btn-outline btn-sm" id="admin-google-signout-btn" style="display:none;">Sign Out Cloud Session</button>
+          </div>
+        </form>
       </div>
 
       <!-- Admin Workspace -->
@@ -2211,7 +2221,7 @@
 
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js';
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
     import {
       getFirestore, doc, getDoc, getDocFromServer, setDoc, updateDoc, deleteDoc,
       collection, onSnapshot, query, orderBy, serverTimestamp, writeBatch
@@ -2235,6 +2245,7 @@
       const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
       const auth = getAuth(app);
       const PRIMARY_ADMIN_EMAIL = 'dilmohammad9011@gmail.com';
+      const ADMIN_PASS_SHA256 = '36bf4bcf0c844f64c95124520fc148fd665dbbc9745a3347e56d852097523371';
 
       const OperationType = {
         CREATE: 'create',
@@ -2278,7 +2289,8 @@
       }
 
       const STORAGE_KEYS = {
-        CART: 'pabel_sports_cart_v1'
+        CART: 'pabel_sports_cart_v1',
+        ADMIN_PASS_SESSION: 'pabel_admin_pass_unlocked_v1'
       };
 
       const OFFICIAL_DEFAULTS = {
@@ -2670,6 +2682,9 @@
         settings: {},
         adminSettings: Object.assign({}, DEFAULT_ADMIN_SETTINGS),
         lastNotificationDispatch: null,
+        adminPassVerified: false,
+        adminCloudAuthorized: false,
+        adminCloudNeedsStep: false,
         adminUnlocked: false,
         adminUser: null,
         adminCheckDone: false,
@@ -3112,6 +3127,25 @@
         state.adminUnsubs.push(adminSettingsUnsub, ordersUnsub, notificationsUnsub, dealersUnsub, messagesUnsub);
       }
 
+      async function verifyAdminPassword(rawPassword) {
+        const val = String(rawPassword || '');
+        if (!val) return false;
+        if (window.crypto && window.crypto.subtle && typeof TextEncoder !== 'undefined') {
+          try {
+            const buf = await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(val));
+            const hex = Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('');
+            return hex === ADMIN_PASS_SHA256;
+          } catch {
+            // Fallback below if subtle crypto is restricted
+          }
+        }
+        return val === 'pavel0123';
+      }
+
+      function syncAdminUnlockedFlag() {
+        state.adminUnlocked = Boolean(state.adminPassVerified && state.adminCloudAuthorized);
+      }
+
       function initAuthListener() {
         onAuthStateChanged(auth, async (user) => {
           state.adminUser = user;
@@ -3127,15 +3161,16 @@
                 authorized = false;
               }
             }
-            state.adminUnlocked = authorized;
+            state.adminCloudAuthorized = authorized;
             if (authorized) {
+              state.adminCloudNeedsStep = false;
               await seedCloudDefaultsIfEmpty();
               attachAdminCloudSync();
             } else {
               detachAdminCloudSync();
             }
           } else {
-            state.adminUnlocked = false;
+            state.adminCloudAuthorized = false;
             state.orders = [];
             state.dealers = [];
             state.messages = [];
@@ -3145,6 +3180,7 @@
             detachAdminCloudSync();
           }
 
+          syncAdminUnlockedFlag();
           if (document.getElementById('admin-shell').classList.contains('active')) {
             renderAdminGateState();
           }
@@ -3162,6 +3198,12 @@
         state.notifications = [];
         state.settings = Object.assign({}, OFFICIAL_DEFAULTS);
         state.adminSettings = Object.assign({}, DEFAULT_ADMIN_SETTINGS);
+        try {
+          state.adminPassVerified = sessionStorage.getItem(STORAGE_KEYS.ADMIN_PASS_SESSION) === '1';
+        } catch {
+          state.adminPassVerified = false;
+        }
+        syncAdminUnlockedFlag();
       }
 
       /* Apply Settings to DOM */
@@ -4116,26 +4158,39 @@
         const workspace = document.getElementById('admin-workspace');
         const logoutBtn = document.getElementById('admin-logout-btn');
         const authStatus = document.getElementById('admin-auth-status');
-        const signInBtn = document.getElementById('admin-google-signin-btn');
+        const passSubmitBtn = document.getElementById('admin-pass-submit-btn');
+        const googleSignInBtn = document.getElementById('admin-google-signin-btn');
         const signOutBtn = document.getElementById('admin-google-signout-btn');
+
+        syncAdminUnlockedFlag();
 
         if (state.adminUnlocked) {
           gate.style.display = 'none';
           workspace.style.display = 'grid';
           logoutBtn.style.display = 'inline-flex';
-          logoutBtn.textContent = `Sign Out (${state.adminUser?.email || 'Admin'})`;
+          logoutBtn.textContent = 'Lock Admin';
           renderAdminTab();
         } else {
           gate.style.display = 'block';
           workspace.style.display = 'none';
           logoutBtn.style.display = 'none';
-          if (state.adminUser) {
-            authStatus.innerHTML = `<div class="notice-box notice-warning">Signed in as <strong>${escapeHtml(state.adminUser.email)}</strong>, which is not listed as an authorized store administrator.</div>`;
-            signInBtn.style.display = 'none';
+          passSubmitBtn.style.display = 'inline-flex';
+
+          if (state.adminUser && !state.adminCloudAuthorized) {
+            authStatus.innerHTML = `<div class="notice-box notice-warning">Cloud session is signed in as <strong>${escapeHtml(state.adminUser.email || 'unknown')}</strong>, which is not authorized (or email unverified) for live Firestore admin writes.</div>`;
+            googleSignInBtn.style.display = state.adminPassVerified ? 'inline-flex' : 'none';
+            signOutBtn.style.display = 'inline-flex';
+          } else if (state.adminPassVerified && !state.adminCloudAuthorized) {
+            authStatus.innerHTML = `<div class="notice-box notice-success">Password verified. Complete the one-time Cloud Sync authorization with your Google admin account (<code>${escapeHtml(PRIMARY_ADMIN_EMAIL)}</code>) to enable live database updates on this browser.</div>`;
+            googleSignInBtn.style.display = 'inline-flex';
+            signOutBtn.style.display = 'none';
+          } else if (state.adminCloudAuthorized) {
+            authStatus.innerHTML = `<div class="notice-box">Cloud session ready (${escapeHtml(state.adminUser?.email || PRIMARY_ADMIN_EMAIL)}). Enter your admin password to unlock.</div>`;
+            googleSignInBtn.style.display = 'none';
             signOutBtn.style.display = 'inline-flex';
           } else {
             authStatus.innerHTML = '';
-            signInBtn.style.display = 'inline-flex';
+            googleSignInBtn.style.display = 'none';
             signOutBtn.style.display = 'none';
           }
         }
@@ -5502,22 +5557,83 @@
           toggleAdminView(false);
         };
 
+        const passInput = document.getElementById('admin-pass-input');
+        const passToggleBtn = document.getElementById('admin-pass-toggle');
+        passToggleBtn.onclick = () => {
+          const nextType = passInput.type === 'password' ? 'text' : 'password';
+          passInput.type = nextType;
+          passToggleBtn.textContent = nextType === 'password' ? 'Show' : 'Hide';
+        };
+
+        document.getElementById('admin-pass-form').onsubmit = async (e) => {
+          e.preventDefault();
+          const entered = passInput.value.trim();
+          const submitBtn = document.getElementById('admin-pass-submit-btn');
+          const ok = await verifyAdminPassword(entered);
+          if (!ok) {
+            showToast('Incorrect admin password.', true);
+            passInput.focus();
+            passInput.select();
+            return;
+          }
+
+          state.adminPassVerified = true;
+          try {
+            sessionStorage.setItem(STORAGE_KEYS.ADMIN_PASS_SESSION, '1');
+          } catch {}
+          passInput.value = '';
+
+          if (state.adminCloudAuthorized) {
+            syncAdminUnlockedFlag();
+            renderAdminGateState();
+            showToast('Admin Dashboard unlocked.');
+            return;
+          }
+
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Signing In...';
+          try {
+            const cred = await signInWithEmailAndPassword(auth, PRIMARY_ADMIN_EMAIL, entered);
+            if (!cred.user.emailVerified) {
+              state.adminCloudNeedsStep = true;
+              renderAdminGateState();
+              showToast('Password accepted. Please authorize Cloud Sync with Google once.', false);
+            } else {
+              showToast('Admin Dashboard unlocked.');
+            }
+          } catch {
+            state.adminCloudNeedsStep = true;
+            renderAdminGateState();
+            showToast('Password accepted. Click "Authorize Cloud Sync (Google)" once on this device.');
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Sign In to Admin';
+          }
+        };
+
         document.getElementById('admin-google-signin-btn').onclick = async () => {
           try {
             const provider = new GoogleAuthProvider();
             await signInWithPopup(auth, provider);
+            showToast('Cloud Admin Sync authorized.');
           } catch (error) {
-            showToast('Google Sign-In failed or was cancelled.', true);
+            showToast('Google Cloud authorization failed or was cancelled.', true);
           }
         };
 
         document.getElementById('admin-google-signout-btn').onclick = async () => {
+          state.adminPassVerified = false;
+          try { sessionStorage.removeItem(STORAGE_KEYS.ADMIN_PASS_SESSION); } catch {}
           await signOut(auth);
+          showToast('Signed out of Cloud Admin session.');
         };
 
-        document.getElementById('admin-logout-btn').onclick = async () => {
-          await signOut(auth);
-          showToast('Signed out of Admin Dashboard.');
+        document.getElementById('admin-logout-btn').onclick = () => {
+          state.adminPassVerified = false;
+          try { sessionStorage.removeItem(STORAGE_KEYS.ADMIN_PASS_SESSION); } catch {}
+          syncAdminUnlockedFlag();
+          renderAdminGateState();
+          showToast('Admin Dashboard locked.');
         };
       }
 
