@@ -1,0 +1,6 @@
+{
+  "name": "PABEL SPORTS",
+  "description": "Wholesale and retail sportswear e-commerce storefront and dealer portal for PABEL SPORTS Bangladesh.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

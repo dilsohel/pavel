@@ -1,0 +1,4628 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PABEL SPORTS — Wholesale &amp; Retail Sportswear Bangladesh</title>
+  <meta name="description" content="PABEL SPORTS is Bangladesh's premier wholesale and retail supplier of match-grade football jerseys, technical tracksuits, training kits, and custom teamwear." />
+  <meta property="og:title" content="PABEL SPORTS — Wholesale &amp; Retail Sportswear Bangladesh" />
+  <meta property="og:description" content="Match-grade football jerseys, tracksuits, training kits, and wholesale bulk teamwear across Bangladesh." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-canvas: #fafafa;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f1f1f3;
+      --bg-dark: #0e0e11;
+      --bg-dark-elevated: #18181c;
+      --text-primary: #111114;
+      --text-secondary: #52525b;
+      --text-muted: #71717a;
+      --text-on-dark: #f4f4f5;
+      --text-muted-dark: #a1a1aa;
+      --accent: #dc2626;
+      --accent-hover: #b91c1c;
+      --accent-soft: rgba(220, 38, 38, 0.08);
+      --border-hairline: #e4e4e7;
+      --border-dark: #27272a;
+      --success: #15803d;
+      --success-soft: rgba(21, 128, 61, 0.09);
+      --warning: #b45309;
+      --warning-soft: rgba(180, 83, 9, 0.09);
+      --danger: #b91c1c;
+      --danger-soft: rgba(185, 28, 28, 0.09);
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --shadow-card: 0 1px 2px rgba(17, 17, 20, 0.04), 0 8px 24px rgba(17, 17, 20, 0.05);
+      --shadow-drawer: -12px 0 40px rgba(0, 0, 0, 0.18);
+      --font-display: 'Barlow Condensed', system-ui, -apple-system, sans-serif;
+      --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --header-height: 68px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      line-height: 1.55;
+      font-size: 15px;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .tabular {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .mono {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      min-height: 42px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 1;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: transform 150ms var(--ease-out), background-color 150ms var(--ease-out), border-color 150ms var(--ease-out), color 150ms var(--ease-out);
+    }
+
+    .btn:active {
+      transform: scale(0.985);
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: #ffffff;
+      border: 1px solid var(--accent);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    .btn-dark {
+      background-color: var(--bg-dark);
+      color: #ffffff;
+      border: 1px solid var(--bg-dark);
+    }
+
+    .btn-dark:hover {
+      background-color: #27272a;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border-hairline);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--text-primary);
+      background-color: var(--bg-subtle);
+    }
+
+    .btn-outline-light {
+      background-color: transparent;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .btn-outline-light:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: #ffffff;
+    }
+
+    .btn-whatsapp {
+      background-color: #16a34a;
+      color: #ffffff;
+      border: 1px solid #16a34a;
+    }
+
+    .btn-whatsapp:hover {
+      background-color: #15803d;
+      border-color: #15803d;
+    }
+
+    .btn-sm {
+      min-height: 36px;
+      padding: 8px 14px;
+      font-size: 13px;
+    }
+
+    /* Slim Announcement Bar */
+    .promo-strip {
+      background-color: var(--bg-dark);
+      color: var(--text-on-dark);
+      font-size: 12.5px;
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .promo-strip-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 36px;
+      padding: 6px 0;
+    }
+
+    .promo-copy {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .promo-strip-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .promo-link {
+      color: var(--text-muted-dark);
+      font-size: 12px;
+      font-weight: 500;
+      transition: color 150ms var(--ease-out);
+      white-space: nowrap;
+    }
+
+    .promo-link:hover {
+      color: #ffffff;
+    }
+
+    /* Top Navigation Bar */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background-color: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      height: var(--header-height);
+    }
+
+    .brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .brand-logo-img {
+      height: 40px;
+      width: auto;
+      max-width: 160px;
+      object-fit: contain;
+    }
+
+    .brand-wordmark {
+      font-family: var(--font-display);
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    .brand-wordmark span {
+      color: var(--accent);
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .nav-link {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding: 6px 0;
+      position: relative;
+      transition: color 150ms var(--ease-out);
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--text-primary);
+    }
+
+    .nav-link.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background-color: var(--accent);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .header-search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .header-search-input {
+      width: 190px;
+      height: 38px;
+      padding: 0 12px 0 34px;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-canvas);
+      font-size: 13px;
+      transition: width 200ms var(--ease-out), border-color 150ms var(--ease-out);
+    }
+
+    .header-search-input:focus {
+      outline: none;
+      border-color: var(--text-primary);
+      background-color: #ffffff;
+      width: 230px;
+    }
+
+    .header-search-icon {
+      position: absolute;
+      left: 10px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .icon-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-width: 40px;
+      height: 40px;
+      padding: 0 12px;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-surface);
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: border-color 150ms var(--ease-out), background-color 150ms var(--ease-out);
+    }
+
+    .icon-btn:hover {
+      border-color: var(--text-primary);
+      background-color: var(--bg-subtle);
+    }
+
+    .cart-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 5px;
+      border-radius: 3px;
+      background-color: var(--accent);
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+    }
+
+    /* Mobile Drawer */
+    .mobile-nav-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background-color: rgba(14, 14, 17, 0.56);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 200ms var(--ease-out);
+    }
+
+    .mobile-nav-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-nav-panel {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: min(320px, 86vw);
+      background-color: var(--bg-surface);
+      z-index: 61;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transform: translateX(-100%);
+      transition: transform 220ms var(--ease-out);
+      overflow-y: auto;
+    }
+
+    .mobile-nav-overlay.open .mobile-nav-panel {
+      transform: translateX(0);
+    }
+
+    .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid var(--border-hairline);
+      padding-top: 12px;
+    }
+
+    .mobile-nav-links button,
+    .mobile-nav-links a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 4px;
+      font-size: 15px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-hairline);
+      text-align: left;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      position: relative;
+      background-color: var(--bg-dark);
+      color: #ffffff;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1.15fr;
+      align-items: stretch;
+      min-height: 520px;
+    }
+
+    .hero-content {
+      padding: 64px 48px 64px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+      z-index: 2;
+    }
+
+    .hero-kicker {
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #f87171;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 4.5vw, 4.1rem);
+      font-weight: 800;
+      line-height: 0.98;
+      letter-spacing: -0.01em;
+      text-wrap: balance;
+      color: #ffffff;
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #d4d4d8;
+      max-width: 52ch;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .hero-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      padding-top: 16px;
+      margin-top: 8px;
+      border-top: 1px solid var(--border-dark);
+      font-size: 13px;
+      color: var(--text-muted-dark);
+    }
+
+    .hero-media {
+      position: relative;
+      min-height: 360px;
+      background-color: #18181b;
+    }
+
+    .hero-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .hero-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--bg-dark) 0%, rgba(14, 14, 17, 0.35) 35%, rgba(14, 14, 17, 0.1) 100%);
+      pointer-events: none;
+    }
+
+    /* Sections */
+    .section {
+      padding: 64px 0;
+    }
+
+    .section-surface {
+      background-color: var(--bg-surface);
+      border-top: 1px solid var(--border-hairline);
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .section-dark {
+      background-color: var(--bg-dark);
+      color: var(--text-on-dark);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .section-kicker {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.85rem, 3vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      text-wrap: balance;
+    }
+
+    .section-lead {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 58ch;
+      margin-top: 8px;
+    }
+
+    /* Segmented Tabs & Catalog Toolbar */
+    .collection-tabs {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 4px;
+      background-color: var(--bg-subtle);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-hairline);
+    }
+
+    .tab-btn {
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      white-space: nowrap;
+      transition: background-color 150ms var(--ease-out), color 150ms var(--ease-out);
+    }
+
+    .tab-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .tab-btn.active {
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+
+    .catalog-toolbar {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 12px;
+      margin-bottom: 24px;
+      align-items: center;
+    }
+
+    .category-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: thin;
+      margin-bottom: 24px;
+    }
+
+    .cat-btn {
+      padding: 8px 14px;
+      border: 1px solid var(--border-hairline);
+      background-color: var(--bg-surface);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all 150ms var(--ease-out);
+    }
+
+    .cat-btn:hover {
+      border-color: var(--text-primary);
+      color: var(--text-primary);
+    }
+
+    .cat-btn.active {
+      background-color: var(--bg-dark);
+      border-color: var(--bg-dark);
+      color: #ffffff;
+    }
+
+    .form-control {
+      width: 100%;
+      min-height: 42px;
+      padding: 9px 12px;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-surface);
+      font-size: 14px;
+      transition: border-color 150ms var(--ease-out);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--text-primary);
+    }
+
+    textarea.form-control {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    /* Product Grid & Cards */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .product-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out), border-color 180ms var(--ease-out);
+    }
+
+    .product-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card);
+      border-color: #d4d4d8;
+    }
+
+    .product-media {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      background-color: var(--bg-subtle);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .product-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 280ms var(--ease-out);
+    }
+
+    .product-card:hover .product-media img {
+      transform: scale(1.03);
+    }
+
+    .img-fallback {
+      width: 100%;
+      height: 100%;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px;
+      text-align: center;
+      background: linear-gradient(135deg, #18181b 0%, #27272a 100%);
+      color: #e4e4e7;
+    }
+
+    .img-fallback.visible {
+      display: flex;
+    }
+
+    .product-body {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .product-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .product-title {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    .product-title:hover {
+      color: var(--accent);
+    }
+
+    .product-pricing {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 6px;
+      border-top: 1px solid var(--border-hairline);
+      margin-top: auto;
+    }
+
+    .price-retail {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .price-wholesale {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .product-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    /* Wholesale & Bulk Tiers */
+    .wholesale-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      align-items: start;
+    }
+
+    .tier-table-wrap {
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background-color: var(--bg-dark-elevated);
+    }
+
+    .tier-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .tier-table th,
+    .tier-table td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .tier-table th {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted-dark);
+      font-weight: 600;
+    }
+
+    .tier-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .dealer-card {
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      border-radius: var(--radius-md);
+      padding: 28px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* Why Choose Us & Testimonials */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .pillar-item {
+      padding: 22px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+    }
+
+    .pillar-num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .pillar-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .pillar-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+      margin-top: 36px;
+    }
+
+    .testimonial-card {
+      padding: 24px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .testimonial-quote {
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: var(--text-primary);
+    }
+
+    .testimonial-author {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-hairline);
+      font-size: 13px;
+    }
+
+    .testimonial-author strong {
+      display: block;
+      color: var(--text-primary);
+    }
+
+    .testimonial-author span {
+      color: var(--text-muted);
+    }
+
+    /* Contact Section */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 36px;
+      align-items: start;
+    }
+
+    .contact-channels {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .channel-row {
+      padding: 18px 20px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    /* Footer */
+    .site-footer {
+      background-color: var(--bg-dark);
+      color: var(--text-on-dark);
+      padding: 56px 0 28px;
+      border-top: 1px solid var(--border-dark);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1.1fr;
+      gap: 36px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .footer-heading {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #ffffff;
+      margin-bottom: 14px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      font-size: 13.5px;
+      color: var(--text-muted-dark);
+    }
+
+    .footer-links button,
+    .footer-links a {
+      text-align: left;
+      transition: color 150ms var(--ease-out);
+    }
+
+    .footer-links button:hover,
+    .footer-links a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--text-muted-dark);
+    }
+
+    /* Drawers & Modals */
+    .backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      background-color: rgba(14, 14, 17, 0.62);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms var(--ease-out);
+    }
+
+    .backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-dialog {
+      width: 100%;
+      max-width: 960px;
+      max-height: 90vh;
+      background-color: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+      transform: translateY(10px);
+      transition: transform 180ms var(--ease-out);
+    }
+
+    .backdrop.open .modal-dialog {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-hairline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    /* Cart Drawer */
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 75;
+      background-color: rgba(14, 14, 17, 0.55);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 200ms var(--ease-out);
+    }
+
+    .drawer-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(440px, 100vw);
+      background-color: var(--bg-surface);
+      z-index: 76;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-drawer);
+      transform: translateX(100%);
+      transition: transform 220ms var(--ease-out);
+    }
+
+    .drawer-backdrop.open .cart-drawer {
+      transform: translateX(0);
+    }
+
+    .cart-items-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 76px 1fr;
+      gap: 14px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .cart-item-img {
+      width: 76px;
+      height: 76px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background-color: var(--bg-subtle);
+    }
+
+    .cart-item-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .qty-stepper {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      height: 34px;
+    }
+
+    .qty-stepper button {
+      width: 30px;
+      height: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .qty-stepper button:hover {
+      background-color: var(--bg-subtle);
+    }
+
+    .qty-stepper input {
+      width: 44px;
+      text-align: center;
+      border: none;
+      border-left: 1px solid var(--border-hairline);
+      border-right: 1px solid var(--border-hairline);
+      height: 100%;
+      font-size: 13px;
+      font-family: var(--font-mono);
+    }
+
+    .cart-footer {
+      padding: 20px;
+      border-top: 1px solid var(--border-hairline);
+      background-color: var(--bg-canvas);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Product Detail Layout */
+    .pdp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .pdp-main-img {
+      aspect-ratio: 4 / 3;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background-color: var(--bg-subtle);
+      border: 1px solid var(--border-hairline);
+    }
+
+    .pdp-main-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .pdp-thumbs {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .pdp-thumb {
+      width: 72px;
+      height: 54px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 2px solid transparent;
+      background-color: var(--bg-subtle);
+    }
+
+    .pdp-thumb.active {
+      border-color: var(--accent);
+    }
+
+    .pdp-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .variant-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .variant-btn {
+      min-width: 44px;
+      height: 38px;
+      padding: 0 12px;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 140ms var(--ease-out);
+    }
+
+    .variant-btn:hover {
+      border-color: var(--text-primary);
+    }
+
+    .variant-btn.active {
+      background-color: var(--bg-dark);
+      border-color: var(--bg-dark);
+      color: #ffffff;
+    }
+
+    .color-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+
+    /* Admin Dashboard */
+    .admin-shell {
+      display: none;
+      min-height: calc(100vh - var(--header-height));
+      background-color: var(--bg-canvas);
+    }
+
+    .admin-shell.active {
+      display: block;
+    }
+
+    .storefront-shell.hidden {
+      display: none;
+    }
+
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 28px;
+      padding: 28px 0 64px;
+      align-items: start;
+    }
+
+    .admin-sidebar {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: sticky;
+      top: calc(var(--header-height) + 20px);
+    }
+
+    .admin-nav-btn {
+      width: 100%;
+      text-align: left;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background-color 140ms var(--ease-out), color 140ms var(--ease-out);
+    }
+
+    .admin-nav-btn:hover {
+      background-color: var(--bg-subtle);
+      color: var(--text-primary);
+    }
+
+    .admin-nav-btn.active {
+      background-color: var(--bg-dark);
+      color: #ffffff;
+    }
+
+    .admin-panel {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      padding: 24px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .kpi-box {
+      padding: 18px;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      background-color: var(--bg-canvas);
+    }
+
+    .kpi-label {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .kpi-value {
+      font-family: var(--font-display);
+      font-size: 30px;
+      font-weight: 700;
+      margin-top: 6px;
+      color: var(--text-primary);
+    }
+
+    .data-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-hairline);
+      vertical-align: middle;
+    }
+
+    .data-table th {
+      background-color: var(--bg-canvas);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .notice-box {
+      padding: 14px 16px;
+      border: 1px solid var(--border-hairline);
+      background-color: var(--bg-canvas);
+      border-radius: var(--radius-md);
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    .notice-warning {
+      border-color: #f59e0b;
+      background-color: #fffbeb;
+      color: #78350f;
+    }
+
+    /* Floating WhatsApp Button */
+    .floating-wa {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 50;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      background-color: #16a34a;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(22, 163, 74, 0.35);
+      transition: transform 180ms var(--ease-out), background-color 180ms var(--ease-out);
+    }
+
+    .floating-wa:hover {
+      transform: translateY(-2px);
+      background-color: #15803d;
+    }
+
+    /* Toast Stack */
+    .toast-region {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      z-index: 95;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: min(360px, calc(100vw - 40px));
+      pointer-events: none;
+    }
+
+    .toast {
+      background-color: var(--bg-dark);
+      color: #ffffff;
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-dark);
+      font-size: 13.5px;
+      font-weight: 500;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+      animation: toast-in 180ms var(--ease-out);
+      pointer-events: auto;
+    }
+
+    .toast.error {
+      background-color: var(--accent-hover);
+      border-color: var(--accent);
+    }
+
+    @keyframes toast-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Printable Invoice */
+    .print-only {
+      display: none;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printable-invoice, #printable-invoice * {
+        visibility: visible;
+      }
+      #printable-invoice {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 24px;
+        background: #ffffff;
+        color: #000000;
+      }
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1120px) {
+      .main-nav {
+        display: none;
+      }
+      .mobile-menu-btn {
+        display: inline-flex;
+      }
+      .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .pillars-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .admin-layout {
+        grid-template-columns: 1fr;
+      }
+      .admin-sidebar {
+        position: static;
+        flex-direction: row;
+        overflow-x: auto;
+      }
+      .admin-nav-btn {
+        width: auto;
+        white-space: nowrap;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-content {
+        padding: 40px 0 32px;
+      }
+      .hero-media {
+        min-height: 260px;
+      }
+      .hero-media::after {
+        background: linear-gradient(180deg, var(--bg-dark) 0%, rgba(14, 14, 17, 0.15) 60%);
+      }
+      .catalog-toolbar {
+        grid-template-columns: 1fr;
+      }
+      .wholesale-split,
+      .contact-grid,
+      .pdp-grid,
+      .testimonials-grid,
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+      .header-search-box {
+        display: none;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      .product-grid,
+      .pillars-grid,
+      .footer-grid,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .promo-strip {
+        display: none;
+      }
+      .floating-wa-label {
+        display: none;
+      }
+      .floating-wa {
+        width: 48px;
+        padding: 0;
+        justify-content: center;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Slim Promo Bar -->
+  <div class="promo-strip" id="promo-strip">
+    <div class="container promo-strip-inner">
+      <div class="promo-copy">
+        <span id="promo-text">Direct Wholesale &amp; Retail Sportswear Dispatch Across All 64 Districts of Bangladesh</span>
+      </div>
+      <div class="promo-strip-actions">
+        <a id="promo-fb-link" href="https://www.facebook.com/profile.php?id=61594685934145&mibextid=rS40aB7S9Ucbxw6v" target="_blank" rel="noopener noreferrer" class="promo-link">Facebook Page</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#home" class="brand-link" id="brand-home-link" aria-label="PABEL SPORTS Home">
+        <img id="header-logo-img" class="brand-logo-img" src="https://imgur.com/CeOWw4o.jpg" alt="PABEL SPORTS Official Logo" referrerpolicy="no-referrer" />
+        <span class="brand-wordmark" id="header-brand-fallback">PABEL <span>SPORTS</span></span>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary Navigation">
+        <button type="button" class="nav-link active" data-nav="home">Home</button>
+        <button type="button" class="nav-link" data-nav="all">All Products</button>
+        <button type="button" class="nav-link" data-nav="Football Jerseys">Football Jerseys</button>
+        <button type="button" class="nav-link" data-nav="Tracksuits">Tracksuits</button>
+        <button type="button" class="nav-link" data-nav="sportswear">Sportswear</button>
+        <button type="button" class="nav-link" data-nav="wholesale">Wholesale</button>
+        <button type="button" class="nav-link" data-nav="contact">Contact</button>
+      </nav>
+
+      <div class="header-actions">
+        <div class="header-search-box">
+          <svg class="header-search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="search" id="header-search-input" class="header-search-input" placeholder="Search jerseys, kits..." aria-label="Search products" />
+        </div>
+
+        <button type="button" class="icon-btn" id="open-cart-btn" aria-label="Open Shopping Cart">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span>Cart</span>
+          <span class="cart-count tabular" id="header-cart-count">0</span>
+        </button>
+
+        <button type="button" class="icon-btn mobile-menu-btn" id="mobile-menu-open" aria-label="Open Menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-nav-overlay" id="mobile-nav-overlay" aria-hidden="true">
+    <div class="mobile-nav-panel">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <strong style="font-family:var(--font-display);font-size:20px;">PABEL SPORTS</strong>
+        <button type="button" class="icon-btn" id="mobile-menu-close" aria-label="Close Menu">&times;</button>
+      </div>
+      <input type="search" id="mobile-search-input" class="form-control" placeholder="Search products..." aria-label="Mobile search" />
+      <div class="mobile-nav-links" id="mobile-nav-links">
+        <button type="button" data-nav="home">Home</button>
+        <button type="button" data-nav="all">All Products</button>
+        <button type="button" data-nav="Football Jerseys">Football Jerseys</button>
+        <button type="button" data-nav="Tracksuits">Tracksuits</button>
+        <button type="button" data-nav="sportswear">Sportswear</button>
+        <button type="button" data-nav="wholesale">Wholesale &amp; Bulk</button>
+        <button type="button" data-nav="contact">Contact</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STOREFRONT MAIN -->
+  <main id="storefront-shell" class="storefront-shell">
+    <!-- Hero Banner -->
+    <section id="home" class="hero-section">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <div class="hero-kicker" id="hero-kicker">Bangladesh Wholesale &amp; Retail Hub</div>
+            <h1 class="hero-title" id="hero-headline">Match-Grade Football Jerseys &amp; Technical Sportswear</h1>
+            <p class="hero-subtitle" id="hero-subheadline">
+              Direct wholesale and single-piece retail supply of player-version club kits, national jerseys, pro tracksuits, and custom sublimation teamwear across Bangladesh.
+            </p>
+            <div class="hero-ctas">
+              <button type="button" class="btn btn-primary" id="hero-shop-btn">Shop Now</button>
+              <button type="button" class="btn btn-outline-light" id="hero-wholesale-btn">Wholesale Order</button>
+            </div>
+            <div class="hero-meta-row">
+              <span>Currency: BDT (৳)</span>
+              <span>·</span>
+              <span>MOQ From 10 Pieces</span>
+              <span>·</span>
+              <span>Cash on Delivery &amp; Dealer Dispatch</span>
+            </div>
+          </div>
+          <div class="hero-media">
+            <img id="hero-banner-img" src="/src/assets/images/hero_sportswear_banner_1794945370908.jpg" alt="PABEL SPORTS Football Jerseys and Tracksuits Collection" referrerpolicy="no-referrer" />
+            <div class="img-fallback">
+              <strong style="font-family:var(--font-display);font-size:28px;">PABEL SPORTS</strong>
+              <span>Performance Teamwear &amp; Wholesale Kits</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Catalog & Product Discovery -->
+    <section id="catalog" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Curated Catalog</div>
+            <h2 class="section-title">Jerseys, Tracksuits &amp; Teamwear</h2>
+            <p class="section-lead">Switch between retail and bulk wholesale tiers. Orders meeting each item's Minimum Order Quantity automatically unlock wholesale pricing in your cart.</p>
+          </div>
+          <div class="collection-tabs" id="collection-tabs" role="tablist" aria-label="Product collections">
+            <button type="button" class="tab-btn active" data-collection="all">All Catalog</button>
+            <button type="button" class="tab-btn" data-collection="featured">Featured</button>
+            <button type="button" class="tab-btn" data-collection="bestseller">Best Sellers</button>
+            <button type="button" class="tab-btn" data-collection="new">New Arrivals</button>
+            <button type="button" class="tab-btn" data-collection="wholesale">Wholesale Offers</button>
+          </div>
+        </div>
+
+        <div class="category-scroll" id="category-bar" aria-label="Product categories"></div>
+
+        <div class="catalog-toolbar">
+          <input type="search" id="catalog-search-input" class="form-control" placeholder="Filter by jersey, club name, SKU, or fabric..." aria-label="Filter catalog products" />
+          <select id="catalog-category-select" class="form-control" aria-label="Filter by category" style="min-width:210px;"></select>
+          <select id="catalog-sort-select" class="form-control" aria-label="Sort products" style="min-width:190px;">
+            <option value="featured">Sort: Featured First</option>
+            <option value="price-asc">Retail Price: Low to High</option>
+            <option value="price-desc">Retail Price: High to Low</option>
+            <option value="wholesale-asc">Wholesale Price: Low to High</option>
+          </select>
+        </div>
+
+        <div id="catalog-results-meta" style="font-size:13px;color:var(--text-muted);margin-bottom:16px;" class="tabular"></div>
+        <div class="product-grid" id="product-grid"></div>
+      </div>
+    </section>
+
+    <!-- Wholesale & Dealer Portal -->
+    <section id="wholesale" class="section section-dark">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker" style="color:#f87171;">B2B Bulk &amp; Dealer Program</div>
+            <h2 class="section-title" style="color:#ffffff;">Wholesale Volume Pricing &amp; Dealer Quotations</h2>
+            <p class="section-lead" style="color:var(--text-muted-dark);">Built for sports retailers, academies, corporate tournaments, and district distributors throughout Bangladesh.</p>
+          </div>
+        </div>
+
+        <div class="wholesale-split">
+          <div style="display:flex;flex-direction:column;gap:24px;">
+            <div class="tier-table-wrap">
+              <table class="tier-table">
+                <thead>
+                  <tr>
+                    <th>Order Tier</th>
+                    <th>Quantity</th>
+                    <th>Extra Discount</th>
+                    <th>Dispatch</th>
+                  </tr>
+                </thead>
+                <tbody id="wholesale-tier-body"></tbody>
+              </table>
+            </div>
+
+            <div style="padding:22px;border:1px solid var(--border-dark);border-radius:var(--radius-md);background-color:var(--bg-dark-elevated);">
+              <h3 style="font-size:16px;font-weight:700;margin-bottom:10px;">Instant Bulk Quotation Estimator</h3>
+              <p style="font-size:13.5px;color:var(--text-muted-dark);margin-bottom:14px;">Select a product and quantity to preview exact BDT wholesale pricing and submit directly on WhatsApp.</p>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label" for="quote-product-select" style="color:#e4e4e7;">Product</label>
+                  <select id="quote-product-select" class="form-control" style="background:#0e0e11;color:#fff;border-color:#3f3f46;"></select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="quote-qty-input" style="color:#e4e4e7;">Quantity (Pieces)</label>
+                  <input type="number" id="quote-qty-input" class="form-control tabular" value="25" min="1" style="background:#0e0e11;color:#fff;border-color:#3f3f46;" />
+                </div>
+              </div>
+              <div id="quote-calc-output" style="margin-top:14px;padding:12px 14px;background:#0e0e11;border-radius:var(--radius-sm);font-size:13.5px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;" class="tabular"></div>
+              <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
+                <button type="button" class="btn btn-primary btn-sm" id="quote-add-cart-btn">Add Bulk Qty to Cart</button>
+                <a id="quote-wa-btn" href="https://wa.me/8801866041897" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-sm">Request Quotation on WhatsApp</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="dealer-card">
+            <h3 style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-bottom:6px;">Dealer Registration &amp; Bulk Inquiry</h3>
+            <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:18px;">Register your sports shop, club, or institution to receive factory catalog sheets and distributor rates.</p>
+            <form id="dealer-form" class="form-grid" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="dealer-shop">Shop / Organization Name *</label>
+                <input type="text" id="dealer-shop" class="form-control" required placeholder="e.g. Dhaka Eleven Sports" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="dealer-name">Contact Person *</label>
+                <input type="text" id="dealer-name" class="form-control" required placeholder="Full name" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="dealer-phone">Phone / WhatsApp *</label>
+                <input type="tel" id="dealer-phone" class="form-control" required placeholder="01XXXXXXXXX" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="dealer-district">District *</label>
+                <input type="text" id="dealer-district" class="form-control" required placeholder="e.g. Chattogram" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="dealer-volume">Estimated Order Quantity</label>
+                <select id="dealer-volume" class="form-control">
+                  <option value="10-24 pcs">10 – 24 Pieces</option>
+                  <option value="25-49 pcs">25 – 49 Pieces</option>
+                  <option value="50-99 pcs">50 – 99 Pieces</option>
+                  <option value="100+ pcs">100+ Pieces (Distributor)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="dealer-category">Primary Interest</label>
+                <select id="dealer-category" class="form-control"></select>
+              </div>
+              <div class="form-group full">
+                <label class="form-label" for="dealer-notes">Requirements / Custom Jersey Notes</label>
+                <textarea id="dealer-notes" class="form-control" placeholder="Specify club kits, sizes, or custom printing details..."></textarea>
+              </div>
+              <div class="form-group full" style="flex-direction:row;gap:10px;flex-wrap:wrap;">
+                <button type="submit" class="btn btn-primary">Submit Dealer Application</button>
+                <button type="button" class="btn btn-outline" id="dealer-wa-submit">Send Inquiry via WhatsApp</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose Us & Customer Testimonials -->
+    <section class="section section-surface">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Performance Standards</div>
+            <h2 class="section-title">Why Retailers &amp; Teams Choose PABEL SPORTS</h2>
+          </div>
+        </div>
+
+        <div class="pillars-grid">
+          <div class="pillar-item">
+            <div class="pillar-num">01</div>
+            <h3 class="pillar-title">Player &amp; Fan Grade Quality</h3>
+            <p class="pillar-desc">Engineered moisture-wicking polyester, heat-applied crests, and reinforced collar stitching built for match durability.</p>
+          </div>
+          <div class="pillar-item">
+            <div class="pillar-num">02</div>
+            <h3 class="pillar-title">Direct Factory Wholesale Rates</h3>
+            <p class="pillar-desc">Transparent BDT wholesale margins starting from 10 pieces with automatic volume rebates at 25, 50, and 100+ units.</p>
+          </div>
+          <div class="pillar-item">
+            <div class="pillar-num">03</div>
+            <h3 class="pillar-title">Pan-Bangladesh Logistics</h3>
+            <p class="pillar-desc">Reliable courier and transport booking to Dhaka, Chattogram, Sylhet, Rajshahi, Khulna, and all 64 districts.</p>
+          </div>
+          <div class="pillar-item">
+            <div class="pillar-num">04</div>
+            <h3 class="pillar-title">Custom Team Sublimation</h3>
+            <p class="pillar-desc">Full squad numbering, sponsor printing, and custom crest embroidery for academies and corporate tournaments.</p>
+          </div>
+        </div>
+
+        <div class="testimonials-grid">
+          <article class="testimonial-card">
+            <p class="testimonial-quote">"We restock our Gulistan retail counter with PABEL SPORTS player-version club kits every month. Sizing accuracy and collar finish keep our repeat customers coming back."</p>
+            <div class="testimonial-author">
+              <strong>Tariqul Islam</strong>
+              <span>Owner, Arena Kit House · Dhaka</span>
+            </div>
+          </article>
+          <article class="testimonial-card">
+            <p class="testimonial-quote">"Ordered 65 custom training kits and tracksuits for our district football academy. Wholesale tier pricing saved us 10% and delivery arrived ahead of schedule."</p>
+            <div class="testimonial-author">
+              <strong>Mahmudul Hasan</strong>
+              <span>Head Coach, Sylhet Strikers Academy · Sylhet</span>
+            </div>
+          </article>
+          <article class="testimonial-card">
+            <p class="testimonial-quote">"Fast WhatsApp confirmation and clear stock updates before dispatch. Their BDT wholesale sheet makes margin planning straightforward for our regional store."</p>
+            <div class="testimonial-author">
+              <strong>Sajjad Hossain</strong>
+              <span>Managing Partner, Bay Sports Corner · Chattogram</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Direct Support</div>
+            <h2 class="section-title">Contact PABEL SPORTS</h2>
+            <p class="section-lead">Reach our wholesale desk and retail fulfillment team directly on WhatsApp or Facebook.</p>
+          </div>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-channels">
+            <div class="channel-row">
+              <div>
+                <div style="font-size:12px;text-transform:uppercase;color:var(--text-muted);font-weight:600;">Official WhatsApp Order Desk</div>
+                <strong id="contact-wa-display" style="font-size:18px;" class="tabular">+8801866041897</strong>
+              </div>
+              <a id="contact-wa-link" href="https://wa.me/8801866041897" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-sm">Chat on WhatsApp</a>
+            </div>
+            <div class="channel-row">
+              <div>
+                <div style="font-size:12px;text-transform:uppercase;color:var(--text-muted);font-weight:600;">Official Facebook Page</div>
+                <strong style="font-size:16px;">PABEL SPORTS Official</strong>
+              </div>
+              <a id="contact-fb-link" href="https://www.facebook.com/profile.php?id=61594685934145&mibextid=rS40aB7S9Ucbxw6v" target="_blank" rel="noopener noreferrer" class="btn btn-dark btn-sm">Visit Facebook</a>
+            </div>
+            <div class="channel-row">
+              <div>
+                <div style="font-size:12px;text-transform:uppercase;color:var(--text-muted);font-weight:600;">Coverage &amp; Fulfillment</div>
+                <strong style="font-size:15px;">Bangladesh Nationwide · BDT (৳)</strong>
+                <div style="font-size:13px;color:var(--text-secondary);margin-top:2px;">Sat – Thu: 10:00 AM – 9:00 PM BST</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-panel">
+            <h3 style="font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:14px;">Send a Quick Message</h3>
+            <form id="contact-form" class="form-grid" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="contact-name">Your Name *</label>
+                <input type="text" id="contact-name" class="form-control" required placeholder="Your full name" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="contact-phone">Phone Number *</label>
+                <input type="tel" id="contact-phone" class="form-control" required placeholder="01XXXXXXXXX" />
+              </div>
+              <div class="form-group full">
+                <label class="form-label" for="contact-msg">Message *</label>
+                <textarea id="contact-msg" class="form-control" required placeholder="Ask about stock availability, custom team kits, or wholesale rates..."></textarea>
+              </div>
+              <div class="form-group full" style="flex-direction:row;gap:10px;flex-wrap:wrap;">
+                <button type="submit" class="btn btn-primary">Send Message</button>
+                <button type="button" class="btn btn-outline" id="contact-wa-send">Send via WhatsApp</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ADMIN DASHBOARD SHELL -->
+  <section id="admin-shell" class="admin-shell" aria-label="Admin Dashboard">
+    <div class="container" style="padding-top:24px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px solid var(--border-hairline);">
+        <div>
+          <div class="section-kicker">Store Management</div>
+          <h1 style="font-family:var(--font-display);font-size:32px;font-weight:800;line-height:1;">PABEL SPORTS Admin Dashboard</h1>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline btn-sm" id="admin-back-store-btn">Back to Storefront</button>
+          <button type="button" class="btn btn-dark btn-sm" id="admin-logout-btn" style="display:none;">Lock Admin</button>
+        </div>
+      </div>
+
+      <!-- Demo Persistence Notice -->
+      <div class="notice-box notice-warning" style="margin-top:16px;">
+        <strong>Local Browser Demo Storage Notice:</strong> All products, categories, orders, settings, and cart data are persisted in <code>localStorage</code> inside this browser only. This single-file demonstration does not provide secure authentication or shared multi-device online synchronization. For live multi-device business operations, a verified backend server and database are required.
+      </div>
+
+      <!-- Admin Passcode Gate -->
+      <div id="admin-login-gate" style="max-width:440px;margin:48px auto;background:var(--bg-surface);border:1px solid var(--border-hairline);border-radius:var(--radius-md);padding:28px;">
+        <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-bottom:6px;">Admin Access Gate</h2>
+        <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:16px;">Demo UI lock only (localStorage is not secure server authentication). Default demo passcode: <code class="mono">pabel2026</code></p>
+        <form id="admin-login-form" style="display:flex;flex-direction:column;gap:12px;">
+          <div class="form-group">
+            <label class="form-label" for="admin-passcode-input">Demo Passcode</label>
+            <input type="password" id="admin-passcode-input" class="form-control" placeholder="Enter pabel2026" required />
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button type="submit" class="btn btn-primary">Unlock Dashboard</button>
+            <button type="button" class="btn btn-outline" id="admin-quick-unlock">Quick Demo Unlock</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Admin Workspace -->
+      <div id="admin-workspace" class="admin-layout" style="display:none;">
+        <aside class="admin-sidebar" aria-label="Admin sections">
+          <button type="button" class="admin-nav-btn active" data-admin-tab="overview">Overview</button>
+          <button type="button" class="admin-nav-btn" data-admin-tab="products">Products &amp; Inventory</button>
+          <button type="button" class="admin-nav-btn" data-admin-tab="categories">Categories</button>
+          <button type="button" class="admin-nav-btn" data-admin-tab="orders">Orders &amp; Invoices</button>
+          <button type="button" class="admin-nav-btn" data-admin-tab="customers">Customers &amp; Dealers</button>
+          <button type="button" class="admin-nav-btn" data-admin-tab="settings">Store, Logo &amp; Settings</button>
+        </aside>
+
+        <div id="admin-tab-content"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer" id="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <img id="footer-logo-img" class="brand-logo-img" src="https://imgur.com/CeOWw4o.jpg" alt="PABEL SPORTS Logo" referrerpolicy="no-referrer" style="background:#fff;padding:3px;border-radius:4px;" />
+            <span style="font-family:var(--font-display);font-size:22px;font-weight:800;color:#fff;">PABEL SPORTS</span>
+          </div>
+          <p style="font-size:13.5px;color:var(--text-muted-dark);line-height:1.65;max-width:36ch;">
+            Wholesale and retail sportswear supplier in Bangladesh. Delivering match-grade football jerseys, tracksuits, training kits, and custom club apparel nationwide.
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-heading">Quick Links</div>
+          <div class="footer-links">
+            <button type="button" data-nav="home">Home</button>
+            <button type="button" data-nav="all">All Products</button>
+            <button type="button" data-nav="wholesale">Wholesale &amp; Bulk</button>
+            <button type="button" data-nav="contact">Contact Support</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-heading">Top Categories</div>
+          <div class="footer-links">
+            <button type="button" data-nav="Football Jerseys">Football Jerseys</button>
+            <button type="button" data-nav="Player Version Jerseys">Player Version Jerseys</button>
+            <button type="button" data-nav="Tracksuits">Tracksuits</button>
+            <button type="button" data-nav="Training Kits">Training Kits</button>
+            <button type="button" data-nav="Custom Jerseys">Custom Jerseys</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-heading">Connect &amp; Order</div>
+          <div class="footer-links">
+            <a id="footer-wa-link" href="https://wa.me/8801866041897" target="_blank" rel="noopener noreferrer">WhatsApp: +8801866041897</a>
+            <a id="footer-fb-link" href="https://www.facebook.com/profile.php?id=61594685934145&mibextid=rS40aB7S9Ucbxw6v" target="_blank" rel="noopener noreferrer">Official Facebook Page</a>
+            <span>Currency: BDT (৳)</span>
+            <span>Delivery: All 64 Districts, Bangladesh</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span id="footer-copyright-trigger" style="user-select:none;cursor:default;" title="">&copy; <span id="footer-year">2026</span> PABEL SPORTS Bangladesh. All rights reserved.</span>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span>Bangladesh Wholesale &amp; Retail Sportswear</span>
+          <button type="button" id="footer-hidden-admin-btn" aria-label="Hidden Admin Panel" style="opacity:0.16;font-size:12px;letter-spacing:0.06em;padding:4px 6px;border-radius:3px;transition:opacity 180ms ease;">&bull;&bull;&bull;</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp Button -->
+  <a id="floating-wa-btn" href="https://wa.me/8801866041897" target="_blank" rel="noopener noreferrer" class="floating-wa" aria-label="Order on WhatsApp">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.77 14.11c-.24.68-1.41 1.3-1.95 1.38-.5.08-1.13.11-1.82-.11-.42-.13-.96-.31-1.65-.61-2.9-1.26-4.79-4.18-4.94-4.37-.14-.2-1.18-1.57-1.18-3 0-1.43.75-2.13 1.01-2.42.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.66.5.24.58.83 2.01.9 2.16.07.14.12.31.02.5-.1.2-.15.31-.3.48-.14.17-.3.38-.43.51-.14.14-.29.3-.13.59.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.33 1.44.29.15.46.12.63-.07.17-.2.73-.85.92-1.14.2-.29.39-.24.66-.14.27.1 1.7.8 1.99.95.29.14.48.22.55.34.07.12.07.7-.17 1.38z"/>
+    </svg>
+    <span class="floating-wa-label">WhatsApp Order</span>
+  </a>
+
+  <!-- Shopping Cart Drawer -->
+  <div class="drawer-backdrop" id="cart-drawer-backdrop" aria-hidden="true">
+    <aside class="cart-drawer" aria-label="Shopping Cart">
+      <div class="modal-header">
+        <h2 class="modal-title">Your Order Bag</h2>
+        <button type="button" class="icon-btn" id="close-cart-btn" aria-label="Close Cart">&times;</button>
+      </div>
+      <div class="cart-items-list" id="cart-items-list"></div>
+      <div class="cart-footer" id="cart-footer"></div>
+    </aside>
+  </div>
+
+  <!-- Product Details Modal -->
+  <div class="backdrop" id="pdp-modal" aria-hidden="true">
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="pdp-modal-title">
+      <div class="modal-header">
+        <h2 class="modal-title" id="pdp-modal-title">Product Details</h2>
+        <button type="button" class="icon-btn" id="close-pdp-btn" aria-label="Close Product Details">&times;</button>
+      </div>
+      <div class="modal-body" id="pdp-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div class="backdrop" id="checkout-modal" aria-hidden="true">
+    <div class="modal-dialog" style="max-width:860px;" role="dialog" aria-modal="true" aria-labelledby="checkout-modal-title">
+      <div class="modal-header">
+        <h2 class="modal-title" id="checkout-modal-title">Checkout &amp; Order Placement</h2>
+        <button type="button" class="icon-btn" id="close-checkout-btn" aria-label="Close Checkout">&times;</button>
+      </div>
+      <div class="modal-body" id="checkout-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Generic Confirmation Modal -->
+  <div class="backdrop" id="confirm-modal" aria-hidden="true">
+    <div class="modal-dialog" style="max-width:440px;" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+      <div class="modal-header">
+        <h2 class="modal-title" id="confirm-modal-title">Confirm Action</h2>
+        <button type="button" class="icon-btn" id="confirm-cancel-x" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="confirm-modal-msg" style="font-size:14.5px;color:var(--text-secondary);margin-bottom:20px;"></p>
+        <div style="display:flex;justify-content:flex-end;gap:10px;">
+          <button type="button" class="btn btn-outline btn-sm" id="confirm-cancel-btn">Cancel</button>
+          <button type="button" class="btn btn-primary btn-sm" id="confirm-ok-btn">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Printable Invoice Container -->
+  <div id="printable-invoice" class="print-only"></div>
+
+  <!-- Toast Notification Region -->
+  <div class="toast-region" id="toast-region" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const STORAGE_KEYS = {
+        PRODUCTS: 'pabel_sports_products_v1',
+        CATEGORIES: 'pabel_sports_categories_v1',
+        CART: 'pabel_sports_cart_v1',
+        ORDERS: 'pabel_sports_orders_v1',
+        DEALERS: 'pabel_sports_dealers_v1',
+        MESSAGES: 'pabel_sports_messages_v1',
+        SETTINGS: 'pabel_sports_settings_v1',
+        ADMIN_UNLOCKED: 'pabel_sports_admin_unlocked_v1'
+      };
+
+      const OFFICIAL_DEFAULTS = {
+        brandName: 'PABEL SPORTS',
+        logoUrl: 'https://imgur.com/CeOWw4o.jpg',
+        whatsappNumber: '+8801866041897',
+        whatsappUrl: 'https://wa.me/8801866041897',
+        facebookUrl: 'https://www.facebook.com/profile.php?id=61594685934145&mibextid=rS40aB7S9Ucbxw6v',
+        promoText: 'Direct Wholesale & Retail Sportswear Dispatch Across All 64 Districts of Bangladesh',
+        heroKicker: 'Bangladesh Wholesale & Retail Hub',
+        heroHeadline: 'Match-Grade Football Jerseys & Technical Sportswear',
+        heroSubheadline: 'Direct wholesale and single-piece retail supply of player-version club kits, national jerseys, pro tracksuits, and custom sublimation teamwear across Bangladesh.',
+        heroBannerUrl: '/src/assets/images/hero_sportswear_banner_1794945370908.jpg',
+        dhakaShipping: 70,
+        outsideDhakaShipping: 130,
+        tier2Min: 25,
+        tier2DiscountPct: 5,
+        tier3Min: 50,
+        tier3DiscountPct: 10,
+        tier4Min: 100,
+        tier4DiscountPct: 15
+      };
+
+      const DEFAULT_CATEGORIES = [
+        'Football Jerseys',
+        'Club Jerseys',
+        'National Team Jerseys',
+        'Real Madrid Jerseys',
+        'Barcelona Jerseys',
+        'Manchester United Jerseys',
+        'Player Version Jerseys',
+        'Fan Version Jerseys',
+        'Tracksuits',
+        'Training Kits',
+        'Sports Shorts',
+        'Sports T-Shirts',
+        'Custom Jerseys',
+        'Accessories'
+      ];
+
+      const DEFAULT_PRODUCTS = [
+        {
+          id: 'ps-001',
+          name: 'Real Madrid 25/26 Home Player Version Jersey',
+          sku: 'PS-RM-25H',
+          category: 'Real Madrid Jerseys',
+          tags: ['Football Jerseys', 'Club Jerseys', 'Player Version Jerseys'],
+          description: 'Match-authentic slim-fit breathable jacquard mesh with heat-pressed crest and laser-cut side ventilation panels.',
+          imageUrl: '/src/assets/images/product_football_jersey_white_1794945370111.jpg',
+          gallery: [
+            '/src/assets/images/product_football_jersey_white_1794945370111.jpg',
+            '/src/assets/images/hero_sportswear_banner_1794945370908.jpg'
+          ],
+          regularPrice: 1250,
+          wholesalePrice: 820,
+          moq: 10,
+          bulkPricingNote: '৳780 (25+ pcs) · ৳740 (50+ pcs)',
+          sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+          colors: ['White / Obsidian', 'White / Crimson Trim'],
+          stock: 185,
+          featured: true,
+          bestSeller: true,
+          newArrival: true,
+          wholesaleOffer: true
+        },
+        {
+          id: 'ps-002',
+          name: 'Manchester United Crimson Pro Match Jersey',
+          sku: 'PS-MU-25P',
+          category: 'Manchester United Jerseys',
+          tags: ['Football Jerseys', 'Club Jerseys', 'Player Version Jerseys'],
+          description: 'Deep crimson player-issue jersey crafted with lightweight 145gsm moisture-wicking interlock fabric.',
+          imageUrl: '/src/assets/images/product_club_jersey_red_1794945372031.jpg',
+          gallery: [
+            '/src/assets/images/product_club_jersey_red_1794945372031.jpg',
+            '/src/assets/images/hero_sportswear_banner_1794945370908.jpg'
+          ],
+          regularPrice: 1280,
+          wholesalePrice: 840,
+          moq: 10,
+          bulkPricingNote: '৳800 (25+ pcs) · ৳760 (50+ pcs)',
+          sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+          colors: ['Crimson Red / Black', 'Black / Red'],
+          stock: 140,
+          featured: true,
+          bestSeller: true,
+          newArrival: false,
+          wholesaleOffer: true
+        },
+        {
+          id: 'ps-003',
+          name: 'PABEL Stealth Pro Full-Zip Tracksuit Set',
+          sku: 'PS-TS-09B',
+          category: 'Tracksuits',
+          tags: ['Training Kits'],
+          description: 'Two-piece full-zip training jacket and tapered zip-ankle trousers in matte stretch double-knit polyester.',
+          imageUrl: '/src/assets/images/product_pro_tracksuit_1794945371357.jpg',
+          gallery: [
+            '/src/assets/images/product_pro_tracksuit_1794945371357.jpg',
+            '/src/assets/images/hero_sportswear_banner_1794945370908.jpg'
+          ],
+          regularPrice: 2450,
+          wholesalePrice: 1680,
+          moq: 10,
+          bulkPricingNote: '৳1,595 (25+ sets) · ৳1,510 (50+ sets)',
+          sizes: ['M', 'L', 'XL', 'XXL'],
+          colors: ['Matte Black / Crimson', 'Charcoal / White'],
+          stock: 95,
+          featured: true,
+          bestSeller: true,
+          newArrival: true,
+          wholesaleOffer: true
+        },
+        {
+          id: 'ps-004',
+          name: 'AeroMesh Complete Training Kit Bundle',
+          sku: 'PS-TK-44C',
+          category: 'Training Kits',
+          tags: ['Sports Shorts', 'Sports T-Shirts'],
+          description: 'Complete athletic training bundle pairing a dry-fit performance tee, zippered pocket shorts, and crew grip socks.',
+          imageUrl: '/src/assets/images/product_training_kit_1794945372137.jpg',
+          gallery: [
+            '/src/assets/images/product_training_kit_1794945372137.jpg'
+          ],
+          regularPrice: 1490,
+          wholesalePrice: 980,
+          moq: 12,
+          bulkPricingNote: '৳930 (25+ kits) · ৳880 (50+ kits)',
+          sizes: ['S', 'M', 'L', 'XL'],
+          colors: ['Charcoal / Black', 'Black / Crimson'],
+          stock: 120,
+          featured: true,
+          bestSeller: false,
+          newArrival: true,
+          wholesaleOffer: true
+        },
+        {
+          id: 'ps-005',
+          name: 'FC Barcelona Away Fan Version Stadium Jersey',
+          sku: 'PS-FCB-25F',
+          category: 'Barcelona Jerseys',
+          tags: ['Football Jerseys', 'Club Jerseys', 'Fan Version Jerseys'],
+          description: 'Relaxed stadium cut with embroidered crest and breathable micro-perforated back panel for everyday wear.',
+          imageUrl: '/src/assets/images/product_club_jersey_red_1794945372031.jpg',
+          gallery: [
+            '/src/assets/images/product_club_jersey_red_1794945372031.jpg'
+          ],
+          regularPrice: 880,
+          wholesalePrice: 540,
+          moq: 15,
+          bulkPricingNote: '৳510 (25+ pcs) · ৳485 (50+ pcs)',
+          sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+          colors: ['Crimson / Navy', 'Obsidian Black'],
+          stock: 260,
+          featured: false,
+          bestSeller: true,
+          newArrival: false,
+          wholesaleOffer: true
+        },
+        {
+          id: 'ps-006',
+          name: 'National Team World Cup Fan Edition Jersey',
+          sku: 'PS-NT-26F',
+          category: 'National Team Jerseys',
+          tags: ['Football Jerseys', 'Fan Version Jerseys'],
+          description: 'High-demand tournament fan jersey featuring woven team badge, soft ribbed V-collar, and fade-proof print.',
+          imageUrl: '/src/assets/images/product_football_jersey_white_1794945370111.jpg',
+          gallery: [
+            '/src/assets/images/product_football_jersey_white_1794945370111.jpg'
+          ],
+          regularPrice: 850,
+          wholesalePrice: 510,
+          moq: 20,
+          bulkPricingNote: '৳485 (25+ pcs) · ৳460 (50+ pcs)',
+          sizes: ['M', 'L', 'XL', 'XXL'],
+          colors: ['Sky White', 'Crimson / White'],
+          stock: 340,
+          featured: true,
+          bestSeller: true,
+          newArrival: true,
+          wholesaleOffer: true
+        },
+        {
+          id: 'ps-007',
+          name: 'Elite European Club Player Version Jersey',
+          sku: 'PS-CL-31P',
+          category: 'Player Version Jerseys',
+          tags: ['Football Jerseys', 'Club Jerseys'],
+          description: 'Tailored athletic silhouette with sculpted raglan sleeves and breathable knit zones for competitive play.',
+          imageUrl: '/src/assets/images/product_football_jersey_white_1794945370111.jpg',
+          gallery: [
+            '/src/assets/images/product_football_jersey_white_1794945370111.jpg'
+          ],
+          regularPrice: 1220,
+          wholesalePrice: 790,
+          moq: 10,
+          bulkPricingNote: '৳750 (25+ pcs) · ৳710 (50+ pcs)',
+          sizes: ['S', 'M', 'L', 'XL'],
+          colors: ['White / Black', 'Red / Black'],
+          stock: 110,
+          featured: false,
+          bestSeller: false,
+          newArrival: true,
+          wholesaleOffer: false
+        },
+        {
+          id: 'ps-008',
+          name: 'Velocity Woven Zip-Pocket Sports Shorts',
+          sku: 'PS-SS-14B',
+          category: 'Sports Shorts',
+          tags: ['Training Kits'],
+          description: '4-way stretch lightweight training shorts with concealed zip pockets and internal drawcord.',
+          imageUrl: '/src/assets/images/product_training_kit_1794945372137.jpg',
+          gallery: [
+            '/src/assets/images/product_training_kit_1794945372137.jpg'
+          ],
+          regularPrice: 580,
+          wholesalePrice: 360,
+          moq: 20,
+          bulkPricingNote: '৳340 (25+ pcs) · ৳320 (50+ pcs)',
+          sizes: ['M', 'L', 'XL', 'XXL'],
+          colors: ['Jet Black', 'Slate Grey'],
+          stock: 290,
+          featured: false,
+          bestSeller: true,
+          newArrival: false,
+          wholesaleOffer: true
+        },
+        {
+          id: 'ps-009',
+          name: 'Dry-Fit Performance Sports T-Shirt',
+          sku: 'PS-ST-21G',
+          category: 'Sports T-Shirts',
+          tags: ['Training Kits'],
+          description: 'Anti-odor micro-mesh athletic tee built for gym sessions, running clubs, and warm-up drills.',
+          imageUrl: '/src/assets/images/product_training_kit_1794945372137.jpg',
+          gallery: [
+            '/src/assets/images/product_training_kit_1794945372137.jpg'
+          ],
+          regularPrice: 550,
+          wholesalePrice: 330,
+          moq: 20,
+          bulkPricingNote: '৳310 (25+ pcs) · ৳295 (50+ pcs)',
+          sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+          colors: ['Heather Charcoal', 'Obsidian Black', 'Crimson'],
+          stock: 420,
+          featured: false,
+          bestSeller: true,
+          newArrival: false,
+          wholesaleOffer: true
+        },
+        {
+          id: 'ps-010',
+          name: 'Custom Sublimation Squad Jersey Pack',
+          sku: 'PS-CJ-100',
+          category: 'Custom Jerseys',
+          tags: ['Football Jerseys'],
+          description: 'Full-color edge-to-edge sublimation team jerseys with custom player names, back numbers, and sponsor logos.',
+          imageUrl: '/src/assets/images/hero_sportswear_banner_1794945370908.jpg',
+          gallery: [
+            '/src/assets/images/hero_sportswear_banner_1794945370908.jpg'
+          ],
+          regularPrice: 780,
+          wholesalePrice: 480,
+          moq: 15,
+          bulkPricingNote: '৳455 (25+ pcs) · ৳430 (50+ pcs)',
+          sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+          colors: ['Custom Club Colorway'],
+          stock: 500,
+          featured: true,
+          bestSeller: false,
+          newArrival: true,
+          wholesaleOffer: true
+        },
+        {
+          id: 'ps-011',
+          name: 'Academy Winter Fleece Training Tracksuit',
+          sku: 'PS-TS-19R',
+          category: 'Tracksuits',
+          tags: ['Training Kits'],
+          description: 'Brushed inner-fleece tracksuit engineered for early morning winter camp sessions and travel.',
+          imageUrl: '/src/assets/images/product_pro_tracksuit_1794945371357.jpg',
+          gallery: [
+            '/src/assets/images/product_pro_tracksuit_1794945371357.jpg'
+          ],
+          regularPrice: 2650,
+          wholesalePrice: 1850,
+          moq: 10,
+          bulkPricingNote: '৳1,750 (25+ sets)',
+          sizes: ['M', 'L', 'XL', 'XXL'],
+          colors: ['Black / Crimson', 'All Black'],
+          stock: 72,
+          featured: false,
+          bestSeller: false,
+          newArrival: true,
+          wholesaleOffer: false
+        },
+        {
+          id: 'ps-012',
+          name: 'Pro-Grip Match Socks & Shin Sleeve Bundle',
+          sku: 'PS-AC-05K',
+          category: 'Accessories',
+          tags: ['Training Kits'],
+          description: 'Silicone anti-slip sole match socks paired with breathable compression shin sleeves.',
+          imageUrl: '/src/assets/images/product_training_kit_1794945372137.jpg',
+          gallery: [
+            '/src/assets/images/product_training_kit_1794945372137.jpg'
+          ],
+          regularPrice: 380,
+          wholesalePrice: 220,
+          moq: 24,
+          bulkPricingNote: '৳200 (50+ pairs)',
+          sizes: ['Free Size (39-44 EU)'],
+          colors: ['Black / Grey', 'White / Black', 'Red / Black'],
+          stock: 600,
+          featured: false,
+          bestSeller: true,
+          newArrival: false,
+          wholesaleOffer: true
+        }
+      ];
+
+      const DEFAULT_ORDERS = [
+        {
+          id: 'PS-2026-1041',
+          createdAt: '2026-11-15T14:20:00Z',
+          customerName: 'Tariqul Islam',
+          phone: '01711223344',
+          address: 'Shop 42, Maulana Bhashani Hockey Stadium Market',
+          district: 'Dhaka',
+          city: 'Gulistan',
+          notes: 'Pack sizes M and L separately',
+          paymentMethod: 'Cash on Delivery',
+          paymentStatus: 'COD Due on Delivery',
+          status: 'Confirmed',
+          items: [
+            {
+              productId: 'ps-001',
+              name: 'Real Madrid 25/26 Home Player Version Jersey',
+              sku: 'PS-RM-25H',
+              size: 'L',
+              color: 'White / Obsidian',
+              qty: 20,
+              unitPrice: 820,
+              isWholesale: true
+            }
+          ],
+          subtotal: 16400,
+          discount: 0,
+          shipping: 70,
+          total: 16470
+        }
+      ];
+
+      const BD_DISTRICTS = [
+        'Dhaka', 'Chattogram', 'Sylhet', 'Rajshahi', 'Khulna', 'Barishal', 'Rangpur', 'Mymensingh',
+        'Gazipur', 'Narayanganj', 'Cumilla', 'Bogura', 'Cox\'s Bazar', 'Jashore', 'Narsingdi',
+        'Tangail', 'Faridpur', 'Dinajpur', 'Feni', 'Brahmanbaria', 'Noakhali', 'Kushtia', 'Pabna'
+      ];
+
+      const COLOR_HEX_MAP = {
+        'White': '#f4f4f5',
+        'Black': '#18181b',
+        'Obsidian': '#18181b',
+        'Crimson': '#dc2626',
+        'Red': '#dc2626',
+        'Navy': '#1e3a8a',
+        'Charcoal': '#3f3f46',
+        'Grey': '#71717a',
+        'Sky': '#38bdf8'
+      };
+
+      const state = {
+        products: [],
+        categories: [],
+        cart: [],
+        orders: [],
+        dealers: [],
+        messages: [],
+        settings: {},
+        adminUnlocked: false,
+        adminTab: 'overview',
+        editingProductId: null,
+        activeCollection: 'all',
+        activeCategory: 'all',
+        searchQuery: '',
+        sortBy: 'featured',
+        pdpProductId: null,
+        pdpSize: '',
+        pdpColor: '',
+        pdpQty: 1,
+        pdpImageIndex: 0
+      };
+
+      /* Safe Helpers */
+      function escapeHtml(value) {
+        if (value === null || value === undefined) return '';
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function formatBDT(amount) {
+        const num = Number(amount) || 0;
+        return '৳' + Math.round(num).toLocaleString('en-US');
+      }
+
+      function readStorage(key, fallback) {
+        try {
+          const raw = localStorage.getItem(key);
+          if (!raw) return structuredCloneFallback(fallback);
+          return JSON.parse(raw);
+        } catch {
+          return structuredCloneFallback(fallback);
+        }
+      }
+
+      function writeStorage(key, value) {
+        try {
+          localStorage.setItem(key, JSON.stringify(value));
+        } catch {
+          showToast('Browser storage quota reached. Clear old entries if needed.', true);
+        }
+      }
+
+      function structuredCloneFallback(val) {
+        return JSON.parse(JSON.stringify(val));
+      }
+
+      function showToast(message, isError = false) {
+        const region = document.getElementById('toast-region');
+        const el = document.createElement('div');
+        el.className = 'toast' + (isError ? ' error' : '');
+        el.textContent = message;
+        region.appendChild(el);
+        setTimeout(() => {
+          el.remove();
+        }, 3200);
+      }
+
+      function openConfirm(title, message, onConfirm) {
+        const modal = document.getElementById('confirm-modal');
+        document.getElementById('confirm-modal-title').textContent = title;
+        document.getElementById('confirm-modal-msg').textContent = message;
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+
+        const okBtn = document.getElementById('confirm-ok-btn');
+        const cancelBtn = document.getElementById('confirm-cancel-btn');
+        const closeX = document.getElementById('confirm-cancel-x');
+
+        const cleanup = () => {
+          modal.classList.remove('open');
+          modal.setAttribute('aria-hidden', 'true');
+          okBtn.onclick = null;
+          cancelBtn.onclick = null;
+          closeX.onclick = null;
+        };
+
+        okBtn.onclick = () => {
+          cleanup();
+          onConfirm();
+        };
+        cancelBtn.onclick = cleanup;
+        closeX.onclick = cleanup;
+      }
+
+      function getSwatchColor(label) {
+        const key = Object.keys(COLOR_HEX_MAP).find((k) => label.toLowerCase().includes(k.toLowerCase()));
+        return key ? COLOR_HEX_MAP[key] : '#52525b';
+      }
+
+      function buildWhatsAppLink(messageText) {
+        const base = (state.settings.whatsappUrl || OFFICIAL_DEFAULTS.whatsappUrl).replace(/\/+$/, '');
+        return `${base}?text=${encodeURIComponent(messageText)}`;
+      }
+
+      function getUnitPricing(product, qty) {
+        const isWholesale = qty >= (Number(product.moq) || 10);
+        const basePrice = isWholesale ? Number(product.wholesalePrice) : Number(product.regularPrice);
+        let bulkDiscountPct = 0;
+        if (qty >= Number(state.settings.tier4Min || 100)) {
+          bulkDiscountPct = Number(state.settings.tier4DiscountPct || 15);
+        } else if (qty >= Number(state.settings.tier3Min || 50)) {
+          bulkDiscountPct = Number(state.settings.tier3DiscountPct || 10);
+        } else if (qty >= Number(state.settings.tier2Min || 25)) {
+          bulkDiscountPct = Number(state.settings.tier2DiscountPct || 5);
+        }
+        const effectiveUnit = Math.round(basePrice * (1 - bulkDiscountPct / 100));
+        return { isWholesale, basePrice, bulkDiscountPct, effectiveUnit };
+      }
+
+      function attachImageFallback(imgEl) {
+        if (!imgEl) return;
+        imgEl.addEventListener('error', () => {
+          imgEl.style.display = 'none';
+          const sibling = imgEl.nextElementSibling;
+          if (sibling && sibling.classList.contains('img-fallback')) {
+            sibling.classList.add('visible');
+          }
+        });
+      }
+
+      /* Initialization */
+      function initState() {
+        state.categories = readStorage(STORAGE_KEYS.CATEGORIES, DEFAULT_CATEGORIES);
+        state.products = readStorage(STORAGE_KEYS.PRODUCTS, DEFAULT_PRODUCTS);
+        state.cart = readStorage(STORAGE_KEYS.CART, []);
+        state.orders = readStorage(STORAGE_KEYS.ORDERS, DEFAULT_ORDERS);
+        state.dealers = readStorage(STORAGE_KEYS.DEALERS, []);
+        state.messages = readStorage(STORAGE_KEYS.MESSAGES, []);
+        state.settings = Object.assign({}, OFFICIAL_DEFAULTS, readStorage(STORAGE_KEYS.SETTINGS, OFFICIAL_DEFAULTS));
+        state.adminUnlocked = readStorage(STORAGE_KEYS.ADMIN_UNLOCKED, false);
+
+        if (!localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
+          writeStorage(STORAGE_KEYS.PRODUCTS, state.products);
+        }
+        if (!localStorage.getItem(STORAGE_KEYS.CATEGORIES)) {
+          writeStorage(STORAGE_KEYS.CATEGORIES, state.categories);
+        }
+        if (!localStorage.getItem(STORAGE_KEYS.ORDERS)) {
+          writeStorage(STORAGE_KEYS.ORDERS, state.orders);
+        }
+        if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
+          writeStorage(STORAGE_KEYS.SETTINGS, state.settings);
+        }
+      }
+
+      /* Apply Settings to DOM */
+      function applySettingsUI() {
+        const s = state.settings;
+        const headerLogo = document.getElementById('header-logo-img');
+        const footerLogo = document.getElementById('footer-logo-img');
+        const brandFallback = document.getElementById('header-brand-fallback');
+
+        [headerLogo, footerLogo].forEach((img) => {
+          img.style.display = 'block';
+          img.src = s.logoUrl || OFFICIAL_DEFAULTS.logoUrl;
+          img.onerror = () => {
+            img.style.display = 'none';
+          };
+        });
+        brandFallback.style.display = 'inline';
+
+        document.getElementById('promo-text').textContent = s.promoText;
+        document.getElementById('hero-kicker').textContent = s.heroKicker;
+        document.getElementById('hero-headline').textContent = s.heroHeadline;
+        document.getElementById('hero-subheadline').textContent = s.heroSubheadline;
+
+        const heroImg = document.getElementById('hero-banner-img');
+        heroImg.style.display = 'block';
+        heroImg.nextElementSibling.classList.remove('visible');
+        heroImg.src = s.heroBannerUrl || OFFICIAL_DEFAULTS.heroBannerUrl;
+
+        const waDisplay = s.whatsappNumber || OFFICIAL_DEFAULTS.whatsappNumber;
+        const waHref = s.whatsappUrl || OFFICIAL_DEFAULTS.whatsappUrl;
+        const fbHref = s.facebookUrl || OFFICIAL_DEFAULTS.facebookUrl;
+
+        document.getElementById('contact-wa-display').textContent = waDisplay;
+        document.getElementById('contact-wa-link').href = waHref;
+        document.getElementById('floating-wa-btn').href = buildWhatsAppLink('Hello PABEL SPORTS, I would like to place an order / request wholesale pricing.');
+        document.getElementById('footer-wa-link').href = waHref;
+        document.getElementById('footer-wa-link').textContent = `WhatsApp: ${waDisplay}`;
+        document.getElementById('promo-fb-link').href = fbHref;
+        document.getElementById('contact-fb-link').href = fbHref;
+        document.getElementById('footer-fb-link').href = fbHref;
+
+        renderWholesaleTiers();
+      }
+
+      function renderWholesaleTiers() {
+        const s = state.settings;
+        const tbody = document.getElementById('wholesale-tier-body');
+        tbody.innerHTML = `
+          <tr>
+            <td><strong>Starter Wholesale</strong></td>
+            <td class="tabular">10 – ${Number(s.tier2Min) - 1} pcs</td>
+            <td class="tabular">Standard Wholesale Price</td>
+            <td>24h Dispatch</td>
+          </tr>
+          <tr>
+            <td><strong>Club &amp; Retail Tier</strong></td>
+            <td class="tabular">${s.tier2Min} – ${Number(s.tier3Min) - 1} pcs</td>
+            <td class="tabular">+${s.tier2DiscountPct}% Volume Discount</td>
+            <td>Priority Courier</td>
+          </tr>
+          <tr>
+            <td><strong>Regional Stockist</strong></td>
+            <td class="tabular">${s.tier3Min} – ${Number(s.tier4Min) - 1} pcs</td>
+            <td class="tabular">+${s.tier3DiscountPct}% Volume Discount</td>
+            <td>Priority + Custom Print</td>
+          </tr>
+          <tr>
+            <td><strong>Master Distributor</strong></td>
+            <td class="tabular">${s.tier4Min}+ pcs</td>
+            <td class="tabular">+${s.tier4DiscountPct}% Maximum Rebate</td>
+            <td>Dedicated Transport</td>
+          </tr>
+        `;
+      }
+
+      /* Render Categories */
+      function renderCategoryControls() {
+        const bar = document.getElementById('category-bar');
+        const select = document.getElementById('catalog-category-select');
+        const dealerCat = document.getElementById('dealer-category');
+
+        const allBtn = `<button type="button" class="cat-btn ${state.activeCategory === 'all' ? 'active' : ''}" data-cat="all">All Categories</button>`;
+        const catBtns = state.categories.map((cat) =>
+          `<button type="button" class="cat-btn ${state.activeCategory === cat ? 'active' : ''}" data-cat="${escapeHtml(cat)}">${escapeHtml(cat)}</button>`
+        ).join('');
+        bar.innerHTML = allBtn + catBtns;
+
+        select.innerHTML = `<option value="all">All Categories (${state.products.length})</option>` +
+          state.categories.map((cat) => `<option value="${escapeHtml(cat)}" ${state.activeCategory === cat ? 'selected' : ''}>${escapeHtml(cat)}</option>`).join('');
+
+        dealerCat.innerHTML = state.categories.map((cat) => `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`).join('');
+      }
+
+      /* Filter & Sort Products */
+      function getFilteredProducts() {
+        let list = state.products.slice();
+
+        if (state.activeCollection === 'featured') {
+          list = list.filter((p) => p.featured);
+        } else if (state.activeCollection === 'bestseller') {
+          list = list.filter((p) => p.bestSeller);
+        } else if (state.activeCollection === 'new') {
+          list = list.filter((p) => p.newArrival);
+        } else if (state.activeCollection === 'wholesale') {
+          list = list.filter((p) => p.wholesaleOffer);
+        }
+
+        if (state.activeCategory === 'sportswear') {
+          const sportswearCats = ['Tracksuits', 'Training Kits', 'Sports Shorts', 'Sports T-Shirts', 'Accessories'];
+          list = list.filter((p) => sportswearCats.includes(p.category) || (p.tags || []).some((t) => sportswearCats.includes(t)));
+        } else if (state.activeCategory !== 'all') {
+          list = list.filter((p) => p.category === state.activeCategory || (p.tags || []).includes(state.activeCategory));
+        }
+
+        const q = state.searchQuery.trim().toLowerCase();
+        if (q) {
+          list = list.filter((p) =>
+            p.name.toLowerCase().includes(q) ||
+            p.sku.toLowerCase().includes(q) ||
+            p.category.toLowerCase().includes(q) ||
+            p.description.toLowerCase().includes(q)
+          );
+        }
+
+        if (state.sortBy === 'price-asc') {
+          list.sort((a, b) => a.regularPrice - b.regularPrice);
+        } else if (state.sortBy === 'price-desc') {
+          list.sort((a, b) => b.regularPrice - a.regularPrice);
+        } else if (state.sortBy === 'wholesale-asc') {
+          list.sort((a, b) => a.wholesalePrice - b.wholesalePrice);
+        } else {
+          list.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+        }
+
+        return list;
+      }
+
+      function renderProductGrid() {
+        const grid = document.getElementById('product-grid');
+        const meta = document.getElementById('catalog-results-meta');
+        const items = getFilteredProducts();
+
+        meta.textContent = `Showing ${items.length} of ${state.products.length} products`;
+
+        if (!items.length) {
+          grid.innerHTML = `
+            <div style="grid-column:1/-1;padding:48px 24px;text-align:center;background:var(--bg-surface);border:1px solid var(--border-hairline);border-radius:var(--radius-md);">
+              <h3 style="font-size:18px;font-weight:700;margin-bottom:8px;">No matching sportswear found</h3>
+              <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">Try clearing your search query or switching to All Categories.</p>
+              <button type="button" class="btn btn-dark btn-sm" id="reset-catalog-filters">Reset Filters</button>
+            </div>
+          `;
+          const resetBtn = document.getElementById('reset-catalog-filters');
+          if (resetBtn) {
+            resetBtn.onclick = () => {
+              state.activeCategory = 'all';
+              state.activeCollection = 'all';
+              state.searchQuery = '';
+              document.getElementById('catalog-search-input').value = '';
+              document.getElementById('header-search-input').value = '';
+              syncCatalogUI();
+            };
+          }
+          return;
+        }
+
+        grid.innerHTML = items.map((p) => {
+          const stockText = p.stock > 0 ? `${p.stock} in stock` : 'Out of stock';
+          const waMsg = `Hello PABEL SPORTS, I want to order:\nProduct: ${p.name} (${p.sku})\nRetail: ${formatBDT(p.regularPrice)} | Wholesale (MOQ ${p.moq}): ${formatBDT(p.wholesalePrice)}`;
+          return `
+            <article class="product-card" data-product-id="${escapeHtml(p.id)}">
+              <div class="product-media" data-action="view-product" data-id="${escapeHtml(p.id)}">
+                <img src="${escapeHtml(p.imageUrl)}" alt="${escapeHtml(p.name)}" referrerpolicy="no-referrer" loading="lazy" />
+                <div class="img-fallback">
+                  <strong style="font-family:var(--font-display);font-size:20px;">PABEL SPORTS</strong>
+                  <span style="font-size:12px;">${escapeHtml(p.name)}</span>
+                </div>
+              </div>
+              <div class="product-body">
+                <div class="product-meta">
+                  <span>${escapeHtml(p.category)}</span>
+                  <span aria-hidden="true">&middot;</span>
+                  <span class="tabular">${escapeHtml(stockText)}</span>
+                </div>
+                <h3 class="product-title" data-action="view-product" data-id="${escapeHtml(p.id)}">${escapeHtml(p.name)}</h3>
+                <div style="font-size:12.5px;color:var(--text-muted);" class="tabular">SKU: ${escapeHtml(p.sku)} &middot; MOQ ${p.moq} pcs</div>
+                <div class="product-pricing">
+                  <div>
+                    <div style="font-size:11px;color:var(--text-muted);">Retail</div>
+                    <div class="price-retail tabular">${formatBDT(p.regularPrice)}</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div style="font-size:11px;color:var(--text-muted);">Wholesale (${p.moq}+)</div>
+                    <div class="price-wholesale tabular">${formatBDT(p.wholesalePrice)}</div>
+                  </div>
+                </div>
+                <div class="product-actions">
+                  <button type="button" class="btn btn-dark btn-sm" data-action="quick-add" data-id="${escapeHtml(p.id)}" ${p.stock <= 0 ? 'disabled' : ''}>Add to Cart</button>
+                  <button type="button" class="btn btn-outline btn-sm" data-action="view-product" data-id="${escapeHtml(p.id)}">Details</button>
+                  <a href="${escapeHtml(buildWhatsAppLink(waMsg))}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-sm" aria-label="Order ${escapeHtml(p.name)} on WhatsApp">WA</a>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        grid.querySelectorAll('img').forEach(attachImageFallback);
+      }
+
+      function syncCatalogUI() {
+        document.querySelectorAll('#collection-tabs .tab-btn').forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.collection === state.activeCollection);
+        });
+        renderCategoryControls();
+        renderProductGrid();
+        populateQuoteEstimator();
+      }
+
+      /* Quote Estimator */
+      function populateQuoteEstimator() {
+        const select = document.getElementById('quote-product-select');
+        const currentVal = select.value;
+        select.innerHTML = state.products.map((p) =>
+          `<option value="${escapeHtml(p.id)}">${escapeHtml(p.name)} (MOQ ${p.moq})</option>`
+        ).join('');
+        if (currentVal && state.products.some((p) => p.id === currentVal)) {
+          select.value = currentVal;
+        }
+        updateQuoteCalculation();
+      }
+
+      function updateQuoteCalculation() {
+        const prodId = document.getElementById('quote-product-select').value;
+        const qty = Math.max(1, parseInt(document.getElementById('quote-qty-input').value, 10) || 1);
+        const product = state.products.find((p) => p.id === prodId) || state.products[0];
+        if (!product) return;
+
+        const pricing = getUnitPricing(product, qty);
+        const total = pricing.effectiveUnit * qty;
+        const out = document.getElementById('quote-calc-output');
+
+        out.innerHTML = `
+          <div>
+            <div style="font-size:12px;color:#a1a1aa;">${pricing.isWholesale ? 'Wholesale Rate Applied' : `Below MOQ (${product.moq} pcs) — Retail Rate`}${pricing.bulkDiscountPct ? ` (+${pricing.bulkDiscountPct}% Bulk Rebate)` : ''}</div>
+            <strong style="font-size:16px;color:#ffffff;">Unit: ${formatBDT(pricing.effectiveUnit)}</strong>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:12px;color:#a1a1aa;">Estimated Total (${qty} pcs)</div>
+            <strong style="font-size:18px;color:#f87171;">${formatBDT(total)}</strong>
+          </div>
+        `;
+
+        const waMsg = `Hello PABEL SPORTS Wholesale Desk,\nI would like a bulk quotation:\nProduct: ${product.name} (${product.sku})\nQuantity: ${qty} pcs\nEstimated Unit Rate: ${formatBDT(pricing.effectiveUnit)}\nEstimated Total: ${formatBDT(total)}`;
+        document.getElementById('quote-wa-btn').href = buildWhatsAppLink(waMsg);
+      }
+
+      /* Product Details Modal */
+      function openProductDetails(productId) {
+        const p = state.products.find((item) => item.id === productId);
+        if (!p) return;
+
+        state.pdpProductId = p.id;
+        state.pdpSize = (p.sizes && p.sizes[0]) || 'L';
+        state.pdpColor = (p.colors && p.colors[0]) || 'Standard';
+        state.pdpQty = 1;
+        state.pdpImageIndex = 0;
+
+        renderPDPContent();
+        const modal = document.getElementById('pdp-modal');
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+      }
+
+      function renderPDPContent() {
+        const p = state.products.find((item) => item.id === state.pdpProductId);
+        if (!p) return;
+
+        const gallery = (p.gallery && p.gallery.length) ? p.gallery : [p.imageUrl];
+        const activeImg = gallery[state.pdpImageIndex] || p.imageUrl;
+        const pricing = getUnitPricing(p, state.pdpQty);
+        const related = state.products.filter((item) => item.id !== p.id && (item.category === p.category || item.featured)).slice(0, 3);
+
+        const waMsg = `Hello PABEL SPORTS, I want to order:\nProduct: ${p.name} (${p.sku})\nSize: ${state.pdpSize}\nColor: ${state.pdpColor}\nQuantity: ${state.pdpQty}\nUnit Price: ${formatBDT(pricing.effectiveUnit)}\nTotal: ${formatBDT(pricing.effectiveUnit * state.pdpQty)}`;
+
+        const body = document.getElementById('pdp-modal-body');
+        document.getElementById('pdp-modal-title').textContent = p.name;
+
+        body.innerHTML = `
+          <div class="pdp-grid">
+            <div>
+              <div class="pdp-main-img">
+                <img id="pdp-hero-img" src="${escapeHtml(activeImg)}" alt="${escapeHtml(p.name)}" referrerpolicy="no-referrer" />
+                <div class="img-fallback">
+                  <strong style="font-family:var(--font-display);font-size:24px;">PABEL SPORTS</strong>
+                  <span>${escapeHtml(p.name)}</span>
+                </div>
+              </div>
+              ${gallery.length > 1 ? `
+                <div class="pdp-thumbs">
+                  ${gallery.map((src, idx) => `
+                    <button type="button" class="pdp-thumb ${idx === state.pdpImageIndex ? 'active' : ''}" data-pdp-img="${idx}" aria-label="View image ${idx + 1}">
+                      <img src="${escapeHtml(src)}" alt="${escapeHtml(p.name)} view ${idx + 1}" referrerpolicy="no-referrer" />
+                    </button>
+                  `).join('')}
+                </div>
+              ` : ''}
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:16px;">
+              <div class="product-meta">
+                <span>${escapeHtml(p.category)}</span>
+                <span>&middot;</span>
+                <span class="mono">${escapeHtml(p.sku)}</span>
+                <span>&middot;</span>
+                <span class="tabular">${p.stock > 0 ? `${p.stock} available` : 'Out of stock'}</span>
+              </div>
+
+              <p style="font-size:14.5px;color:var(--text-secondary);line-height:1.6;">${escapeHtml(p.description)}</p>
+
+              <div style="padding:14px 16px;background:var(--bg-canvas);border:1px solid var(--border-hairline);border-radius:var(--radius-md);display:grid;grid-template-columns:1fr 1fr;gap:12px;" class="tabular">
+                <div>
+                  <div style="font-size:12px;color:var(--text-muted);">Retail Unit Price</div>
+                  <strong style="font-size:20px;">${formatBDT(p.regularPrice)}</strong>
+                </div>
+                <div>
+                  <div style="font-size:12px;color:var(--text-muted);">Wholesale (${p.moq}+ pcs)</div>
+                  <strong style="font-size:20px;color:var(--accent);">${formatBDT(p.wholesalePrice)}</strong>
+                </div>
+                ${p.bulkPricingNote ? `<div style="grid-column:1/-1;font-size:12.5px;color:var(--text-secondary);border-top:1px solid var(--border-hairline);padding-top:8px;">Bulk Tiers: ${escapeHtml(p.bulkPricingNote)}</div>` : ''}
+              </div>
+
+              <div>
+                <div class="form-label" style="margin-bottom:8px;">Size: <strong>${escapeHtml(state.pdpSize)}</strong></div>
+                <div class="variant-row">
+                  ${(p.sizes || ['M', 'L', 'XL']).map((sz) => `
+                    <button type="button" class="variant-btn ${state.pdpSize === sz ? 'active' : ''}" data-pdp-size="${escapeHtml(sz)}">${escapeHtml(sz)}</button>
+                  `).join('')}
+                </div>
+              </div>
+
+              <div>
+                <div class="form-label" style="margin-bottom:8px;">Color: <strong>${escapeHtml(state.pdpColor)}</strong></div>
+                <div class="variant-row">
+                  ${(p.colors || ['Standard']).map((clr) => `
+                    <button type="button" class="variant-btn ${state.pdpColor === clr ? 'active' : ''}" data-pdp-color="${escapeHtml(clr)}">
+                      <span class="color-swatch" style="background-color:${getSwatchColor(clr)};"></span>
+                      <span>${escapeHtml(clr)}</span>
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+                <div>
+                  <div class="form-label" style="margin-bottom:6px;">Quantity</div>
+                  <div class="qty-stepper">
+                    <button type="button" id="pdp-qty-dec" aria-label="Decrease quantity">&minus;</button>
+                    <input type="number" id="pdp-qty-input" value="${state.pdpQty}" min="1" max="${Math.max(1, p.stock)}" aria-label="Product quantity" />
+                    <button type="button" id="pdp-qty-inc" aria-label="Increase quantity">+</button>
+                  </div>
+                </div>
+                <div style="text-align:right;" class="tabular">
+                  <div style="font-size:12px;color:var(--text-muted);">${pricing.isWholesale ? 'Wholesale Rate Active' : `Add ${Math.max(0, p.moq - state.pdpQty)} more for Wholesale`}</div>
+                  <strong style="font-size:20px;">${formatBDT(pricing.effectiveUnit * state.pdpQty)}</strong>
+                </div>
+              </div>
+
+              <div style="display:flex;flex-wrap:wrap;gap:10px;padding-top:6px;">
+                <button type="button" class="btn btn-dark" id="pdp-add-cart-btn" style="flex:1;" ${p.stock <= 0 ? 'disabled' : ''}>Add to Cart</button>
+                <button type="button" class="btn btn-primary" id="pdp-buy-now-btn" style="flex:1;" ${p.stock <= 0 ? 'disabled' : ''}>Buy Now</button>
+                <a href="${escapeHtml(buildWhatsAppLink(waMsg))}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp" style="width:100%;">Order This Item on WhatsApp</a>
+              </div>
+            </div>
+          </div>
+
+          ${related.length ? `
+            <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border-hairline);">
+              <h3 style="font-family:var(--font-display);font-size:20px;font-weight:700;margin-bottom:14px;">Related Products</h3>
+              <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;">
+                ${related.map((rel) => `
+                  <button type="button" data-pdp-open="${escapeHtml(rel.id)}" style="text-align:left;border:1px solid var(--border-hairline);border-radius:var(--radius-sm);padding:10px;background:var(--bg-canvas);">
+                    <div style="font-size:13.5px;font-weight:700;margin-bottom:4px;">${escapeHtml(rel.name)}</div>
+                    <div style="font-size:12.5px;color:var(--accent);" class="tabular">Wholesale ${formatBDT(rel.wholesalePrice)} &middot; Retail ${formatBDT(rel.regularPrice)}</div>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+        `;
+
+        attachImageFallback(document.getElementById('pdp-hero-img'));
+
+        body.querySelectorAll('[data-pdp-img]').forEach((btn) => {
+          btn.onclick = () => {
+            state.pdpImageIndex = Number(btn.dataset.pdpImg);
+            renderPDPContent();
+          };
+        });
+        body.querySelectorAll('[data-pdp-size]').forEach((btn) => {
+          btn.onclick = () => {
+            state.pdpSize = btn.dataset.pdpSize;
+            renderPDPContent();
+          };
+        });
+        body.querySelectorAll('[data-pdp-color]').forEach((btn) => {
+          btn.onclick = () => {
+            state.pdpColor = btn.dataset.pdpColor;
+            renderPDPContent();
+          };
+        });
+        body.querySelectorAll('[data-pdp-open]').forEach((btn) => {
+          btn.onclick = () => openProductDetails(btn.dataset.pdpOpen);
+        });
+
+        document.getElementById('pdp-qty-dec').onclick = () => {
+          state.pdpQty = Math.max(1, state.pdpQty - 1);
+          renderPDPContent();
+        };
+        document.getElementById('pdp-qty-inc').onclick = () => {
+          state.pdpQty = Math.min(Math.max(1, p.stock), state.pdpQty + 1);
+          renderPDPContent();
+        };
+        document.getElementById('pdp-qty-input').onchange = (e) => {
+          const v = Math.max(1, Math.min(Math.max(1, p.stock), parseInt(e.target.value, 10) || 1));
+          state.pdpQty = v;
+          renderPDPContent();
+        };
+
+        document.getElementById('pdp-add-cart-btn').onclick = () => {
+          addToCart(p.id, state.pdpSize, state.pdpColor, state.pdpQty);
+          closeModal('pdp-modal');
+          openCartDrawer();
+        };
+        document.getElementById('pdp-buy-now-btn').onclick = () => {
+          addToCart(p.id, state.pdpSize, state.pdpColor, state.pdpQty);
+          closeModal('pdp-modal');
+          openCheckoutModal();
+        };
+      }
+
+      /* Cart Engine */
+      function addToCart(productId, size, color, qty) {
+        const product = state.products.find((p) => p.id === productId);
+        if (!product) return;
+        if (product.stock <= 0) {
+          showToast('This item is currently out of stock.', true);
+          return;
+        }
+
+        const chosenSize = size || (product.sizes && product.sizes[0]) || 'L';
+        const chosenColor = color || (product.colors && product.colors[0]) || 'Standard';
+        const addQty = Math.max(1, Number(qty) || 1);
+
+        const existing = state.cart.find((item) =>
+          item.productId === productId && item.size === chosenSize && item.color === chosenColor
+        );
+
+        if (existing) {
+          existing.qty = Math.min(product.stock, existing.qty + addQty);
+        } else {
+          state.cart.push({
+            key: `${productId}__${chosenSize}__${chosenColor}`,
+            productId,
+            size: chosenSize,
+            color: chosenColor,
+            qty: Math.min(product.stock, addQty)
+          });
+        }
+
+        persistCart();
+        showToast(`${product.name} (${chosenSize}) added to cart.`);
+      }
+
+      function persistCart() {
+        writeStorage(STORAGE_KEYS.CART, state.cart);
+        renderCartBadge();
+        renderCartDrawer();
+      }
+
+      function renderCartBadge() {
+        const count = state.cart.reduce((sum, item) => sum + item.qty, 0);
+        document.getElementById('header-cart-count').textContent = count;
+      }
+
+      function calculateCartTotals() {
+        let retailSubtotal = 0;
+        let effectiveSubtotal = 0;
+        let totalUnits = 0;
+
+        const lines = state.cart.map((item) => {
+          const product = state.products.find((p) => p.id === item.productId);
+          if (!product) return null;
+          const pricing = getUnitPricing(product, item.qty);
+          const lineRetail = Number(product.regularPrice) * item.qty;
+          const lineTotal = pricing.effectiveUnit * item.qty;
+          retailSubtotal += lineRetail;
+          effectiveSubtotal += lineTotal;
+          totalUnits += item.qty;
+          return { ...item, product, pricing, lineTotal, lineRetail };
+        }).filter(Boolean);
+
+        const wholesaleSavings = Math.max(0, retailSubtotal - effectiveSubtotal);
+        return { lines, retailSubtotal, effectiveSubtotal, wholesaleSavings, totalUnits };
+      }
+
+      function renderCartDrawer() {
+        const listEl = document.getElementById('cart-items-list');
+        const footerEl = document.getElementById('cart-footer');
+        const summary = calculateCartTotals();
+
+        if (!summary.lines.length) {
+          listEl.innerHTML = `
+            <div style="text-align:center;padding:48px 16px;">
+              <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 12px;color:var(--text-muted);">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+              <h3 style="font-size:17px;font-weight:700;margin-bottom:6px;">Your cart is empty</h3>
+              <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:18px;">Add football jerseys, tracksuits, or bulk teamwear to start an order.</p>
+              <button type="button" class="btn btn-dark btn-sm" id="empty-cart-browse">Browse Catalog</button>
+            </div>
+          `;
+          footerEl.innerHTML = '';
+          const browseBtn = document.getElementById('empty-cart-browse');
+          if (browseBtn) {
+            browseBtn.onclick = () => {
+              closeCartDrawer();
+              document.getElementById('catalog').scrollIntoView({ behavior: 'smooth' });
+            };
+          }
+          return;
+        }
+
+        listEl.innerHTML = summary.lines.map((line) => `
+          <div class="cart-item" data-cart-key="${escapeHtml(line.key)}">
+            <div class="cart-item-img">
+              <img src="${escapeHtml(line.product.imageUrl)}" alt="${escapeHtml(line.product.name)}" referrerpolicy="no-referrer" />
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;justify-content:space-between;gap:8px;align-items:start;">
+                <strong style="font-size:14px;line-height:1.3;">${escapeHtml(line.product.name)}</strong>
+                <button type="button" data-cart-remove="${escapeHtml(line.key)}" style="color:var(--text-muted);font-size:18px;line-height:1;" aria-label="Remove item">&times;</button>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:12px;">
+                <select class="form-control" style="min-height:28px;padding:2px 6px;width:auto;font-size:12px;" data-cart-size="${escapeHtml(line.key)}" aria-label="Size">
+                  ${(line.product.sizes || ['L']).map((sz) => `<option value="${escapeHtml(sz)}" ${sz === line.size ? 'selected' : ''}>Size: ${escapeHtml(sz)}</option>`).join('')}
+                </select>
+                <select class="form-control" style="min-height:28px;padding:2px 6px;width:auto;font-size:12px;" data-cart-color="${escapeHtml(line.key)}" aria-label="Color">
+                  ${(line.product.colors || ['Standard']).map((clr) => `<option value="${escapeHtml(clr)}" ${clr === line.color ? 'selected' : ''}>${escapeHtml(clr)}</option>`).join('')}
+                </select>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;">
+                <div class="qty-stepper">
+                  <button type="button" data-cart-dec="${escapeHtml(line.key)}" aria-label="Decrease">&minus;</button>
+                  <input type="number" min="1" max="${line.product.stock}" value="${line.qty}" data-cart-qty="${escapeHtml(line.key)}" aria-label="Quantity" />
+                  <button type="button" data-cart-inc="${escapeHtml(line.key)}" aria-label="Increase">+</button>
+                </div>
+                <div style="text-align:right;" class="tabular">
+                  <div style="font-size:11.5px;color:${line.pricing.isWholesale ? 'var(--accent)' : 'var(--text-muted)'};">
+                    ${formatBDT(line.pricing.effectiveUnit)}/pc ${line.pricing.isWholesale ? '(Wholesale)' : ''}
+                  </div>
+                  <strong style="font-size:14.5px;">${formatBDT(line.lineTotal)}</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        const waLines = summary.lines.map((l) => `- ${l.product.name} (${l.size}, ${l.color}) x ${l.qty} = ${formatBDT(l.lineTotal)}`).join('\n');
+        const waCartMsg = `Hello PABEL SPORTS, I want to order my cart:\n${waLines}\nEstimated Subtotal: ${formatBDT(summary.effectiveSubtotal)}`;
+
+        footerEl.innerHTML = `
+          <div style="display:flex;justify-content:space-between;font-size:13.5px;" class="tabular">
+            <span style="color:var(--text-secondary);">Retail Value (${summary.totalUnits} pcs)</span>
+            <span>${formatBDT(summary.retailSubtotal)}</span>
+          </div>
+          ${summary.wholesaleSavings > 0 ? `
+            <div style="display:flex;justify-content:space-between;font-size:13.5px;color:var(--success);font-weight:600;" class="tabular">
+              <span>Wholesale &amp; Bulk Savings</span>
+              <span>-${formatBDT(summary.wholesaleSavings)}</span>
+            </div>
+          ` : ''}
+          <div style="display:flex;justify-content:space-between;font-size:17px;font-weight:700;padding-top:8px;border-top:1px solid var(--border-hairline);" class="tabular">
+            <span>Subtotal</span>
+            <span>${formatBDT(summary.effectiveSubtotal)}</span>
+          </div>
+          <button type="button" class="btn btn-primary" id="cart-checkout-btn">Proceed to Checkout</button>
+          <a href="${escapeHtml(buildWhatsAppLink(waCartMsg))}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">Order Cart on WhatsApp</a>
+        `;
+
+        document.getElementById('cart-checkout-btn').onclick = () => {
+          closeCartDrawer();
+          openCheckoutModal();
+        };
+      }
+
+      function openCartDrawer() {
+        const drawer = document.getElementById('cart-drawer-backdrop');
+        drawer.classList.add('open');
+        drawer.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeCartDrawer() {
+        const drawer = document.getElementById('cart-drawer-backdrop');
+        drawer.classList.remove('open');
+        drawer.setAttribute('aria-hidden', 'true');
+      }
+
+      function closeModal(id) {
+        const modal = document.getElementById(id);
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+      }
+
+      /* Checkout & Order Placement */
+      function openCheckoutModal() {
+        const summary = calculateCartTotals();
+        if (!summary.lines.length) {
+          showToast('Your cart is empty. Add items before checking out.', true);
+          return;
+        }
+        renderCheckoutForm();
+        const modal = document.getElementById('checkout-modal');
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+      }
+
+      function renderCheckoutForm() {
+        const summary = calculateCartTotals();
+        const s = state.settings;
+        const body = document.getElementById('checkout-modal-body');
+
+        body.innerHTML = `
+          <div class="pdp-grid">
+            <form id="checkout-form" class="form-grid" novalidate>
+              <div class="form-group full">
+                <label class="form-label" for="co-name">Customer Full Name *</label>
+                <input type="text" id="co-name" class="form-control" required placeholder="e.g. Md. Rafiqul Islam" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="co-phone">Mobile Phone (BD) *</label>
+                <input type="tel" id="co-phone" class="form-control" required placeholder="01XXXXXXXXX" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="co-district">District *</label>
+                <select id="co-district" class="form-control" required>
+                  ${BD_DISTRICTS.map((d) => `<option value="${escapeHtml(d)}">${escapeHtml(d)}</option>`).join('')}
+                </select>
+              </div>
+              <div class="form-group full">
+                <label class="form-label" for="co-city">City / Thana / Area *</label>
+                <input type="text" id="co-city" class="form-control" required placeholder="e.g. Mirpur 10, Dhaka" />
+              </div>
+              <div class="form-group full">
+                <label class="form-label" for="co-address">Full Delivery Address *</label>
+                <textarea id="co-address" class="form-control" required placeholder="House, Road, Shop Name, Market or Landmark"></textarea>
+              </div>
+              <div class="form-group full">
+                <label class="form-label" for="co-payment">Payment Method *</label>
+                <select id="co-payment" class="form-control" required>
+                  <option value="Cash on Delivery">Cash on Delivery (Pay upon courier arrival)</option>
+                  <option value="bKash">bKash (Manual / Merchant Verification)</option>
+                  <option value="Nagad">Nagad (Manual / Merchant Verification)</option>
+                  <option value="Rocket">Rocket (Manual / Merchant Verification)</option>
+                  <option value="Bank Transfer">Bank Transfer (Manual Slip Verification)</option>
+                </select>
+              </div>
+              <div class="form-group full" id="co-payment-notice"></div>
+              <div class="form-group full">
+                <label class="form-label" for="co-notes">Order Notes (Optional)</label>
+                <input type="text" id="co-notes" class="form-control" placeholder="Courier preference or jersey number instructions" />
+              </div>
+              <div class="form-group full">
+                <button type="submit" class="btn btn-primary" style="width:100%;">Place Order</button>
+              </div>
+            </form>
+
+            <div style="background:var(--bg-canvas);border:1px solid var(--border-hairline);border-radius:var(--radius-md);padding:20px;display:flex;flex-direction:column;gap:12px;">
+              <h3 style="font-family:var(--font-display);font-size:20px;font-weight:700;">Order Summary</h3>
+              <div style="display:flex;flex-direction:column;gap:8px;max-height:220px;overflow-y:auto;padding-bottom:8px;border-bottom:1px solid var(--border-hairline);">
+                ${summary.lines.map((l) => `
+                  <div style="display:flex;justify-content:space-between;gap:10px;font-size:13px;" class="tabular">
+                    <span>${escapeHtml(l.product.name)} (${escapeHtml(l.size)}) &times; ${l.qty}</span>
+                    <strong>${formatBDT(l.lineTotal)}</strong>
+                  </div>
+                `).join('')}
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:13.5px;" class="tabular">
+                <span>Subtotal</span>
+                <span>${formatBDT(summary.effectiveSubtotal)}</span>
+              </div>
+              ${summary.wholesaleSavings > 0 ? `
+                <div style="display:flex;justify-content:space-between;font-size:13.5px;color:var(--success);" class="tabular">
+                  <span>Wholesale Savings</span>
+                  <span>-${formatBDT(summary.wholesaleSavings)}</span>
+                </div>
+              ` : ''}
+              <div style="display:flex;justify-content:space-between;font-size:13.5px;" class="tabular">
+                <span>Delivery Fee (<span id="co-ship-label">Dhaka</span>)</span>
+                <span id="co-ship-amount">${formatBDT(s.dhakaShipping)}</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;padding-top:10px;border-top:1px solid var(--border-hairline);" class="tabular">
+                <span>Total Payable</span>
+                <span id="co-grand-total">${formatBDT(summary.effectiveSubtotal + Number(s.dhakaShipping))}</span>
+              </div>
+              <div class="notice-box" style="font-size:12.5px;">
+                Demo orders are saved locally in this browser's <code>localStorage</code> and can also be confirmed directly with our WhatsApp team.
+              </div>
+            </div>
+          </div>
+        `;
+
+        const districtEl = document.getElementById('co-district');
+        const paymentEl = document.getElementById('co-payment');
+
+        const updateShippingAndPayment = () => {
+          const isDhaka = districtEl.value === 'Dhaka';
+          const ship = Number(isDhaka ? s.dhakaShipping : s.outsideDhakaShipping);
+          document.getElementById('co-ship-label').textContent = isDhaka ? 'Dhaka Metro' : 'Outside Dhaka';
+          document.getElementById('co-ship-amount').textContent = formatBDT(ship);
+          document.getElementById('co-grand-total').textContent = formatBDT(summary.effectiveSubtotal + ship);
+
+          const pm = paymentEl.value;
+          const noticeEl = document.getElementById('co-payment-notice');
+          if (pm === 'Cash on Delivery') {
+            noticeEl.innerHTML = `<div class="notice-box"><strong>Cash on Delivery:</strong> Pay total BDT amount upon parcel inspection/delivery. Wholesale orders outside Dhaka may require advance booking confirmation via WhatsApp.</div>`;
+          } else {
+            noticeEl.innerHTML = `<div class="notice-box notice-warning"><strong>Important Payment Gateway Notice:</strong> Actual automated online payment processing for <strong>${escapeHtml(pm)}</strong> requires a verified merchant payment gateway integration (e.g., SSLCommerz / bKash Merchant API) on a live server. This demo does <strong>not</strong> process or simulate online payment success—your order will be recorded as <em>Pending Payment Verification</em> so you can coordinate payment safely via WhatsApp.</div>`;
+          }
+        };
+
+        districtEl.onchange = updateShippingAndPayment;
+        paymentEl.onchange = updateShippingAndPayment;
+        updateShippingAndPayment();
+
+        document.getElementById('checkout-form').onsubmit = (e) => {
+          e.preventDefault();
+          const name = document.getElementById('co-name').value.trim();
+          const phone = document.getElementById('co-phone').value.trim();
+          const district = districtEl.value;
+          const city = document.getElementById('co-city').value.trim();
+          const address = document.getElementById('co-address').value.trim();
+          const paymentMethod = paymentEl.value;
+          const notes = document.getElementById('co-notes').value.trim();
+
+          if (!name || !phone || !city || !address) {
+            showToast('Please fill in all required delivery fields.', true);
+            return;
+          }
+          if (!/^(\+?88)?01[3-9]\d{8}$/.test(phone.replace(/[\s-]/g, ''))) {
+            showToast('Please enter a valid Bangladesh mobile number (e.g. 017XXXXXXXX).', true);
+            return;
+          }
+
+          const ship = Number(district === 'Dhaka' ? s.dhakaShipping : s.outsideDhakaShipping);
+          const orderId = 'PS-2026-' + String(Math.floor(1000 + Math.random() * 9000));
+          const order = {
+            id: orderId,
+            createdAt: new Date().toISOString(),
+            customerName: name,
+            phone,
+            address,
+            district,
+            city,
+            notes,
+            paymentMethod,
+            paymentStatus: paymentMethod === 'Cash on Delivery' ? 'COD Due on Delivery' : 'Pending Payment Verification (No Gateway Connected)',
+            status: 'Pending',
+            items: summary.lines.map((l) => ({
+              productId: l.product.id,
+              name: l.product.name,
+              sku: l.product.sku,
+              size: l.size,
+              color: l.color,
+              qty: l.qty,
+              unitPrice: l.pricing.effectiveUnit,
+              isWholesale: l.pricing.isWholesale
+            })),
+            subtotal: summary.effectiveSubtotal,
+            discount: summary.wholesaleSavings,
+            shipping: ship,
+            total: summary.effectiveSubtotal + ship
+          };
+
+          // Deduct stock locally
+          order.items.forEach((oi) => {
+            const prod = state.products.find((p) => p.id === oi.productId);
+            if (prod) {
+              prod.stock = Math.max(0, prod.stock - oi.qty);
+            }
+          });
+          writeStorage(STORAGE_KEYS.PRODUCTS, state.products);
+
+          state.orders.unshift(order);
+          writeStorage(STORAGE_KEYS.ORDERS, state.orders);
+
+          state.cart = [];
+          persistCart();
+          renderProductGrid();
+          renderOrderReceipt(order);
+          showToast(`Order ${orderId} recorded successfully.`);
+        };
+      }
+
+      function renderOrderReceipt(order) {
+        const body = document.getElementById('checkout-modal-body');
+        const waItems = order.items.map((i) => `- ${i.name} (${i.size}, ${i.color}) x ${i.qty} = ${formatBDT(i.unitPrice * i.qty)}`).join('\n');
+        const waMsg = `Hello PABEL SPORTS, I placed order ${order.id}:\nName: ${order.customerName}\nPhone: ${order.phone}\nAddress: ${order.address}, ${order.city}, ${order.district}\nPayment: ${order.paymentMethod}\nItems:\n${waItems}\nTotal: ${formatBDT(order.total)}`;
+
+        body.innerHTML = `
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <div style="padding:20px;border:1px solid var(--border-hairline);border-radius:var(--radius-md);background:var(--bg-canvas);">
+              <div style="font-size:12px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:4px;">Order Recorded (Local Demo)</div>
+              <h3 style="font-family:var(--font-display);font-size:28px;font-weight:800;">Order #${escapeHtml(order.id)}</h3>
+              <p style="font-size:14px;color:var(--text-secondary);margin-top:4px;">
+                Status: <strong>${escapeHtml(order.status)}</strong> &middot; Payment: <strong>${escapeHtml(order.paymentMethod)}</strong> (${escapeHtml(order.paymentStatus)})
+              </p>
+            </div>
+
+            <div class="data-table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Variant</th>
+                    <th>Qty</th>
+                    <th>Unit</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${order.items.map((i) => `
+                    <tr>
+                      <td><strong>${escapeHtml(i.name)}</strong><div class="mono" style="font-size:11.5px;color:var(--text-muted);">${escapeHtml(i.sku)}</div></td>
+                      <td>${escapeHtml(i.size)} / ${escapeHtml(i.color)}</td>
+                      <td class="tabular">${i.qty}</td>
+                      <td class="tabular">${formatBDT(i.unitPrice)}</td>
+                      <td class="tabular"><strong>${formatBDT(i.unitPrice * i.qty)}</strong></td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+              <div class="tabular" style="font-size:15px;">
+                Subtotal: <strong>${formatBDT(order.subtotal)}</strong> &middot; Delivery: <strong>${formatBDT(order.shipping)}</strong> &middot; Grand Total: <strong style="color:var(--accent);font-size:18px;">${formatBDT(order.total)}</strong>
+              </div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button type="button" class="btn btn-outline btn-sm" id="receipt-print-btn">Print Invoice</button>
+                <a href="${escapeHtml(buildWhatsAppLink(waMsg))}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-sm">Confirm via WhatsApp</a>
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('receipt-print-btn').onclick = () => printOrderInvoice(order.id);
+      }
+
+      function printOrderInvoice(orderId) {
+        const order = state.orders.find((o) => o.id === orderId);
+        if (!order) return;
+
+        const container = document.getElementById('printable-invoice');
+        container.innerHTML = `
+          <div style="font-family:Arial,sans-serif;max-width:780px;margin:0 auto;">
+            <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #111;padding-bottom:14px;margin-bottom:18px;">
+              <div>
+                <h1 style="font-size:24px;margin:0;">PABEL SPORTS</h1>
+                <div style="font-size:12px;color:#555;">Wholesale &amp; Retail Sportswear · Bangladesh</div>
+                <div style="font-size:12px;color:#555;">WhatsApp: ${escapeHtml(state.settings.whatsappNumber)}</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:18px;font-weight:bold;">INVOICE</div>
+                <div>Order ID: ${escapeHtml(order.id)}</div>
+                <div>Date: ${new Date(order.createdAt).toLocaleDateString('en-GB')}</div>
+              </div>
+            </div>
+            <div style="margin-bottom:18px;font-size:13px;">
+              <strong>Bill / Deliver To:</strong><br/>
+              ${escapeHtml(order.customerName)} (${escapeHtml(order.phone)})<br/>
+              ${escapeHtml(order.address)}, ${escapeHtml(order.city)}, ${escapeHtml(order.district)}<br/>
+              Payment Method: ${escapeHtml(order.paymentMethod)} — ${escapeHtml(order.paymentStatus)}
+            </div>
+            <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:18px;">
+              <thead>
+                <tr style="background:#f4f4f5;">
+                  <th style="border:1px solid #d4d4d8;padding:8px;text-align:left;">Product</th>
+                  <th style="border:1px solid #d4d4d8;padding:8px;text-align:left;">Size / Color</th>
+                  <th style="border:1px solid #d4d4d8;padding:8px;text-align:right;">Qty</th>
+                  <th style="border:1px solid #d4d4d8;padding:8px;text-align:right;">Unit</th>
+                  <th style="border:1px solid #d4d4d8;padding:8px;text-align:right;">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${order.items.map((i) => `
+                  <tr>
+                    <td style="border:1px solid #d4d4d8;padding:8px;">${escapeHtml(i.name)} (${escapeHtml(i.sku)})</td>
+                    <td style="border:1px solid #d4d4d8;padding:8px;">${escapeHtml(i.size)} / ${escapeHtml(i.color)}</td>
+                    <td style="border:1px solid #d4d4d8;padding:8px;text-align:right;">${i.qty}</td>
+                    <td style="border:1px solid #d4d4d8;padding:8px;text-align:right;">${formatBDT(i.unitPrice)}</td>
+                    <td style="border:1px solid #d4d4d8;padding:8px;text-align:right;">${formatBDT(i.unitPrice * i.qty)}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+            <div style="text-align:right;font-size:14px;">
+              <div>Subtotal: ${formatBDT(order.subtotal)}</div>
+              <div>Delivery: ${formatBDT(order.shipping)}</div>
+              <div style="font-size:17px;font-weight:bold;margin-top:6px;">Grand Total: ${formatBDT(order.total)}</div>
+            </div>
+          </div>
+        `;
+        window.print();
+      }
+
+      /* Admin Dashboard View Switch & Rendering */
+      function toggleAdminView(showAdmin) {
+        const storefront = document.getElementById('storefront-shell');
+        const adminShell = document.getElementById('admin-shell');
+        if (showAdmin) {
+          storefront.classList.add('hidden');
+          adminShell.classList.add('active');
+          renderAdminGateState();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          adminShell.classList.remove('active');
+          storefront.classList.remove('hidden');
+          syncCatalogUI();
+          applySettingsUI();
+        }
+      }
+
+      function renderAdminGateState() {
+        const gate = document.getElementById('admin-login-gate');
+        const workspace = document.getElementById('admin-workspace');
+        const logoutBtn = document.getElementById('admin-logout-btn');
+
+        if (state.adminUnlocked) {
+          gate.style.display = 'none';
+          workspace.style.display = 'grid';
+          logoutBtn.style.display = 'inline-flex';
+          renderAdminTab();
+        } else {
+          gate.style.display = 'block';
+          workspace.style.display = 'none';
+          logoutBtn.style.display = 'none';
+        }
+      }
+
+      function renderAdminTab() {
+        document.querySelectorAll('.admin-nav-btn').forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.adminTab === state.adminTab);
+        });
+
+        const container = document.getElementById('admin-tab-content');
+        if (state.adminTab === 'overview') {
+          renderAdminOverview(container);
+        } else if (state.adminTab === 'products') {
+          renderAdminProducts(container);
+        } else if (state.adminTab === 'categories') {
+          renderAdminCategories(container);
+        } else if (state.adminTab === 'orders') {
+          renderAdminOrders(container);
+        } else if (state.adminTab === 'customers') {
+          renderAdminCustomers(container);
+        } else if (state.adminTab === 'settings') {
+          renderAdminSettings(container);
+        }
+      }
+
+      function renderAdminOverview(container) {
+        const totalRevenue = state.orders.reduce((s, o) => s + (Number(o.total) || 0), 0);
+        const lowStock = state.products.filter((p) => p.stock < 30);
+
+        container.innerHTML = `
+          <div class="admin-panel">
+            <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-bottom:16px;">Dashboard Overview</h2>
+            <div class="kpi-grid">
+              <div class="kpi-box">
+                <div class="kpi-label">Total Products</div>
+                <div class="kpi-value tabular">${state.products.length}</div>
+              </div>
+              <div class="kpi-box">
+                <div class="kpi-label">Total Orders</div>
+                <div class="kpi-value tabular">${state.orders.length}</div>
+              </div>
+              <div class="kpi-box">
+                <div class="kpi-label">Order Volume (BDT)</div>
+                <div class="kpi-value tabular">${formatBDT(totalRevenue)}</div>
+              </div>
+              <div class="kpi-box">
+                <div class="kpi-label">Dealer Inquiries</div>
+                <div class="kpi-value tabular">${state.dealers.length}</div>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+              <div>
+                <h3 style="font-size:16px;font-weight:700;margin-bottom:10px;">Recent Orders</h3>
+                <div class="data-table-wrap">
+                  <table class="data-table">
+                    <thead><tr><th>Order</th><th>Customer</th><th>Total</th><th>Status</th></tr></thead>
+                    <tbody>
+                      ${state.orders.slice(0, 5).map((o) => `
+                        <tr>
+                          <td class="mono">${escapeHtml(o.id)}</td>
+                          <td>${escapeHtml(o.customerName)}</td>
+                          <td class="tabular">${formatBDT(o.total)}</td>
+                          <td>${escapeHtml(o.status)}</td>
+                        </tr>
+                      `).join('') || '<tr><td colspan="4">No orders yet.</td></tr>'}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div>
+                <h3 style="font-size:16px;font-weight:700;margin-bottom:10px;">Inventory Attention (&lt; 30 Stock)</h3>
+                <div class="data-table-wrap">
+                  <table class="data-table">
+                    <thead><tr><th>SKU</th><th>Product</th><th>Stock</th></tr></thead>
+                    <tbody>
+                      ${lowStock.map((p) => `
+                        <tr>
+                          <td class="mono">${escapeHtml(p.sku)}</td>
+                          <td>${escapeHtml(p.name)}</td>
+                          <td class="tabular" style="color:var(--accent);font-weight:700;">${p.stock}</td>
+                        </tr>
+                      `).join('') || '<tr><td colspan="3">All products are well stocked.</td></tr>'}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderAdminProducts(container) {
+        const editing = state.editingProductId ? state.products.find((p) => p.id === state.editingProductId) : null;
+
+        container.innerHTML = `
+          <div style="display:flex;flex-direction:column;gap:24px;">
+            <div class="admin-panel">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+                <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;">${editing ? 'Edit Product' : 'Add New Product'}</h2>
+                ${editing ? '<button type="button" class="btn btn-outline btn-sm" id="adm-cancel-edit">Cancel Edit</button>' : ''}
+              </div>
+
+              <form id="adm-product-form" class="form-grid">
+                <div class="form-group">
+                  <label class="form-label" for="adm-p-name">Product Name *</label>
+                  <input type="text" id="adm-p-name" class="form-control" required value="${escapeHtml(editing ? editing.name : '')}" placeholder="e.g. Argentina Home Player Jersey" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adm-p-sku">SKU *</label>
+                  <input type="text" id="adm-p-sku" class="form-control mono" required value="${escapeHtml(editing ? editing.sku : '')}" placeholder="e.g. PS-ARG-26H" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adm-p-category">Category *</label>
+                  <select id="adm-p-category" class="form-control" required>
+                    ${state.categories.map((c) => `<option value="${escapeHtml(c)}" ${editing && editing.category === c ? 'selected' : ''}>${escapeHtml(c)}</option>`).join('')}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adm-p-image">Product Image URL *</label>
+                  <input type="text" id="adm-p-image" class="form-control" required value="${escapeHtml(editing ? editing.imageUrl : '/src/assets/images/product_football_jersey_white_1794945370111.jpg')}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adm-p-file">Or Upload Local Image Preview</label>
+                  <input type="file" id="adm-p-file" class="form-control" accept="image/*" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Live Image Preview</label>
+                  <div style="height:64px;width:92px;border:1px solid var(--border-hairline);border-radius:var(--radius-sm);overflow:hidden;background:var(--bg-subtle);">
+                    <img id="adm-p-preview" src="${escapeHtml(editing ? editing.imageUrl : '/src/assets/images/product_football_jersey_white_1794945370111.jpg')}" alt="Preview" style="width:100%;height:100%;object-fit:cover;" referrerpolicy="no-referrer" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adm-p-regular">Regular Retail Price (BDT ৳) *</label>
+                  <input type="number" id="adm-p-regular" class="form-control tabular" min="1" required value="${editing ? editing.regularPrice : 1200}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adm-p-wholesale">Wholesale Price (BDT ৳) *</label>
+                  <input type="number" id="adm-p-wholesale" class="form-control tabular" min="1" required value="${editing ? editing.wholesalePrice : 800}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adm-p-moq">Minimum Order Quantity (MOQ) *</label>
+                  <input type="number" id="adm-p-moq" class="form-control tabular" min="1" required value="${editing ? editing.moq : 10}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adm-p-stock">Stock Quantity *</label>
+                  <input type="number" id="adm-p-stock" class="form-control tabular" min="0" required value="${editing ? editing.stock : 100}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adm-p-sizes">Available Sizes (comma separated)</label>
+                  <input type="text" id="adm-p-sizes" class="form-control" value="${escapeHtml(editing ? (editing.sizes || []).join(', ') : 'S, M, L, XL, XXL')}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adm-p-colors">Available Colors (comma separated)</label>
+                  <input type="text" id="adm-p-colors" class="form-control" value="${escapeHtml(editing ? (editing.colors || []).join(', ') : 'Black, White, Crimson')}" />
+                </div>
+                <div class="form-group full">
+                  <label class="form-label" for="adm-p-bulk">Bulk Pricing Tier Note</label>
+                  <input type="text" id="adm-p-bulk" class="form-control" value="${escapeHtml(editing ? (editing.bulkPricingNote || '') : '')}" placeholder="e.g. ৳760 (25+ pcs) · ৳720 (50+ pcs)" />
+                </div>
+                <div class="form-group full">
+                  <label class="form-label" for="adm-p-desc">Product Description *</label>
+                  <textarea id="adm-p-desc" class="form-control" required>${escapeHtml(editing ? editing.description : '')}</textarea>
+                </div>
+                <div class="form-group full" style="flex-direction:row;gap:18px;flex-wrap:wrap;align-items:center;">
+                  <label style="display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;">
+                    <input type="checkbox" id="adm-p-featured" ${!editing || editing.featured ? 'checked' : ''} /> Featured
+                  </label>
+                  <label style="display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;">
+                    <input type="checkbox" id="adm-p-bestseller" ${editing && editing.bestSeller ? 'checked' : ''} /> Best Seller
+                  </label>
+                  <label style="display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;">
+                    <input type="checkbox" id="adm-p-new" ${editing && editing.newArrival ? 'checked' : ''} /> New Arrival
+                  </label>
+                  <label style="display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;">
+                    <input type="checkbox" id="adm-p-offer" ${!editing || editing.wholesaleOffer ? 'checked' : ''} /> Wholesale Offer
+                  </label>
+                </div>
+                <div class="form-group full">
+                  <button type="submit" class="btn btn-primary">${editing ? 'Save Product Changes' : 'Upload Product to Catalog'}</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="admin-panel">
+              <h3 style="font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:14px;">Catalog &amp; Inventory (${state.products.length})</h3>
+              <div class="data-table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Category</th>
+                      <th>Retail</th>
+                      <th>Wholesale</th>
+                      <th>MOQ</th>
+                      <th>Stock</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${state.products.map((p) => `
+                      <tr>
+                        <td>
+                          <div style="display:flex;align-items:center;gap:10px;">
+                            <img src="${escapeHtml(p.imageUrl)}" alt="" style="width:44px;height:34px;object-fit:cover;border-radius:3px;background:var(--bg-subtle);" referrerpolicy="no-referrer" />
+                            <div>
+                              <strong>${escapeHtml(p.name)}</strong>
+                              <div class="mono" style="font-size:11.5px;color:var(--text-muted);">${escapeHtml(p.sku)}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>${escapeHtml(p.category)}</td>
+                        <td class="tabular">${formatBDT(p.regularPrice)}</td>
+                        <td class="tabular" style="color:var(--accent);font-weight:600;">${formatBDT(p.wholesalePrice)}</td>
+                        <td class="tabular">${p.moq}</td>
+                        <td>
+                          <input type="number" min="0" value="${p.stock}" data-adm-stock="${escapeHtml(p.id)}" class="form-control tabular" style="width:82px;min-height:32px;padding:4px 8px;" aria-label="Stock for ${escapeHtml(p.name)}" />
+                        </td>
+                        <td>
+                          <div style="display:flex;gap:6px;">
+                            <button type="button" class="btn btn-outline btn-sm" data-adm-edit="${escapeHtml(p.id)}">Edit</button>
+                            <button type="button" class="btn btn-outline btn-sm" style="color:var(--danger);border-color:var(--danger);" data-adm-delete="${escapeHtml(p.id)}">Delete</button>
+                          </div>
+                        </td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        `;
+
+        const imgInput = document.getElementById('adm-p-image');
+        const preview = document.getElementById('adm-p-preview');
+        imgInput.oninput = () => {
+          preview.src = imgInput.value.trim();
+        };
+
+        document.getElementById('adm-p-file').onchange = (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = () => {
+            imgInput.value = reader.result;
+            preview.src = reader.result;
+          };
+          reader.readAsDataURL(file);
+        };
+
+        if (editing) {
+          document.getElementById('adm-cancel-edit').onclick = () => {
+            state.editingProductId = null;
+            renderAdminProducts(container);
+          };
+        }
+
+        document.getElementById('adm-product-form').onsubmit = (e) => {
+          e.preventDefault();
+          const payload = {
+            id: editing ? editing.id : 'ps-' + Date.now(),
+            name: document.getElementById('adm-p-name').value.trim(),
+            sku: document.getElementById('adm-p-sku').value.trim(),
+            category: document.getElementById('adm-p-category').value,
+            tags: editing ? (editing.tags || []) : [],
+            imageUrl: document.getElementById('adm-p-image').value.trim(),
+            gallery: [document.getElementById('adm-p-image').value.trim()],
+            regularPrice: Number(document.getElementById('adm-p-regular').value) || 0,
+            wholesalePrice: Number(document.getElementById('adm-p-wholesale').value) || 0,
+            moq: Math.max(1, Number(document.getElementById('adm-p-moq').value) || 1),
+            stock: Math.max(0, Number(document.getElementById('adm-p-stock').value) || 0),
+            sizes: document.getElementById('adm-p-sizes').value.split(',').map((s) => s.trim()).filter(Boolean),
+            colors: document.getElementById('adm-p-colors').value.split(',').map((s) => s.trim()).filter(Boolean),
+            bulkPricingNote: document.getElementById('adm-p-bulk').value.trim(),
+            description: document.getElementById('adm-p-desc').value.trim(),
+            featured: document.getElementById('adm-p-featured').checked,
+            bestSeller: document.getElementById('adm-p-bestseller').checked,
+            newArrival: document.getElementById('adm-p-new').checked,
+            wholesaleOffer: document.getElementById('adm-p-offer').checked
+          };
+
+          if (!payload.name || !payload.sku || !payload.description || payload.regularPrice <= 0 || payload.wholesalePrice <= 0) {
+            showToast('Please complete all required product fields with valid prices.', true);
+            return;
+          }
+
+          if (editing) {
+            const idx = state.products.findIndex((p) => p.id === editing.id);
+            if (idx > -1) state.products[idx] = payload;
+            state.editingProductId = null;
+            showToast('Product updated.');
+          } else {
+            state.products.unshift(payload);
+            showToast('New product added to catalog.');
+          }
+          writeStorage(STORAGE_KEYS.PRODUCTS, state.products);
+          renderAdminProducts(container);
+        };
+
+        container.querySelectorAll('[data-adm-stock]').forEach((inp) => {
+          inp.onchange = () => {
+            const prod = state.products.find((p) => p.id === inp.dataset.admStock);
+            if (prod) {
+              prod.stock = Math.max(0, parseInt(inp.value, 10) || 0);
+              writeStorage(STORAGE_KEYS.PRODUCTS, state.products);
+              showToast(`Stock updated for ${prod.sku}.`);
+            }
+          };
+        });
+
+        container.querySelectorAll('[data-adm-edit]').forEach((btn) => {
+          btn.onclick = () => {
+            state.editingProductId = btn.dataset.admEdit;
+            renderAdminProducts(container);
+            container.scrollIntoView({ behavior: 'smooth' });
+          };
+        });
+
+        container.querySelectorAll('[data-adm-delete]').forEach((btn) => {
+          btn.onclick = () => {
+            const id = btn.dataset.admDelete;
+            openConfirm('Delete Product', 'Are you sure you want to remove this product from the catalog?', () => {
+              state.products = state.products.filter((p) => p.id !== id);
+              writeStorage(STORAGE_KEYS.PRODUCTS, state.products);
+              renderAdminProducts(container);
+              showToast('Product deleted.');
+            });
+          };
+        });
+      }
+
+      function renderAdminCategories(container) {
+        container.innerHTML = `
+          <div class="admin-panel">
+            <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-bottom:14px;">Category Management</h2>
+            <form id="adm-cat-form" style="display:flex;gap:10px;max-width:480px;margin-bottom:20px;">
+              <input type="text" id="adm-new-cat" class="form-control" placeholder="New category name..." required />
+              <button type="submit" class="btn btn-primary btn-sm">Add Category</button>
+            </form>
+            <div class="data-table-wrap">
+              <table class="data-table">
+                <thead><tr><th>Category Name</th><th>Products</th><th>Action</th></tr></thead>
+                <tbody>
+                  ${state.categories.map((cat) => {
+                    const count = state.products.filter((p) => p.category === cat).length;
+                    return `
+                      <tr>
+                        <td><strong>${escapeHtml(cat)}</strong></td>
+                        <td class="tabular">${count}</td>
+                        <td>
+                          <button type="button" class="btn btn-outline btn-sm" style="color:var(--danger);border-color:var(--danger);" data-adm-del-cat="${escapeHtml(cat)}">Remove</button>
+                        </td>
+                      </tr>
+                    `;
+                  }).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('adm-cat-form').onsubmit = (e) => {
+          e.preventDefault();
+          const val = document.getElementById('adm-new-cat').value.trim();
+          if (!val) return;
+          if (state.categories.includes(val)) {
+            showToast('Category already exists.', true);
+            return;
+          }
+          state.categories.push(val);
+          writeStorage(STORAGE_KEYS.CATEGORIES, state.categories);
+          renderAdminCategories(container);
+          showToast('Category added.');
+        };
+
+        container.querySelectorAll('[data-adm-del-cat]').forEach((btn) => {
+          btn.onclick = () => {
+            const cat = btn.dataset.admDelCat;
+            openConfirm('Remove Category', `Remove "${cat}" from the category list?`, () => {
+              state.categories = state.categories.filter((c) => c !== cat);
+              writeStorage(STORAGE_KEYS.CATEGORIES, state.categories);
+              renderAdminCategories(container);
+              showToast('Category removed.');
+            });
+          };
+        });
+      }
+
+      function renderAdminOrders(container) {
+        const statuses = ['Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
+        container.innerHTML = `
+          <div class="admin-panel">
+            <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-bottom:16px;">Orders &amp; Invoice Management (${state.orders.length})</h2>
+            <div class="data-table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer &amp; Delivery</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Payment</th>
+                    <th>Status</th>
+                    <th>Invoice</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${state.orders.map((o) => `
+                    <tr>
+                      <td>
+                        <strong class="mono">${escapeHtml(o.id)}</strong>
+                        <div style="font-size:11.5px;color:var(--text-muted);">${new Date(o.createdAt).toLocaleDateString('en-GB')}</div>
+                      </td>
+                      <td>
+                        <strong>${escapeHtml(o.customerName)}</strong>
+                        <div style="font-size:12px;color:var(--text-secondary);">${escapeHtml(o.phone)} &middot; ${escapeHtml(o.district)}</div>
+                      </td>
+                      <td>
+                        ${o.items.map((i) => `<div style="font-size:12.5px;">${escapeHtml(i.name)} (${escapeHtml(i.size)}) &times; ${i.qty}</div>`).join('')}
+                      </td>
+                      <td class="tabular"><strong>${formatBDT(o.total)}</strong></td>
+                      <td style="font-size:12.5px;">${escapeHtml(o.paymentMethod)}</td>
+                      <td>
+                        <select class="form-control" style="min-height:32px;padding:4px 8px;font-size:12.5px;" data-adm-order-status="${escapeHtml(o.id)}">
+                          ${statuses.map((st) => `<option value="${st}" ${o.status === st ? 'selected' : ''}>${st}</option>`).join('')}
+                        </select>
+                      </td>
+                      <td>
+                        <button type="button" class="btn btn-outline btn-sm" data-adm-print="${escapeHtml(o.id)}">Print</button>
+                      </td>
+                    </tr>
+                  `).join('') || '<tr><td colspan="7">No orders recorded yet.</td></tr>'}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+
+        container.querySelectorAll('[data-adm-order-status]').forEach((sel) => {
+          sel.onchange = () => {
+            const ord = state.orders.find((o) => o.id === sel.dataset.admOrderStatus);
+            if (ord) {
+              ord.status = sel.value;
+              writeStorage(STORAGE_KEYS.ORDERS, state.orders);
+              showToast(`Order ${ord.id} updated to ${ord.status}.`);
+            }
+          };
+        });
+
+        container.querySelectorAll('[data-adm-print]').forEach((btn) => {
+          btn.onclick = () => printOrderInvoice(btn.dataset.admPrint);
+        });
+      }
+
+      function renderAdminCustomers(container) {
+        const customerMap = new Map();
+        state.orders.forEach((o) => {
+          const existing = customerMap.get(o.phone) || { name: o.customerName, phone: o.phone, district: o.district, orders: 0, spent: 0 };
+          existing.orders += 1;
+          existing.spent += Number(o.total) || 0;
+          customerMap.set(o.phone, existing);
+        });
+        const customers = Array.from(customerMap.values());
+
+        container.innerHTML = `
+          <div style="display:flex;flex-direction:column;gap:24px;">
+            <div class="admin-panel">
+              <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-bottom:14px;">Customer Directory (${customers.length})</h2>
+              <div class="data-table-wrap">
+                <table class="data-table">
+                  <thead><tr><th>Customer Name</th><th>Phone</th><th>District</th><th>Orders</th><th>Total Value</th></tr></thead>
+                  <tbody>
+                    ${customers.map((c) => `
+                      <tr>
+                        <td><strong>${escapeHtml(c.name)}</strong></td>
+                        <td class="mono">${escapeHtml(c.phone)}</td>
+                        <td>${escapeHtml(c.district)}</td>
+                        <td class="tabular">${c.orders}</td>
+                        <td class="tabular"><strong>${formatBDT(c.spent)}</strong></td>
+                      </tr>
+                    `).join('') || '<tr><td colspan="5">No customer records yet.</td></tr>'}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="admin-panel">
+              <h3 style="font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:14px;">Wholesale Dealer Applications (${state.dealers.length})</h3>
+              <div class="data-table-wrap">
+                <table class="data-table">
+                  <thead><tr><th>Shop / Org</th><th>Contact</th><th>District</th><th>Volume</th><th>Interest</th></tr></thead>
+                  <tbody>
+                    ${state.dealers.map((d) => `
+                      <tr>
+                        <td><strong>${escapeHtml(d.shop)}</strong></td>
+                        <td>${escapeHtml(d.name)} (${escapeHtml(d.phone)})</td>
+                        <td>${escapeHtml(d.district)}</td>
+                        <td>${escapeHtml(d.volume)}</td>
+                        <td>${escapeHtml(d.category)}</td>
+                      </tr>
+                    `).join('') || '<tr><td colspan="5">No dealer inquiries submitted yet.</td></tr>'}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderAdminSettings(container) {
+        const s = state.settings;
+        container.innerHTML = `
+          <div class="admin-panel">
+            <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-bottom:16px;">Logo, Banner, Social &amp; Wholesale Settings</h2>
+            <form id="adm-settings-form" class="form-grid">
+              <div class="form-group">
+                <label class="form-label" for="set-logo-url">Official Logo URL</label>
+                <input type="text" id="set-logo-url" class="form-control" value="${escapeHtml(s.logoUrl)}" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="set-logo-file">Or Upload Replacement Logo</label>
+                <input type="file" id="set-logo-file" class="form-control" accept="image/*" />
+              </div>
+              <div class="form-group full" style="flex-direction:row;align-items:center;gap:16px;">
+                <div style="padding:8px 14px;border:1px solid var(--border-hairline);border-radius:var(--radius-sm);background:#fff;">
+                  <img id="set-logo-preview" src="${escapeHtml(s.logoUrl)}" alt="Logo Preview" style="height:44px;width:auto;object-fit:contain;" referrerpolicy="no-referrer" />
+                </div>
+                <button type="button" class="btn btn-outline btn-sm" id="set-reset-logo">Restore Official Imgur Logo</button>
+              </div>
+
+              <div class="form-group full">
+                <label class="form-label" for="set-promo">Top Announcement Strip Text</label>
+                <input type="text" id="set-promo" class="form-control" value="${escapeHtml(s.promoText)}" />
+              </div>
+              <div class="form-group full">
+                <label class="form-label" for="set-hero-headline">Hero Banner Headline</label>
+                <input type="text" id="set-hero-headline" class="form-control" value="${escapeHtml(s.heroHeadline)}" />
+              </div>
+              <div class="form-group full">
+                <label class="form-label" for="set-hero-sub">Hero Banner Subheadline</label>
+                <textarea id="set-hero-sub" class="form-control">${escapeHtml(s.heroSubheadline)}</textarea>
+              </div>
+              <div class="form-group full">
+                <label class="form-label" for="set-hero-img">Hero Banner Image URL</label>
+                <input type="text" id="set-hero-img" class="form-control" value="${escapeHtml(s.heroBannerUrl)}" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="set-wa-num">WhatsApp Number</label>
+                <input type="text" id="set-wa-num" class="form-control" value="${escapeHtml(s.whatsappNumber)}" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="set-wa-url">WhatsApp URL</label>
+                <input type="text" id="set-wa-url" class="form-control" value="${escapeHtml(s.whatsappUrl)}" />
+              </div>
+              <div class="form-group full">
+                <label class="form-label" for="set-fb-url">Official Facebook Page URL</label>
+                <input type="text" id="set-fb-url" class="form-control" value="${escapeHtml(s.facebookUrl)}" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="set-ship-dhaka">Dhaka Delivery Fee (৳)</label>
+                <input type="number" id="set-ship-dhaka" class="form-control tabular" value="${s.dhakaShipping}" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="set-ship-out">Outside Dhaka Fee (৳)</label>
+                <input type="number" id="set-ship-out" class="form-control tabular" value="${s.outsideDhakaShipping}" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="set-t2-pct">25+ pcs Extra Discount (%)</label>
+                <input type="number" id="set-t2-pct" class="form-control tabular" value="${s.tier2DiscountPct}" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="set-t3-pct">50+ pcs Extra Discount (%)</label>
+                <input type="number" id="set-t3-pct" class="form-control tabular" value="${s.tier3DiscountPct}" />
+              </div>
+
+              <div class="form-group full" style="flex-direction:row;gap:12px;flex-wrap:wrap;padding-top:8px;">
+                <button type="submit" class="btn btn-primary">Save All Settings</button>
+                <button type="button" class="btn btn-outline" id="adm-reset-demo-btn" style="color:var(--danger);border-color:var(--danger);">Reset All Demo Data</button>
+              </div>
+            </form>
+          </div>
+        `;
+
+        const logoInput = document.getElementById('set-logo-url');
+        const logoPrev = document.getElementById('set-logo-preview');
+        logoInput.oninput = () => {
+          logoPrev.src = logoInput.value.trim();
+        };
+
+        document.getElementById('set-logo-file').onchange = (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = () => {
+            logoInput.value = reader.result;
+            logoPrev.src = reader.result;
+          };
+          reader.readAsDataURL(file);
+        };
+
+        document.getElementById('set-reset-logo').onclick = () => {
+          logoInput.value = OFFICIAL_DEFAULTS.logoUrl;
+          logoPrev.src = OFFICIAL_DEFAULTS.logoUrl;
+        };
+
+        document.getElementById('adm-settings-form').onsubmit = (e) => {
+          e.preventDefault();
+          state.settings = {
+            ...state.settings,
+            logoUrl: logoInput.value.trim() || OFFICIAL_DEFAULTS.logoUrl,
+            promoText: document.getElementById('set-promo').value.trim(),
+            heroHeadline: document.getElementById('set-hero-headline').value.trim(),
+            heroSubheadline: document.getElementById('set-hero-sub').value.trim(),
+            heroBannerUrl: document.getElementById('set-hero-img').value.trim() || OFFICIAL_DEFAULTS.heroBannerUrl,
+            whatsappNumber: document.getElementById('set-wa-num').value.trim(),
+            whatsappUrl: document.getElementById('set-wa-url').value.trim(),
+            facebookUrl: document.getElementById('set-fb-url').value.trim(),
+            dhakaShipping: Number(document.getElementById('set-ship-dhaka').value) || 70,
+            outsideDhakaShipping: Number(document.getElementById('set-ship-out').value) || 130,
+            tier2DiscountPct: Number(document.getElementById('set-t2-pct').value) || 5,
+            tier3DiscountPct: Number(document.getElementById('set-t3-pct').value) || 10
+          };
+          writeStorage(STORAGE_KEYS.SETTINGS, state.settings);
+          applySettingsUI();
+          showToast('Store settings saved.');
+        };
+
+        document.getElementById('adm-reset-demo-btn').onclick = () => {
+          openConfirm('Reset Demo Data', 'Restore all products, categories, settings, and orders to the factory defaults?', () => {
+            Object.values(STORAGE_KEYS).forEach((k) => localStorage.removeItem(k));
+            initState();
+            applySettingsUI();
+            syncCatalogUI();
+            renderCartBadge();
+            renderCartDrawer();
+            renderAdminTab();
+            showToast('Demo data restored to defaults.');
+          });
+        };
+      }
+
+      /* Global Event Listeners & Delegation */
+      function bindEvents() {
+        // Navigation routing
+        document.addEventListener('click', (e) => {
+          const navBtn = e.target.closest('[data-nav]');
+          if (navBtn) {
+            const target = navBtn.dataset.nav;
+            toggleAdminView(false);
+            document.getElementById('mobile-nav-overlay').classList.remove('open');
+            document.querySelectorAll('.main-nav .nav-link').forEach((n) => n.classList.toggle('active', n.dataset.nav === target));
+
+            if (target === 'home') {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (target === 'wholesale') {
+              document.getElementById('wholesale').scrollIntoView({ behavior: 'smooth' });
+            } else if (target === 'contact') {
+              document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+            } else {
+              state.activeCategory = target;
+              state.activeCollection = 'all';
+              syncCatalogUI();
+              document.getElementById('catalog').scrollIntoView({ behavior: 'smooth' });
+            }
+          }
+
+          // Product card actions
+          const actionEl = e.target.closest('[data-action]');
+          if (actionEl) {
+            const action = actionEl.dataset.action;
+            const id = actionEl.dataset.id;
+            if (action === 'view-product') {
+              openProductDetails(id);
+            } else if (action === 'quick-add') {
+              addToCart(id, null, null, 1);
+            }
+          }
+
+          // Category bar click
+          const catBtn = e.target.closest('#category-bar .cat-btn');
+          if (catBtn) {
+            state.activeCategory = catBtn.dataset.cat;
+            syncCatalogUI();
+          }
+
+          // Collection tabs click
+          const tabBtn = e.target.closest('#collection-tabs .tab-btn');
+          if (tabBtn) {
+            state.activeCollection = tabBtn.dataset.collection;
+            syncCatalogUI();
+          }
+
+          // Cart item controls
+          const rmBtn = e.target.closest('[data-cart-remove]');
+          if (rmBtn) {
+            state.cart = state.cart.filter((i) => i.key !== rmBtn.dataset.cartRemove);
+            persistCart();
+          }
+          const decBtn = e.target.closest('[data-cart-dec]');
+          if (decBtn) {
+            const item = state.cart.find((i) => i.key === decBtn.dataset.cartDec);
+            if (item) {
+              item.qty = Math.max(1, item.qty - 1);
+              persistCart();
+            }
+          }
+          const incBtn = e.target.closest('[data-cart-inc]');
+          if (incBtn) {
+            const item = state.cart.find((i) => i.key === incBtn.dataset.cartInc);
+            const prod = item && state.products.find((p) => p.id === item.productId);
+            if (item && prod) {
+              item.qty = Math.min(prod.stock, item.qty + 1);
+              persistCart();
+            }
+          }
+
+          // Admin tabs
+          const admBtn = e.target.closest('[data-admin-tab]');
+          if (admBtn) {
+            state.adminTab = admBtn.dataset.adminTab;
+            renderAdminTab();
+          }
+        });
+
+        // Cart select / input changes
+        document.getElementById('cart-items-list').addEventListener('change', (e) => {
+          const qtyInp = e.target.closest('[data-cart-qty]');
+          if (qtyInp) {
+            const item = state.cart.find((i) => i.key === qtyInp.dataset.cartQty);
+            const prod = item && state.products.find((p) => p.id === item.productId);
+            if (item && prod) {
+              item.qty = Math.max(1, Math.min(prod.stock, parseInt(qtyInp.value, 10) || 1));
+              persistCart();
+            }
+          }
+          const sizeSel = e.target.closest('[data-cart-size]');
+          if (sizeSel) {
+            const item = state.cart.find((i) => i.key === sizeSel.dataset.cartSize);
+            if (item) {
+              item.size = sizeSel.value;
+              persistCart();
+            }
+          }
+          const clrSel = e.target.closest('[data-cart-color]');
+          if (clrSel) {
+            const item = state.cart.find((i) => i.key === clrSel.dataset.cartColor);
+            if (item) {
+              item.color = clrSel.value;
+              persistCart();
+            }
+          }
+        });
+
+        // Search inputs
+        const handleSearch = (val) => {
+          state.searchQuery = val;
+          document.getElementById('header-search-input').value = val;
+          document.getElementById('catalog-search-input').value = val;
+          document.getElementById('mobile-search-input').value = val;
+          renderProductGrid();
+        };
+
+        document.getElementById('header-search-input').addEventListener('input', (e) => handleSearch(e.target.value));
+        document.getElementById('catalog-search-input').addEventListener('input', (e) => handleSearch(e.target.value));
+        document.getElementById('mobile-search-input').addEventListener('input', (e) => handleSearch(e.target.value));
+
+        document.getElementById('catalog-category-select').addEventListener('change', (e) => {
+          state.activeCategory = e.target.value;
+          syncCatalogUI();
+        });
+
+        document.getElementById('catalog-sort-select').addEventListener('change', (e) => {
+          state.sortBy = e.target.value;
+          renderProductGrid();
+        });
+
+        // Hero CTAs
+        document.getElementById('hero-shop-btn').onclick = () => {
+          document.getElementById('catalog').scrollIntoView({ behavior: 'smooth' });
+        };
+        document.getElementById('hero-wholesale-btn').onclick = () => {
+          document.getElementById('wholesale').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        // Quote estimator
+        document.getElementById('quote-product-select').onchange = updateQuoteCalculation;
+        document.getElementById('quote-qty-input').oninput = updateQuoteCalculation;
+        document.getElementById('quote-add-cart-btn').onclick = () => {
+          const id = document.getElementById('quote-product-select').value;
+          const qty = Math.max(1, parseInt(document.getElementById('quote-qty-input').value, 10) || 1);
+          addToCart(id, null, null, qty);
+          openCartDrawer();
+        };
+
+        // Dealer form
+        document.getElementById('dealer-form').onsubmit = (e) => {
+          e.preventDefault();
+          const shop = document.getElementById('dealer-shop').value.trim();
+          const name = document.getElementById('dealer-name').value.trim();
+          const phone = document.getElementById('dealer-phone').value.trim();
+          const district = document.getElementById('dealer-district').value.trim();
+          if (!shop || !name || !phone || !district) {
+            showToast('Please complete all required dealer registration fields.', true);
+            return;
+          }
+          const dealer = {
+            id: 'D-' + Date.now(),
+            shop,
+            name,
+            phone,
+            district,
+            volume: document.getElementById('dealer-volume').value,
+            category: document.getElementById('dealer-category').value,
+            notes: document.getElementById('dealer-notes').value.trim(),
+            createdAt: new Date().toISOString()
+          };
+          state.dealers.unshift(dealer);
+          writeStorage(STORAGE_KEYS.DEALERS, state.dealers);
+          e.target.reset();
+          showToast('Dealer inquiry submitted! Saved for review in Admin Portal.');
+        };
+
+        document.getElementById('dealer-wa-submit').onclick = () => {
+          const shop = document.getElementById('dealer-shop').value.trim() || 'Sports Retailer';
+          const name = document.getElementById('dealer-name').value.trim() || 'Dealer';
+          const phone = document.getElementById('dealer-phone').value.trim();
+          const district = document.getElementById('dealer-district').value.trim() || 'Bangladesh';
+          const vol = document.getElementById('dealer-volume').value;
+          const cat = document.getElementById('dealer-category').value;
+          const notes = document.getElementById('dealer-notes').value.trim();
+
+          const msg = `Hello PABEL SPORTS Wholesale Team,\nDealer Registration / Bulk Inquiry:\nShop/Org: ${shop}\nName: ${name}\nPhone: ${phone}\nDistrict: ${district}\nEst. Volume: ${vol}\nInterest: ${cat}\nNotes: ${notes || 'N/A'}`;
+          const link = document.createElement('a');
+          link.href = buildWhatsAppLink(msg);
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          link.click();
+        };
+
+        // Contact form
+        document.getElementById('contact-form').onsubmit = (e) => {
+          e.preventDefault();
+          const name = document.getElementById('contact-name').value.trim();
+          const phone = document.getElementById('contact-phone').value.trim();
+          const msg = document.getElementById('contact-msg').value.trim();
+          if (!name || !phone || !msg) {
+            showToast('Please enter your name, phone, and message.', true);
+            return;
+          }
+          state.messages.unshift({ name, phone, msg, createdAt: new Date().toISOString() });
+          writeStorage(STORAGE_KEYS.MESSAGES, state.messages);
+          e.target.reset();
+          showToast('Message saved. For fastest reply, message us on WhatsApp.');
+        };
+
+        document.getElementById('contact-wa-send').onclick = () => {
+          const name = document.getElementById('contact-name').value.trim() || 'Customer';
+          const phone = document.getElementById('contact-phone').value.trim();
+          const msg = document.getElementById('contact-msg').value.trim() || 'Inquiry about PABEL SPORTS jerseys & wholesale.';
+          const link = document.createElement('a');
+          link.href = buildWhatsAppLink(`Hello PABEL SPORTS,\nName: ${name}\nPhone: ${phone}\nMessage: ${msg}`);
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          link.click();
+        };
+
+        // Cart Drawer & Modals
+        document.getElementById('open-cart-btn').onclick = openCartDrawer;
+        document.getElementById('close-cart-btn').onclick = closeCartDrawer;
+        document.getElementById('cart-drawer-backdrop').addEventListener('click', (e) => {
+          if (e.target.id === 'cart-drawer-backdrop') closeCartDrawer();
+        });
+
+        document.getElementById('close-pdp-btn').onclick = () => closeModal('pdp-modal');
+        document.getElementById('close-checkout-btn').onclick = () => closeModal('checkout-modal');
+        ['pdp-modal', 'checkout-modal', 'confirm-modal'].forEach((id) => {
+          document.getElementById(id).addEventListener('click', (e) => {
+            if (e.target.id === id) closeModal(id);
+          });
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            closeCartDrawer();
+            closeModal('pdp-modal');
+            closeModal('checkout-modal');
+            closeModal('confirm-modal');
+            document.getElementById('mobile-nav-overlay').classList.remove('open');
+          }
+        });
+
+        // Mobile Drawer
+        const mobOverlay = document.getElementById('mobile-nav-overlay');
+        document.getElementById('mobile-menu-open').onclick = () => {
+          mobOverlay.classList.add('open');
+          mobOverlay.setAttribute('aria-hidden', 'false');
+        };
+        document.getElementById('mobile-menu-close').onclick = () => {
+          mobOverlay.classList.remove('open');
+          mobOverlay.setAttribute('aria-hidden', 'true');
+        };
+        mobOverlay.addEventListener('click', (e) => {
+          if (e.target === mobOverlay) {
+            mobOverlay.classList.remove('open');
+            mobOverlay.setAttribute('aria-hidden', 'true');
+          }
+        });
+
+        // Hidden Footer Admin Triggers & Auth
+        const hiddenAdminBtn = document.getElementById('footer-hidden-admin-btn');
+        if (hiddenAdminBtn) {
+          hiddenAdminBtn.addEventListener('mouseenter', () => { hiddenAdminBtn.style.opacity = '0.75'; });
+          hiddenAdminBtn.addEventListener('mouseleave', () => { hiddenAdminBtn.style.opacity = '0.16'; });
+          hiddenAdminBtn.onclick = () => toggleAdminView(true);
+        }
+
+        const copyrightTrigger = document.getElementById('footer-copyright-trigger');
+        if (copyrightTrigger) {
+          let tapCount = 0;
+          let tapTimer = null;
+          copyrightTrigger.addEventListener('dblclick', () => toggleAdminView(true));
+          copyrightTrigger.addEventListener('click', () => {
+            tapCount += 1;
+            clearTimeout(tapTimer);
+            if (tapCount >= 3) {
+              tapCount = 0;
+              toggleAdminView(true);
+              return;
+            }
+            tapTimer = setTimeout(() => { tapCount = 0; }, 700);
+          });
+        }
+
+        document.addEventListener('keydown', (e) => {
+          if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+            e.preventDefault();
+            toggleAdminView(true);
+          }
+        });
+
+        if (window.location.hash === '#admin') {
+          toggleAdminView(true);
+        }
+
+        document.getElementById('admin-back-store-btn').onclick = () => {
+          if (window.location.hash === '#admin') {
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+          }
+          toggleAdminView(false);
+        };
+
+        document.getElementById('admin-login-form').onsubmit = (e) => {
+          e.preventDefault();
+          const code = document.getElementById('admin-passcode-input').value.trim();
+          if (code === 'pabel2026') {
+            state.adminUnlocked = true;
+            writeStorage(STORAGE_KEYS.ADMIN_UNLOCKED, true);
+            renderAdminGateState();
+            showToast('Admin dashboard unlocked (demo mode).');
+          } else {
+            showToast('Incorrect demo passcode. Use pabel2026.', true);
+          }
+        };
+
+        document.getElementById('admin-quick-unlock').onclick = () => {
+          state.adminUnlocked = true;
+          writeStorage(STORAGE_KEYS.ADMIN_UNLOCKED, true);
+          renderAdminGateState();
+          showToast('Admin dashboard unlocked.');
+        };
+
+        document.getElementById('admin-logout-btn').onclick = () => {
+          state.adminUnlocked = false;
+          writeStorage(STORAGE_KEYS.ADMIN_UNLOCKED, false);
+          renderAdminGateState();
+        };
+      }
+
+      /* Boot */
+      initState();
+      applySettingsUI();
+      syncCatalogUI();
+      renderCartBadge();
+      renderCartDrawer();
+      bindEvents();
+      attachImageFallback(document.getElementById('hero-banner-img'));
+      document.getElementById('footer-year').textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
