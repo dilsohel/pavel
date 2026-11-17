@@ -1426,6 +1426,77 @@
       color: #78350f;
     }
 
+    .notice-success {
+      border-color: #16a34a;
+      background-color: #f0fdf4;
+      color: #14532d;
+    }
+
+    .notif-dispatch-card {
+      padding: 16px 18px;
+      border: 1px solid #16a34a;
+      background-color: #f0fdf4;
+      border-radius: var(--radius-md);
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .notif-dispatch-card.is-failed {
+      border-color: #f59e0b;
+      background-color: #fffbeb;
+    }
+
+    .notif-preview-box {
+      padding: 10px 12px;
+      background-color: #ffffff;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: var(--text-primary);
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+
+    .badge-chip {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      background-color: var(--bg-subtle);
+      color: var(--text-primary);
+      border: 1px solid var(--border-hairline);
+    }
+
+    .badge-chip.sent {
+      background-color: #dcfce7;
+      border-color: #86efac;
+      color: #166534;
+    }
+
+    .badge-chip.warn {
+      background-color: #fef3c7;
+      border-color: #fcd34d;
+      color: #92400e;
+    }
+
+    .notif-toggle-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      background-color: var(--bg-canvas);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+    }
+
     /* Floating WhatsApp Button */
     .floating-wa {
       position: fixed;
@@ -2231,6 +2302,14 @@
         tier4DiscountPct: 15
       };
 
+      const DEFAULT_ADMIN_SETTINGS = {
+        autoLaunchWhatsapp: false,
+        autoOpenEmail: false,
+        webhookUrl: '',
+        notificationSenderName: 'PABEL SPORTS',
+        customMessageTemplate: 'Hello {customerName}, your {brandName} order #{orderId} status is now "{status}". Total Payable: {total} ({paymentMethod}). Thank you for shopping with us!'
+      };
+
       const DEFAULT_CATEGORIES = [
         'Football Jerseys',
         'Club Jerseys',
@@ -2587,7 +2666,10 @@
         orders: [],
         dealers: [],
         messages: [],
+        notifications: [],
         settings: {},
+        adminSettings: Object.assign({}, DEFAULT_ADMIN_SETTINGS),
+        lastNotificationDispatch: null,
         adminUnlocked: false,
         adminUser: null,
         adminCheckDone: false,
@@ -2691,6 +2773,63 @@
       function buildWhatsAppLink(messageText) {
         const base = (state.settings.whatsappUrl || OFFICIAL_DEFAULTS.whatsappUrl).replace(/\/+$/, '');
         return `${base}?text=${encodeURIComponent(messageText)}`;
+      }
+
+      function normalizeBDPhoneToWa(phone) {
+        const digits = String(phone || '').replace(/[^\d]/g, '');
+        if (!digits) return '';
+        if (digits.startsWith('8801')) return digits;
+        if (digits.startsWith('01')) return '88' + digits;
+        if (digits.startsWith('1') && digits.length === 10) return '880' + digits;
+        return digits;
+      }
+
+      function buildCustomerWhatsAppLink(phone, messageText) {
+        const waDigits = normalizeBDPhoneToWa(phone);
+        if (!waDigits) return '';
+        return `https://wa.me/${waDigits}?text=${encodeURIComponent(messageText)}`;
+      }
+
+      function buildCustomerMailtoLink(email, order, newStatus, messageText) {
+        const cleanEmail = String(email || '').trim();
+        if (!cleanEmail) return '';
+        const sender = state.adminSettings.notificationSenderName || state.settings.brandName || 'PABEL SPORTS';
+        const subject = `[${sender}] Order #${order.id} Update: ${newStatus}`;
+        return `mailto:${encodeURIComponent(cleanEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(messageText)}`;
+      }
+
+      function buildOrderStatusMessage(order, newStatus) {
+        const brandName = state.adminSettings.notificationSenderName || state.settings.brandName || 'PABEL SPORTS';
+        const template = (state.adminSettings.customMessageTemplate || DEFAULT_ADMIN_SETTINGS.customMessageTemplate).trim();
+        const itemSummary = Array.isArray(order.items) && order.items.length
+          ? order.items.slice(0, 4).map((i) => `${i.name} (${i.size}) x${i.qty}`).join(', ') + (order.items.length > 4 ? ` +${order.items.length - 4} more` : '')
+          : '';
+        let msg = template
+          .replace(/\{customerName\}/g, order.customerName || 'Customer')
+          .replace(/\{orderId\}/g, order.id || '')
+          .replace(/\{status\}/g, newStatus)
+          .replace(/\{total\}/g, formatBDT(order.total))
+          .replace(/\{paymentMethod\}/g, order.paymentMethod || '')
+          .replace(/\{district\}/g, order.district || '')
+          .replace(/\{brandName\}/g, brandName);
+        if (itemSummary) {
+          msg += `\nItems: ${itemSummary}`;
+        }
+        return msg.slice(0, 1500);
+      }
+
+      function triggerAnchorLink(href, openInNewTab = true) {
+        if (!href) return;
+        const a = document.createElement('a');
+        a.href = href;
+        if (openInNewTab) {
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+        }
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
       }
 
       function getUnitPricing(product, qty) {
@@ -2890,8 +3029,36 @@
         state.adminUnsubs = [];
       }
 
+      function buildCleanAdminSettingsDoc(cfg) {
+        return {
+          autoLaunchWhatsapp: Boolean(cfg.autoLaunchWhatsapp),
+          autoOpenEmail: Boolean(cfg.autoOpenEmail),
+          webhookUrl: String(cfg.webhookUrl || '').trim().slice(0, 500),
+          notificationSenderName: String(cfg.notificationSenderName || DEFAULT_ADMIN_SETTINGS.notificationSenderName).trim().slice(0, 80) || 'PABEL SPORTS',
+          customMessageTemplate: String(cfg.customMessageTemplate ?? DEFAULT_ADMIN_SETTINGS.customMessageTemplate).trim().slice(0, 600),
+          updatedAt: serverTimestamp()
+        };
+      }
+
       function attachAdminCloudSync() {
         detachAdminCloudSync();
+
+        const adminSettingsUnsub = onSnapshot(
+          doc(db, 'storeConfig', 'adminSettings'),
+          (snap) => {
+            if (snap.exists()) {
+              state.adminSettings = Object.assign({}, DEFAULT_ADMIN_SETTINGS, snap.data());
+            } else {
+              state.adminSettings = Object.assign({}, DEFAULT_ADMIN_SETTINGS);
+            }
+            if (state.adminUnlocked && ['orders', 'settings'].includes(state.adminTab)) {
+              renderAdminTab();
+            }
+          },
+          (error) => {
+            handleFirestoreError(error, OperationType.GET, 'storeConfig/adminSettings');
+          }
+        );
 
         const ordersUnsub = onSnapshot(
           query(collection(db, 'orders'), orderBy('createdAt', 'desc')),
@@ -2903,6 +3070,19 @@
           },
           (error) => {
             handleFirestoreError(error, OperationType.LIST, 'orders');
+          }
+        );
+
+        const notificationsUnsub = onSnapshot(
+          query(collection(db, 'notifications'), orderBy('createdAt', 'desc')),
+          (snap) => {
+            state.notifications = snap.docs.map((d) => ({ ...d.data(), id: d.id }));
+            if (state.adminUnlocked && ['overview', 'orders'].includes(state.adminTab)) {
+              renderAdminTab();
+            }
+          },
+          (error) => {
+            handleFirestoreError(error, OperationType.LIST, 'notifications');
           }
         );
 
@@ -2929,7 +3109,7 @@
           }
         );
 
-        state.adminUnsubs.push(ordersUnsub, dealersUnsub, messagesUnsub);
+        state.adminUnsubs.push(adminSettingsUnsub, ordersUnsub, notificationsUnsub, dealersUnsub, messagesUnsub);
       }
 
       function initAuthListener() {
@@ -2959,6 +3139,9 @@
             state.orders = [];
             state.dealers = [];
             state.messages = [];
+            state.notifications = [];
+            state.adminSettings = Object.assign({}, DEFAULT_ADMIN_SETTINGS);
+            state.lastNotificationDispatch = null;
             detachAdminCloudSync();
           }
 
@@ -2976,7 +3159,9 @@
         state.orders = [];
         state.dealers = [];
         state.messages = [];
+        state.notifications = [];
         state.settings = Object.assign({}, OFFICIAL_DEFAULTS);
+        state.adminSettings = Object.assign({}, DEFAULT_ADMIN_SETTINGS);
       }
 
       /* Apply Settings to DOM */
@@ -3618,8 +3803,12 @@
                 <input type="text" id="co-name" class="form-control" required placeholder="e.g. Md. Rafiqul Islam" />
               </div>
               <div class="form-group">
-                <label class="form-label" for="co-phone">Mobile Phone (BD) *</label>
+                <label class="form-label" for="co-phone">Mobile Phone / WhatsApp (BD) *</label>
                 <input type="tel" id="co-phone" class="form-control" required placeholder="01XXXXXXXXX" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="co-email">Email for Status Updates (Optional)</label>
+                <input type="email" id="co-email" class="form-control" maxlength="160" placeholder="customer@example.com" />
               </div>
               <div class="form-group">
                 <label class="form-label" for="co-district">District *</label>
@@ -3627,7 +3816,7 @@
                   ${BD_DISTRICTS.map((d) => `<option value="${escapeHtml(d)}">${escapeHtml(d)}</option>`).join('')}
                 </select>
               </div>
-              <div class="form-group full">
+              <div class="form-group">
                 <label class="form-label" for="co-city">City / Thana / Area *</label>
                 <input type="text" id="co-city" class="form-control" required placeholder="e.g. Mirpur 10, Dhaka" />
               </div>
@@ -3684,7 +3873,7 @@
                 <span id="co-grand-total">${formatBDT(summary.effectiveSubtotal + Number(s.dhakaShipping))}</span>
               </div>
               <div class="notice-box" style="font-size:12.5px;">
-                Demo orders are saved locally in this browser's <code>localStorage</code> and can also be confirmed directly with our WhatsApp team.
+                Orders are saved securely to PABEL SPORTS cloud. You will receive order status updates on your BD WhatsApp number${''} or email when our dispatch team confirms or ships your parcel.
               </div>
             </div>
           </div>
@@ -3717,6 +3906,7 @@
           e.preventDefault();
           const name = document.getElementById('co-name').value.trim();
           const phone = document.getElementById('co-phone').value.trim();
+          const email = document.getElementById('co-email').value.trim();
           const district = districtEl.value;
           const city = document.getElementById('co-city').value.trim();
           const address = document.getElementById('co-address').value.trim();
@@ -3729,6 +3919,10 @@
           }
           if (!/^(\+?88)?01[3-9]\d{8}$/.test(phone.replace(/[\s-]/g, ''))) {
             showToast('Please enter a valid Bangladesh mobile number (e.g. 017XXXXXXXX).', true);
+            return;
+          }
+          if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showToast('Please enter a valid email address or leave it blank.', true);
             return;
           }
 
@@ -3746,6 +3940,7 @@
             updatedAt: serverTimestamp(),
             customerName: name.slice(0, 120),
             phone: phone.slice(0, 24),
+            customerEmail: email.slice(0, 160),
             address: address.slice(0, 400),
             district: district.slice(0, 80),
             city: city.slice(0, 100),
@@ -3863,7 +4058,7 @@
             </div>
             <div style="margin-bottom:18px;font-size:13px;">
               <strong>Bill / Deliver To:</strong><br/>
-              ${escapeHtml(order.customerName)} (${escapeHtml(order.phone)})<br/>
+              ${escapeHtml(order.customerName)} (${escapeHtml(order.phone)}${order.customerEmail ? ' &middot; ' + escapeHtml(order.customerEmail) : ''})<br/>
               ${escapeHtml(order.address)}, ${escapeHtml(order.city)}, ${escapeHtml(order.district)}<br/>
               Payment Method: ${escapeHtml(order.paymentMethod)} — ${escapeHtml(order.paymentStatus)}
             </div>
@@ -4357,70 +4552,356 @@
         });
       }
 
+      async function triggerOrderStatusNotification(ord, previousStatus, newStatus, updateOrderDoc = true) {
+        const cfg = state.adminSettings || DEFAULT_ADMIN_SETTINGS;
+        const message = buildOrderStatusMessage(ord, newStatus);
+        const waHref = buildCustomerWhatsAppLink(ord.phone, message);
+        const mailtoHref = buildCustomerMailtoLink(ord.customerEmail, ord, newStatus, message);
+        const hasEmail = Boolean(ord.customerEmail && mailtoHref);
+        const initialChannel = hasEmail ? 'whatsapp+email' : 'whatsapp';
+        const notifId = 'NTF-' + Date.now() + '-' + Math.floor(100 + Math.random() * 900);
+
+        if (updateOrderDoc) {
+          await updateDoc(doc(db, 'orders', ord.id), {
+            status: newStatus,
+            lastNotifiedStatus: newStatus,
+            lastNotifiedAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+          });
+        } else {
+          await updateDoc(doc(db, 'orders', ord.id), {
+            lastNotifiedStatus: newStatus,
+            lastNotifiedAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+          });
+        }
+
+        let deliveryState = 'prepared';
+        let finalChannel = initialChannel;
+        let webhookError = '';
+
+        await setDoc(doc(db, 'notifications', notifId), {
+          id: notifId,
+          orderId: ord.id,
+          customerName: String(ord.customerName || 'Customer').slice(0, 120),
+          phone: String(ord.phone || '').slice(0, 24),
+          customerEmail: String(ord.customerEmail || '').slice(0, 160),
+          previousStatus,
+          newStatus,
+          channel: initialChannel,
+          message,
+          deliveryState: 'prepared',
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+
+        const webhookUrl = String(cfg.webhookUrl || '').trim();
+        if (webhookUrl) {
+          try {
+            const resp = await fetch(webhookUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                event: 'order.status_changed',
+                notificationId: notifId,
+                orderId: ord.id,
+                customerName: ord.customerName,
+                phone: ord.phone,
+                whatsappNumber: normalizeBDPhoneToWa(ord.phone),
+                customerEmail: ord.customerEmail || '',
+                previousStatus,
+                newStatus,
+                total: ord.total,
+                paymentMethod: ord.paymentMethod,
+                message,
+                timestamp: new Date().toISOString()
+              })
+            });
+            if (resp.ok) {
+              deliveryState = 'webhook_sent';
+              finalChannel = 'webhook';
+            } else {
+              deliveryState = 'webhook_failed';
+              webhookError = `Webhook responded with HTTP ${resp.status}. Use WhatsApp or Email below.`;
+            }
+          } catch (err) {
+            deliveryState = 'webhook_failed';
+            webhookError = err instanceof Error ? err.message : 'Webhook network/CORS error.';
+          }
+
+          await updateDoc(doc(db, 'notifications', notifId), {
+            deliveryState,
+            channel: finalChannel,
+            updatedAt: serverTimestamp()
+          });
+        } else if (cfg.autoLaunchWhatsapp || (cfg.autoOpenEmail && hasEmail)) {
+          if (cfg.autoLaunchWhatsapp && waHref) {
+            triggerAnchorLink(waHref, true);
+          }
+          if (cfg.autoOpenEmail && hasEmail) {
+            triggerAnchorLink(mailtoHref, false);
+          }
+          deliveryState = 'dispatched_client';
+          await updateDoc(doc(db, 'notifications', notifId), {
+            deliveryState,
+            channel: initialChannel,
+            updatedAt: serverTimestamp()
+          });
+        }
+
+        state.lastNotificationDispatch = {
+          id: notifId,
+          orderId: ord.id,
+          customerName: ord.customerName,
+          phone: ord.phone,
+          customerEmail: ord.customerEmail || '',
+          previousStatus,
+          newStatus,
+          message,
+          waHref,
+          mailtoHref,
+          channel: finalChannel,
+          deliveryState,
+          webhookError
+        };
+      }
+
       function renderAdminOrders(container) {
         const statuses = ['Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
+        const cfg = state.adminSettings || DEFAULT_ADMIN_SETTINGS;
+        const dispatch = state.lastNotificationDispatch;
+        const stateLabels = {
+          prepared: 'Prepared — Click to Send',
+          dispatched_client: 'Client App Triggered',
+          webhook_sent: 'Webhook Delivered',
+          webhook_failed: 'Webhook Failed (Fallback Ready)'
+        };
+
         container.innerHTML = `
-          <div class="admin-panel">
-            <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-bottom:16px;">Orders &amp; Invoice Management (${state.orders.length})</h2>
-            <div class="data-table-wrap">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Order ID</th>
-                    <th>Customer &amp; Delivery</th>
-                    <th>Items</th>
-                    <th>Total</th>
-                    <th>Payment</th>
-                    <th>Status</th>
-                    <th>Invoice</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${state.orders.map((o) => `
+          <div style="display:flex;flex-direction:column;gap:24px;">
+            <div class="admin-panel">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+                <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;">Orders &amp; Automated Customer Notifications (${state.orders.length})</h2>
+                <button type="button" class="btn btn-outline btn-sm" id="adm-goto-notif-settings">Configure Webhook &amp; Templates</button>
+              </div>
+
+              <div class="notif-toggle-bar">
+                <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;">
+                  <strong style="font-size:12.5px;text-transform:uppercase;letter-spacing:0.04em;">Auto-Trigger on Status Change:</strong>
+                  <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+                    <input type="checkbox" id="adm-quick-auto-wa" ${cfg.autoLaunchWhatsapp ? 'checked' : ''} />
+                    <span>Auto-open Customer WhatsApp</span>
+                  </label>
+                  <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+                    <input type="checkbox" id="adm-quick-auto-email" ${cfg.autoOpenEmail ? 'checked' : ''} />
+                    <span>Auto-open Customer Email (mailto)</span>
+                  </label>
+                </div>
+                <div>
+                  ${cfg.webhookUrl
+                    ? '<span class="badge-chip sent">Webhook Connected</span>'
+                    : '<span class="badge-chip">Direct WhatsApp / Email Mode</span>'}
+                </div>
+              </div>
+
+              ${dispatch ? `
+                <div class="notif-dispatch-card ${dispatch.deliveryState === 'webhook_failed' ? 'is-failed' : ''}" id="adm-notif-dispatch-card">
+                  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                    <div>
+                      <strong style="font-size:14px;">Notification Triggered for Order #${escapeHtml(dispatch.orderId)}</strong>
+                      <span style="font-size:12.5px;color:var(--text-secondary);margin-left:8px;">
+                        ${escapeHtml(dispatch.customerName)} &middot; ${escapeHtml(dispatch.previousStatus)} &rarr; <strong>${escapeHtml(dispatch.newStatus)}</strong>
+                      </span>
+                    </div>
+                    <span class="badge-chip ${dispatch.deliveryState === 'webhook_sent' || dispatch.deliveryState === 'dispatched_client' ? 'sent' : 'warn'}">
+                      ${escapeHtml(stateLabels[dispatch.deliveryState] || dispatch.deliveryState)}
+                    </span>
+                  </div>
+                  ${dispatch.webhookError ? `<div style="font-size:12.5px;color:#92400e;"><strong>Webhook notice:</strong> ${escapeHtml(dispatch.webhookError)}</div>` : ''}
+                  <div class="notif-preview-box">${escapeHtml(dispatch.message)}</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+                    ${dispatch.waHref ? `<a href="${escapeHtml(dispatch.waHref)}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-sm" data-notif-client-click="${escapeHtml(dispatch.id)}">Send Customer WhatsApp (${escapeHtml(dispatch.phone)})</a>` : ''}
+                    ${dispatch.mailtoHref ? `<a href="${escapeHtml(dispatch.mailtoHref)}" class="btn btn-dark btn-sm" data-notif-client-click="${escapeHtml(dispatch.id)}">Send Customer Email (${escapeHtml(dispatch.customerEmail)})</a>` : '<span style="font-size:12px;color:var(--text-muted);">No email provided on this order</span>'}
+                    <button type="button" class="btn btn-outline btn-sm" id="adm-notif-copy-btn">Copy Message</button>
+                    <button type="button" class="btn btn-outline btn-sm" id="adm-notif-dismiss-btn" style="margin-left:auto;">Dismiss</button>
+                  </div>
+                </div>
+              ` : ''}
+
+              <div class="data-table-wrap">
+                <table class="data-table">
+                  <thead>
                     <tr>
-                      <td>
-                        <strong class="mono">${escapeHtml(o.id)}</strong>
-                        <div style="font-size:11.5px;color:var(--text-muted);">${escapeHtml(formatDate(o.createdAt))}</div>
-                      </td>
-                      <td>
-                        <strong>${escapeHtml(o.customerName)}</strong>
-                        <div style="font-size:12px;color:var(--text-secondary);">${escapeHtml(o.phone)} &middot; ${escapeHtml(o.district)}</div>
-                      </td>
-                      <td>
-                        ${(o.items || []).map((i) => `<div style="font-size:12.5px;">${escapeHtml(i.name)} (${escapeHtml(i.size)}) &times; ${i.qty}</div>`).join('')}
-                      </td>
-                      <td class="tabular"><strong>${formatBDT(o.total)}</strong></td>
-                      <td style="font-size:12.5px;">${escapeHtml(o.paymentMethod)}</td>
-                      <td>
-                        <select class="form-control" style="min-height:32px;padding:4px 8px;font-size:12.5px;" data-adm-order-status="${escapeHtml(o.id)}">
-                          ${statuses.map((st) => `<option value="${st}" ${o.status === st ? 'selected' : ''}>${st}</option>`).join('')}
-                        </select>
-                      </td>
-                      <td>
-                        <button type="button" class="btn btn-outline btn-sm" data-adm-print="${escapeHtml(o.id)}">Print</button>
-                      </td>
+                      <th>Order ID</th>
+                      <th>Customer &amp; Delivery</th>
+                      <th>Items</th>
+                      <th>Total</th>
+                      <th>Payment</th>
+                      <th>Status (Auto-Notifies)</th>
+                      <th>Actions</th>
                     </tr>
-                  `).join('') || '<tr><td colspan="7">No orders recorded yet.</td></tr>'}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    ${state.orders.map((o) => `
+                      <tr>
+                        <td>
+                          <strong class="mono">${escapeHtml(o.id)}</strong>
+                          <div style="font-size:11.5px;color:var(--text-muted);">${escapeHtml(formatDate(o.createdAt))}</div>
+                        </td>
+                        <td>
+                          <strong>${escapeHtml(o.customerName)}</strong>
+                          <div style="font-size:12px;color:var(--text-secondary);">${escapeHtml(o.phone)} &middot; ${escapeHtml(o.district)}</div>
+                          ${o.customerEmail ? `<div style="font-size:11.5px;color:var(--text-muted);">${escapeHtml(o.customerEmail)}</div>` : ''}
+                          ${o.lastNotifiedStatus ? `<div style="margin-top:4px;"><span class="badge-chip sent">Notified: ${escapeHtml(o.lastNotifiedStatus)}</span></div>` : ''}
+                        </td>
+                        <td>
+                          ${(o.items || []).map((i) => `<div style="font-size:12.5px;">${escapeHtml(i.name)} (${escapeHtml(i.size)}) &times; ${i.qty}</div>`).join('')}
+                        </td>
+                        <td class="tabular"><strong>${formatBDT(o.total)}</strong></td>
+                        <td style="font-size:12.5px;">${escapeHtml(o.paymentMethod)}</td>
+                        <td>
+                          <select class="form-control" style="min-height:32px;padding:4px 8px;font-size:12.5px;" data-adm-order-status="${escapeHtml(o.id)}">
+                            ${statuses.map((st) => `<option value="${st}" ${o.status === st ? 'selected' : ''}>${st}</option>`).join('')}
+                          </select>
+                        </td>
+                        <td>
+                          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                            <button type="button" class="btn btn-outline btn-sm" data-adm-notify="${escapeHtml(o.id)}">Notify</button>
+                            <button type="button" class="btn btn-outline btn-sm" data-adm-print="${escapeHtml(o.id)}">Print</button>
+                          </div>
+                        </td>
+                      </tr>
+                    `).join('') || '<tr><td colspan="7">No orders recorded yet.</td></tr>'}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="admin-panel">
+              <h3 style="font-family:var(--font-display);font-size:20px;font-weight:700;margin-bottom:12px;">Order Status Notification History (${state.notifications.length})</h3>
+              <div class="data-table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Order ID</th>
+                      <th>Customer</th>
+                      <th>Status Change</th>
+                      <th>Channel</th>
+                      <th>Trigger State</th>
+                      <th>Message Preview</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${state.notifications.slice(0, 30).map((n) => `
+                      <tr>
+                        <td style="font-size:12px;color:var(--text-muted);white-space:nowrap;">${escapeHtml(formatDate(n.createdAt))}</td>
+                        <td class="mono">${escapeHtml(n.orderId)}</td>
+                        <td>
+                          <strong>${escapeHtml(n.customerName)}</strong>
+                          <div style="font-size:11.5px;color:var(--text-secondary);">${escapeHtml(n.phone)}${n.customerEmail ? ' &middot; ' + escapeHtml(n.customerEmail) : ''}</div>
+                        </td>
+                        <td style="font-size:12.5px;white-space:nowrap;">${escapeHtml(n.previousStatus)} &rarr; <strong>${escapeHtml(n.newStatus)}</strong></td>
+                        <td><span class="badge-chip">${escapeHtml(n.channel)}</span></td>
+                        <td><span class="badge-chip ${n.deliveryState === 'webhook_sent' || n.deliveryState === 'dispatched_client' ? 'sent' : 'warn'}">${escapeHtml(stateLabels[n.deliveryState] || n.deliveryState)}</span></td>
+                        <td style="font-size:12px;color:var(--text-secondary);max-width:300px;">${escapeHtml(String(n.message || '').slice(0, 120))}${String(n.message || '').length > 120 ? '...' : ''}</td>
+                      </tr>
+                    `).join('') || '<tr><td colspan="7">No status notifications triggered yet. Change an order status above to trigger a notification.</td></tr>'}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         `;
 
+        document.getElementById('adm-goto-notif-settings').onclick = () => {
+          state.adminTab = 'settings';
+          renderAdminTab();
+        };
+
+        const saveQuickToggle = async (patch) => {
+          const next = Object.assign({}, state.adminSettings || DEFAULT_ADMIN_SETTINGS, patch);
+          try {
+            await setDoc(doc(db, 'storeConfig', 'adminSettings'), buildCleanAdminSettingsDoc(next));
+            showToast('Notification automation preference synced.');
+          } catch (error) {
+            showToast('Failed to update notification setting.', true);
+            handleFirestoreError(error, OperationType.WRITE, 'storeConfig/adminSettings');
+          }
+        };
+
+        document.getElementById('adm-quick-auto-wa').onchange = (e) => saveQuickToggle({ autoLaunchWhatsapp: e.target.checked });
+        document.getElementById('adm-quick-auto-email').onchange = (e) => saveQuickToggle({ autoOpenEmail: e.target.checked });
+
+        if (dispatch) {
+          const copyBtn = document.getElementById('adm-notif-copy-btn');
+          if (copyBtn) {
+            copyBtn.onclick = async () => {
+              try {
+                await navigator.clipboard.writeText(dispatch.message);
+                showToast('Notification message copied.');
+              } catch {
+                showToast('Clipboard permission unavailable.', true);
+              }
+            };
+          }
+          const dismissBtn = document.getElementById('adm-notif-dismiss-btn');
+          if (dismissBtn) {
+            dismissBtn.onclick = () => {
+              state.lastNotificationDispatch = null;
+              renderAdminTab();
+            };
+          }
+          container.querySelectorAll('[data-notif-client-click]').forEach((link) => {
+            link.onclick = async () => {
+              const nid = link.dataset.notifClientClick;
+              try {
+                await updateDoc(doc(db, 'notifications', nid), {
+                  deliveryState: 'dispatched_client',
+                  updatedAt: serverTimestamp()
+                });
+                if (state.lastNotificationDispatch && state.lastNotificationDispatch.id === nid) {
+                  state.lastNotificationDispatch.deliveryState = 'dispatched_client';
+                }
+              } catch (error) {
+                handleFirestoreError(error, OperationType.UPDATE, `notifications/${nid}`);
+              }
+            };
+          });
+        }
+
         container.querySelectorAll('[data-adm-order-status]').forEach((sel) => {
           sel.onchange = async () => {
             const ord = state.orders.find((o) => o.id === sel.dataset.admOrderStatus);
-            if (ord) {
-              try {
-                await updateDoc(doc(db, 'orders', ord.id), {
-                  status: sel.value,
-                  updatedAt: serverTimestamp()
-                });
-                showToast(`Order ${ord.id} updated to ${sel.value}.`);
-              } catch (error) {
-                showToast('Failed to update order status.', true);
-                handleFirestoreError(error, OperationType.UPDATE, `orders/${ord.id}`);
-              }
+            if (!ord || sel.value === ord.status) return;
+            const prevStatus = ord.status;
+            const nextStatus = sel.value;
+            sel.disabled = true;
+            try {
+              await triggerOrderStatusNotification(ord, prevStatus, nextStatus, true);
+              showToast(`Order ${ord.id} updated to ${nextStatus} & notification trigger created.`);
+              renderAdminTab();
+            } catch (error) {
+              sel.disabled = false;
+              showToast('Failed to update order status or notification trigger.', true);
+              handleFirestoreError(error, OperationType.UPDATE, `orders/${ord.id}`);
+            }
+          };
+        });
+
+        container.querySelectorAll('[data-adm-notify]').forEach((btn) => {
+          btn.onclick = async () => {
+            const ord = state.orders.find((o) => o.id === btn.dataset.admNotify);
+            if (!ord) return;
+            btn.disabled = true;
+            try {
+              await triggerOrderStatusNotification(ord, ord.status, ord.status, false);
+              showToast(`Notification trigger prepared for Order ${ord.id}.`);
+              renderAdminTab();
+            } catch (error) {
+              btn.disabled = false;
+              showToast('Failed to trigger customer notification.', true);
+              handleFirestoreError(error, OperationType.WRITE, `notifications`);
             }
           };
         });
@@ -4487,77 +4968,126 @@
 
       function renderAdminSettings(container) {
         const s = state.settings;
+        const notifCfg = state.adminSettings || DEFAULT_ADMIN_SETTINGS;
         container.innerHTML = `
-          <div class="admin-panel">
-            <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-bottom:16px;">Logo, Banner, Social &amp; Wholesale Settings</h2>
-            <form id="adm-settings-form" class="form-grid">
-              <div class="form-group">
-                <label class="form-label" for="set-logo-url">Official Logo URL</label>
-                <input type="text" id="set-logo-url" class="form-control" value="${escapeHtml(s.logoUrl)}" />
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="set-logo-file">Or Upload Replacement Logo</label>
-                <input type="file" id="set-logo-file" class="form-control" accept="image/*" />
-              </div>
-              <div class="form-group full" style="flex-direction:row;align-items:center;gap:16px;">
-                <div style="padding:8px 14px;border:1px solid var(--border-hairline);border-radius:var(--radius-sm);background:#fff;">
-                  <img id="set-logo-preview" src="${escapeHtml(s.logoUrl)}" alt="Logo Preview" style="height:44px;width:auto;object-fit:contain;" referrerpolicy="no-referrer" />
+          <div style="display:flex;flex-direction:column;gap:24px;">
+            <div class="admin-panel">
+              <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-bottom:16px;">Logo, Banner, Social &amp; Wholesale Settings</h2>
+              <form id="adm-settings-form" class="form-grid">
+                <div class="form-group">
+                  <label class="form-label" for="set-logo-url">Official Logo URL</label>
+                  <input type="text" id="set-logo-url" class="form-control" value="${escapeHtml(s.logoUrl)}" />
                 </div>
-                <button type="button" class="btn btn-outline btn-sm" id="set-reset-logo">Restore Official Imgur Logo</button>
-              </div>
+                <div class="form-group">
+                  <label class="form-label" for="set-logo-file">Or Upload Replacement Logo</label>
+                  <input type="file" id="set-logo-file" class="form-control" accept="image/*" />
+                </div>
+                <div class="form-group full" style="flex-direction:row;align-items:center;gap:16px;">
+                  <div style="padding:8px 14px;border:1px solid var(--border-hairline);border-radius:var(--radius-sm);background:#fff;">
+                    <img id="set-logo-preview" src="${escapeHtml(s.logoUrl)}" alt="Logo Preview" style="height:44px;width:auto;object-fit:contain;" referrerpolicy="no-referrer" />
+                  </div>
+                  <button type="button" class="btn btn-outline btn-sm" id="set-reset-logo">Restore Official Imgur Logo</button>
+                </div>
 
-              <div class="form-group full">
-                <label class="form-label" for="set-promo">Top Announcement Strip Text</label>
-                <input type="text" id="set-promo" class="form-control" value="${escapeHtml(s.promoText)}" />
-              </div>
-              <div class="form-group full">
-                <label class="form-label" for="set-hero-headline">Hero Banner Headline</label>
-                <input type="text" id="set-hero-headline" class="form-control" value="${escapeHtml(s.heroHeadline)}" />
-              </div>
-              <div class="form-group full">
-                <label class="form-label" for="set-hero-sub">Hero Banner Subheadline</label>
-                <textarea id="set-hero-sub" class="form-control">${escapeHtml(s.heroSubheadline)}</textarea>
-              </div>
-              <div class="form-group full">
-                <label class="form-label" for="set-hero-img">Hero Banner Image URL</label>
-                <input type="text" id="set-hero-img" class="form-control" value="${escapeHtml(s.heroBannerUrl)}" />
-              </div>
+                <div class="form-group full">
+                  <label class="form-label" for="set-promo">Top Announcement Strip Text</label>
+                  <input type="text" id="set-promo" class="form-control" value="${escapeHtml(s.promoText)}" />
+                </div>
+                <div class="form-group full">
+                  <label class="form-label" for="set-hero-headline">Hero Banner Headline</label>
+                  <input type="text" id="set-hero-headline" class="form-control" value="${escapeHtml(s.heroHeadline)}" />
+                </div>
+                <div class="form-group full">
+                  <label class="form-label" for="set-hero-sub">Hero Banner Subheadline</label>
+                  <textarea id="set-hero-sub" class="form-control">${escapeHtml(s.heroSubheadline)}</textarea>
+                </div>
+                <div class="form-group full">
+                  <label class="form-label" for="set-hero-img">Hero Banner Image URL</label>
+                  <input type="text" id="set-hero-img" class="form-control" value="${escapeHtml(s.heroBannerUrl)}" />
+                </div>
 
-              <div class="form-group">
-                <label class="form-label" for="set-wa-num">WhatsApp Number</label>
-                <input type="text" id="set-wa-num" class="form-control" value="${escapeHtml(s.whatsappNumber)}" />
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="set-wa-url">WhatsApp URL</label>
-                <input type="text" id="set-wa-url" class="form-control" value="${escapeHtml(s.whatsappUrl)}" />
-              </div>
-              <div class="form-group full">
-                <label class="form-label" for="set-fb-url">Official Facebook Page URL</label>
-                <input type="text" id="set-fb-url" class="form-control" value="${escapeHtml(s.facebookUrl)}" />
-              </div>
+                <div class="form-group">
+                  <label class="form-label" for="set-wa-num">WhatsApp Number</label>
+                  <input type="text" id="set-wa-num" class="form-control" value="${escapeHtml(s.whatsappNumber)}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="set-wa-url">WhatsApp URL</label>
+                  <input type="text" id="set-wa-url" class="form-control" value="${escapeHtml(s.whatsappUrl)}" />
+                </div>
+                <div class="form-group full">
+                  <label class="form-label" for="set-fb-url">Official Facebook Page URL</label>
+                  <input type="text" id="set-fb-url" class="form-control" value="${escapeHtml(s.facebookUrl)}" />
+                </div>
 
-              <div class="form-group">
-                <label class="form-label" for="set-ship-dhaka">Dhaka Delivery Fee (৳)</label>
-                <input type="number" id="set-ship-dhaka" class="form-control tabular" value="${s.dhakaShipping}" />
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="set-ship-out">Outside Dhaka Fee (৳)</label>
-                <input type="number" id="set-ship-out" class="form-control tabular" value="${s.outsideDhakaShipping}" />
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="set-t2-pct">25+ pcs Extra Discount (%)</label>
-                <input type="number" id="set-t2-pct" class="form-control tabular" value="${s.tier2DiscountPct}" />
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="set-t3-pct">50+ pcs Extra Discount (%)</label>
-                <input type="number" id="set-t3-pct" class="form-control tabular" value="${s.tier3DiscountPct}" />
-              </div>
+                <div class="form-group">
+                  <label class="form-label" for="set-ship-dhaka">Dhaka Delivery Fee (৳)</label>
+                  <input type="number" id="set-ship-dhaka" class="form-control tabular" value="${s.dhakaShipping}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="set-ship-out">Outside Dhaka Fee (৳)</label>
+                  <input type="number" id="set-ship-out" class="form-control tabular" value="${s.outsideDhakaShipping}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="set-t2-pct">25+ pcs Extra Discount (%)</label>
+                  <input type="number" id="set-t2-pct" class="form-control tabular" value="${s.tier2DiscountPct}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="set-t3-pct">50+ pcs Extra Discount (%)</label>
+                  <input type="number" id="set-t3-pct" class="form-control tabular" value="${s.tier3DiscountPct}" />
+                </div>
 
-              <div class="form-group full" style="flex-direction:row;gap:12px;flex-wrap:wrap;padding-top:8px;">
-                <button type="submit" class="btn btn-primary">Save &amp; Sync Across All Devices</button>
-                <button type="button" class="btn btn-outline" id="adm-reset-demo-btn" style="color:var(--danger);border-color:var(--danger);">Restore Default Cloud Catalog</button>
-              </div>
-            </form>
+                <div class="form-group full" style="flex-direction:row;gap:12px;flex-wrap:wrap;padding-top:8px;">
+                  <button type="submit" class="btn btn-primary">Save &amp; Sync Across All Devices</button>
+                  <button type="button" class="btn btn-outline" id="adm-reset-demo-btn" style="color:var(--danger);border-color:var(--danger);">Restore Default Cloud Catalog</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="admin-panel">
+              <h3 style="font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:8px;">Automated Order Status Notifications (WhatsApp &amp; Email)</h3>
+              <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:16px;">
+                Configure how customer notifications are triggered whenever you change an order status in the Orders tab. These preferences are stored strictly in admin-only cloud settings.
+              </p>
+              <form id="adm-notif-settings-form" class="form-grid">
+                <div class="form-group full" style="display:flex;flex-direction:row;flex-wrap:wrap;gap:20px;">
+                  <label style="display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;cursor:pointer;">
+                    <input type="checkbox" id="set-notif-auto-wa" ${notifCfg.autoLaunchWhatsapp ? 'checked' : ''} />
+                    <span>Auto-launch Customer WhatsApp on Status Change</span>
+                  </label>
+                  <label style="display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;cursor:pointer;">
+                    <input type="checkbox" id="set-notif-auto-email" ${notifCfg.autoOpenEmail ? 'checked' : ''} />
+                    <span>Auto-open Customer Email (mailto) on Status Change</span>
+                  </label>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="set-notif-sender">Sender / Brand Label *</label>
+                  <input type="text" id="set-notif-sender" class="form-control" maxlength="80" required value="${escapeHtml(notifCfg.notificationSenderName)}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="set-notif-webhook">Automation Webhook URL (Optional)</label>
+                  <input type="url" id="set-notif-webhook" class="form-control" maxlength="500" placeholder="https://hook.eu2.make.com/... or Google Apps Script URL" value="${escapeHtml(notifCfg.webhookUrl)}" />
+                </div>
+
+                <div class="form-group full">
+                  <label class="form-label" for="set-notif-template">Customer Status Message Template</label>
+                  <textarea id="set-notif-template" class="form-control" maxlength="600">${escapeHtml(notifCfg.customMessageTemplate)}</textarea>
+                  <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">
+                    Placeholders: <code>{customerName}</code>, <code>{orderId}</code>, <code>{status}</code>, <code>{total}</code>, <code>{paymentMethod}</code>, <code>{district}</code>, <code>{brandName}</code>
+                  </div>
+                </div>
+
+                <div class="form-group full">
+                  <div class="notice-box" style="font-size:12.5px;">
+                    <strong>Delivery Note:</strong> Without an external webhook relay (e.g., Google Apps Script Gmail relay, Zapier, Make, or WhatsApp Cloud API), browser apps cannot silently send background emails or WhatsApp messages—instead, PABEL SPORTS logs every trigger in Firestore and generates instant 1-click WhatsApp &amp; Email dispatch actions. When a Webhook URL is configured, status changes automatically POST JSON payloads to your relay.
+                  </div>
+                </div>
+
+                <div class="form-group full" style="flex-direction:row;gap:12px;flex-wrap:wrap;">
+                  <button type="submit" class="btn btn-primary">Save Notification Settings</button>
+                </div>
+              </form>
+            </div>
           </div>
         `;
 
@@ -4607,6 +5137,24 @@
           } catch (error) {
             showToast('Failed to save store settings.', true);
             handleFirestoreError(error, OperationType.WRITE, 'storeConfig/public');
+          }
+        };
+
+        document.getElementById('adm-notif-settings-form').onsubmit = async (e) => {
+          e.preventDefault();
+          const nextAdminCfg = {
+            autoLaunchWhatsapp: document.getElementById('set-notif-auto-wa').checked,
+            autoOpenEmail: document.getElementById('set-notif-auto-email').checked,
+            notificationSenderName: document.getElementById('set-notif-sender').value.trim() || 'PABEL SPORTS',
+            webhookUrl: document.getElementById('set-notif-webhook').value.trim(),
+            customMessageTemplate: document.getElementById('set-notif-template').value.trim() || DEFAULT_ADMIN_SETTINGS.customMessageTemplate
+          };
+          try {
+            await setDoc(doc(db, 'storeConfig', 'adminSettings'), buildCleanAdminSettingsDoc(nextAdminCfg));
+            showToast('Notification automation settings saved to cloud.');
+          } catch (error) {
+            showToast('Failed to save notification settings.', true);
+            handleFirestoreError(error, OperationType.WRITE, 'storeConfig/adminSettings');
           }
         };
 

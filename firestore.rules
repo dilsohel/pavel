@@ -107,8 +107,9 @@ service cloud.firestore {
           'items', 'subtotal', 'discount', 'shipping', 'total'
         ])
         && data.keys().hasOnly([
-          'id', 'createdAt', 'updatedAt', 'customerName', 'phone', 'address',
-          'district', 'city', 'notes', 'paymentMethod', 'paymentStatus', 'status',
+          'id', 'createdAt', 'updatedAt', 'customerName', 'phone', 'customerEmail',
+          'address', 'district', 'city', 'notes', 'paymentMethod', 'paymentStatus',
+          'status', 'lastNotifiedStatus', 'lastNotifiedAt',
           'items', 'subtotal', 'discount', 'shipping', 'total'
         ])
         && isValidId(data.id)
@@ -116,6 +117,7 @@ service cloud.firestore {
         && data.updatedAt is timestamp
         && data.customerName is string && data.customerName.size() >= 1 && data.customerName.size() <= 120
         && data.phone is string && data.phone.size() >= 6 && data.phone.size() <= 24
+        && (!('customerEmail' in data) || (data.customerEmail is string && data.customerEmail.size() <= 160))
         && data.address is string && data.address.size() >= 1 && data.address.size() <= 400
         && data.district is string && data.district.size() >= 1 && data.district.size() <= 80
         && data.city is string && data.city.size() >= 1 && data.city.size() <= 100
@@ -123,11 +125,55 @@ service cloud.firestore {
         && data.paymentMethod in ['Cash on Delivery', 'bKash', 'Nagad', 'Rocket', 'Bank Transfer']
         && data.paymentStatus is string && data.paymentStatus.size() >= 1 && data.paymentStatus.size() <= 120
         && data.status in ['Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Cancelled']
+        && (!('lastNotifiedStatus' in data) || data.lastNotifiedStatus in ['Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Cancelled'])
+        && (!('lastNotifiedAt' in data) || data.lastNotifiedAt is timestamp)
         && data.items is list && data.items.size() >= 1 && data.items.size() <= 50 && data.items[0] is map
         && data.subtotal is number && data.subtotal >= 0
         && data.discount is number && data.discount >= 0
         && data.shipping is number && data.shipping >= 0
         && data.total is number && data.total >= 0;
+    }
+
+    function isValidAdminSettings(data) {
+      return data.keys().hasAll([
+          'autoLaunchWhatsapp', 'autoOpenEmail', 'webhookUrl',
+          'notificationSenderName', 'customMessageTemplate', 'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'autoLaunchWhatsapp', 'autoOpenEmail', 'webhookUrl',
+          'notificationSenderName', 'customMessageTemplate', 'updatedAt'
+        ])
+        && data.autoLaunchWhatsapp is bool
+        && data.autoOpenEmail is bool
+        && data.webhookUrl is string && data.webhookUrl.size() <= 500
+        && data.notificationSenderName is string && data.notificationSenderName.size() >= 1 && data.notificationSenderName.size() <= 80
+        && data.customMessageTemplate is string && data.customMessageTemplate.size() <= 600
+        && data.updatedAt == request.time;
+    }
+
+    function isValidOrderNotification(data) {
+      return data.keys().hasAll([
+          'id', 'orderId', 'customerName', 'phone', 'customerEmail',
+          'previousStatus', 'newStatus', 'channel', 'message',
+          'deliveryState', 'createdAt', 'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'id', 'orderId', 'customerName', 'phone', 'customerEmail',
+          'previousStatus', 'newStatus', 'channel', 'message',
+          'deliveryState', 'createdAt', 'updatedAt'
+        ])
+        && isValidId(data.id)
+        && isValidId(data.orderId)
+        && data.customerName is string && data.customerName.size() >= 1 && data.customerName.size() <= 120
+        && data.phone is string && data.phone.size() >= 6 && data.phone.size() <= 24
+        && data.customerEmail is string && data.customerEmail.size() <= 160
+        && data.previousStatus in ['Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Cancelled']
+        && data.newStatus in ['Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Cancelled']
+        && data.channel in ['whatsapp', 'email', 'whatsapp+email', 'webhook']
+        && data.message is string && data.message.size() >= 1 && data.message.size() <= 1500
+        && data.deliveryState in ['prepared', 'dispatched_client', 'webhook_sent', 'webhook_failed']
+        && data.createdAt is timestamp
+        && data.updatedAt == request.time;
     }
 
     function isValidDealerInquiry(data) {
@@ -183,19 +229,32 @@ service cloud.firestore {
     }
 
     match /storeConfig/{configId} {
-      allow get: if configId == 'public';
+      allow get: if configId == 'public' || (isAdmin() && configId == 'adminSettings');
       allow list: if isAdmin();
-      allow create: if isAdmin() && configId == 'public' && isValidStoreConfig(incoming());
-      allow update: if isAdmin()
-        && configId == 'public'
-        && isValidStoreConfig(incoming())
-        && incoming().diff(existing()).affectedKeys().hasOnly([
-          'brandName', 'logoUrl', 'whatsappNumber', 'whatsappUrl', 'facebookUrl',
-          'promoText', 'heroKicker', 'heroHeadline', 'heroSubheadline', 'heroBannerUrl',
-          'dhakaShipping', 'outsideDhakaShipping',
-          'tier2Min', 'tier2DiscountPct', 'tier3Min', 'tier3DiscountPct',
-          'tier4Min', 'tier4DiscountPct', 'categories', 'updatedAt'
-        ]);
+      allow create: if isAdmin() && (
+        (configId == 'public' && isValidStoreConfig(incoming())) ||
+        (configId == 'adminSettings' && isValidAdminSettings(incoming()))
+      );
+      allow update: if isAdmin() && (
+        (
+          configId == 'public'
+          && isValidStoreConfig(incoming())
+          && incoming().diff(existing()).affectedKeys().hasOnly([
+            'brandName', 'logoUrl', 'whatsappNumber', 'whatsappUrl', 'facebookUrl',
+            'promoText', 'heroKicker', 'heroHeadline', 'heroSubheadline', 'heroBannerUrl',
+            'dhakaShipping', 'outsideDhakaShipping',
+            'tier2Min', 'tier2DiscountPct', 'tier3Min', 'tier3DiscountPct',
+            'tier4Min', 'tier4DiscountPct', 'categories', 'updatedAt'
+          ])
+        ) || (
+          configId == 'adminSettings'
+          && isValidAdminSettings(incoming())
+          && incoming().diff(existing()).affectedKeys().hasOnly([
+            'autoLaunchWhatsapp', 'autoOpenEmail', 'webhookUrl',
+            'notificationSenderName', 'customMessageTemplate', 'updatedAt'
+          ])
+        )
+      );
       allow delete: if false;
     }
 
@@ -206,6 +265,8 @@ service cloud.firestore {
         && isValidOrder(incoming())
         && incoming().id == orderId
         && incoming().status == 'Pending'
+        && !('lastNotifiedStatus' in incoming())
+        && !('lastNotifiedAt' in incoming())
         && incoming().createdAt == request.time
         && incoming().updatedAt == request.time;
       allow update: if isAdmin()
@@ -214,8 +275,30 @@ service cloud.firestore {
         && incoming().id == existing().id
         && incoming().createdAt == existing().createdAt
         && incoming().updatedAt == request.time
-        && incoming().diff(existing()).affectedKeys().hasOnly(['status', 'paymentStatus', 'notes', 'updatedAt']);
+        && incoming().diff(existing()).affectedKeys().hasOnly([
+          'status', 'paymentStatus', 'notes', 'lastNotifiedStatus', 'lastNotifiedAt', 'updatedAt'
+        ]);
       allow delete: if isAdmin() && isValidId(orderId);
+    }
+
+    match /notifications/{notificationId} {
+      allow get: if isAdmin() && isValidId(notificationId);
+      allow list: if isAdmin();
+      allow create: if isAdmin()
+        && isValidId(notificationId)
+        && isValidOrderNotification(incoming())
+        && incoming().id == notificationId
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+      allow update: if isAdmin()
+        && isValidId(notificationId)
+        && isValidOrderNotification(incoming())
+        && incoming().id == existing().id
+        && incoming().orderId == existing().orderId
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly(['deliveryState', 'channel', 'updatedAt']);
+      allow delete: if isAdmin() && isValidId(notificationId);
     }
 
     match /dealers/{dealerId} {

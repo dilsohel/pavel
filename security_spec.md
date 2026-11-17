@@ -2,8 +2,8 @@
 
 ## 1. Data Invariants
 1. **Catalog Integrity**: Products in `/products/{productId}` and storefront settings in `/storeConfig/public` are publicly readable by all customer devices, but ONLY verified store administrators (`isAdmin()`) may create, update, or delete them.
-2. **PII Isolation**: Orders (`/orders/{orderId}`), Dealer Applications (`/dealers/{dealerId}`), and Contact Messages (`/messages/{messageId}`) contain customer PII (`phone`, `address`, `customerName`). Unauthenticated visitors and non-admin users may `create` valid submissions, but ONLY verified administrators (`isAdmin()`) may `get`, `list`, `update`, or `delete` them.
-3. **Order Integrity**: Newly created orders must have `status == 'Pending'`, server timestamps (`createdAt == request.time`, `updatedAt == request.time`), non-negative totals, and bounded item arrays (`items.size() >= 1 && items.size() <= 50`).
+2. **PII Isolation**: Orders (`/orders/{orderId}`), Order Notifications (`/notifications/{notificationId}`), Admin Automation Settings (`/storeConfig/adminSettings`), Dealer Applications (`/dealers/{dealerId}`), and Contact Messages (`/messages/{messageId}`) contain customer PII (`phone`, `customerEmail`, `address`, `customerName`) or private webhook endpoints. Unauthenticated visitors and non-admin users may `create` valid order/dealer/message submissions, but ONLY verified administrators (`isAdmin()`) may read or manage `/notifications` and `/storeConfig/adminSettings`.
+3. **Order Integrity**: Newly created orders must have `status == 'Pending'`, no pre-populated `lastNotifiedStatus`/`lastNotifiedAt` fields, server timestamps (`createdAt == request.time`, `updatedAt == request.time`), non-negative totals, and bounded item arrays (`items.size() >= 1 && items.size() <= 50`).
 4. **Immutable Audit Fields**: `id` and `createdAt` cannot be modified after creation.
 5. **No Shadow Fields**: Every collection enforces `keys().hasAll(...) && keys().hasOnly(...)` on creation and strict `affectedKeys().hasOnly(...)` on updates.
 6. **Verified Admin Auth**: Admin status requires `request.auth != null && request.auth.token.email_verified == true` matching the bootstrapped owner email (`dilmohammad9011@gmail.com`) or an entry in `/admins/{request.auth.uid}`.
@@ -20,4 +20,4 @@
 9. **Resource Poisoning via Oversized ID**: Client attempts `setDoc('/orders/' + 'a'.repeat(500), ...)` -> `PERMISSION_DENIED`.
 10. **Invalid Path ID Characters**: Client attempts path ID with spaces or slashes (`bad id!`) -> `PERMISSION_DENIED`.
 11. **Self-Privilege Escalation**: Non-admin user attempts `setDoc('/admins/' + uid, ...)` -> `PERMISSION_DENIED`.
-12. **Customer Modifying Existing Order**: Customer attempts `updateDoc('/orders/PS-2026-1041', { status: 'Delivered' })` -> `PERMISSION_DENIED`.
+12. **Customer Modifying Existing Order or Notification Log**: Customer attempts `updateDoc('/orders/PS-2026-1041', { status: 'Delivered' })`, reads `/storeConfig/adminSettings`, or creates/reads `/notifications` -> `PERMISSION_DENIED`.

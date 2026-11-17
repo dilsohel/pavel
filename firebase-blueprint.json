@@ -66,6 +66,7 @@
         "updatedAt": { "type": "string", "format": "date-time" },
         "customerName": { "type": "string", "minLength": 1, "maxLength": 120 },
         "phone": { "type": "string", "minLength": 6, "maxLength": 24 },
+        "customerEmail": { "type": "string", "maxLength": 160 },
         "address": { "type": "string", "minLength": 1, "maxLength": 400 },
         "district": { "type": "string", "minLength": 1, "maxLength": 80 },
         "city": { "type": "string", "minLength": 1, "maxLength": 100 },
@@ -73,6 +74,8 @@
         "paymentMethod": { "type": "string", "enum": ["Cash on Delivery", "bKash", "Nagad", "Rocket", "Bank Transfer"] },
         "paymentStatus": { "type": "string", "minLength": 1, "maxLength": 120 },
         "status": { "type": "string", "enum": ["Pending", "Confirmed", "Processing", "Shipped", "Delivered", "Cancelled"] },
+        "lastNotifiedStatus": { "type": "string", "enum": ["Pending", "Confirmed", "Processing", "Shipped", "Delivered", "Cancelled"] },
+        "lastNotifiedAt": { "type": "string", "format": "date-time" },
         "items": { "type": "array" },
         "subtotal": { "type": "number" },
         "discount": { "type": "number" },
@@ -80,6 +83,40 @@
         "total": { "type": "number" }
       },
       "required": ["id", "createdAt", "updatedAt", "customerName", "phone", "address", "district", "city", "paymentMethod", "paymentStatus", "status", "items", "subtotal", "discount", "shipping", "total"]
+    },
+    "AdminSettings": {
+      "title": "AdminSettings",
+      "description": "Admin-only automation settings for order status WhatsApp, Email, and Webhook notification triggers.",
+      "type": "object",
+      "properties": {
+        "autoLaunchWhatsapp": { "type": "boolean" },
+        "autoOpenEmail": { "type": "boolean" },
+        "webhookUrl": { "type": "string", "maxLength": 500 },
+        "notificationSenderName": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "customMessageTemplate": { "type": "string", "maxLength": 600 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["autoLaunchWhatsapp", "autoOpenEmail", "webhookUrl", "notificationSenderName", "customMessageTemplate", "updatedAt"]
+    },
+    "OrderNotification": {
+      "title": "OrderNotification",
+      "description": "Automated customer notification trigger log recorded when an admin changes an order status.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "orderId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "phone": { "type": "string", "minLength": 6, "maxLength": 24 },
+        "customerEmail": { "type": "string", "maxLength": 160 },
+        "previousStatus": { "type": "string", "enum": ["Pending", "Confirmed", "Processing", "Shipped", "Delivered", "Cancelled"] },
+        "newStatus": { "type": "string", "enum": ["Pending", "Confirmed", "Processing", "Shipped", "Delivered", "Cancelled"] },
+        "channel": { "type": "string", "enum": ["whatsapp", "email", "whatsapp+email", "webhook"] },
+        "message": { "type": "string", "minLength": 1, "maxLength": 1500 },
+        "deliveryState": { "type": "string", "enum": ["prepared", "dispatched_client", "webhook_sent", "webhook_failed"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "orderId", "customerName", "phone", "customerEmail", "previousStatus", "newStatus", "channel", "message", "deliveryState", "createdAt", "updatedAt"]
     },
     "DealerInquiry": {
       "title": "DealerInquiry",
@@ -130,11 +167,15 @@
     },
     "/storeConfig/{configId}": {
       "schema": { "$ref": "#/entities/StoreConfig" },
-      "description": "Public storefront branding, banner, logo, categories, and wholesale tier settings; admin-only writes."
+      "description": "Storefront configuration (`public` readable by all devices, `adminSettings` readable/writable strictly by admins)."
     },
     "/orders/{orderId}": {
       "schema": { "$ref": "#/entities/Order" },
       "description": "Customer orders containing PII; create-only for customers, read/update/delete restricted to admins."
+    },
+    "/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/OrderNotification" },
+      "description": "Automated order status notification trigger logs containing customer PII; strictly admin-only."
     },
     "/dealers/{dealerId}": {
       "schema": { "$ref": "#/entities/DealerInquiry" },
