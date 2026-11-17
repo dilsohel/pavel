@@ -1,0 +1,245 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn()
+        && request.auth.token.email_verified == true
+        && (
+          request.auth.token.email == 'dilmohammad9011@gmail.com'
+          || exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+        );
+    }
+
+    function isValidProduct(data) {
+      return data.keys().hasAll([
+          'id', 'name', 'sku', 'category', 'description', 'imageUrl',
+          'regularPrice', 'wholesalePrice', 'moq', 'stock',
+          'featured', 'bestSeller', 'newArrival', 'wholesaleOffer', 'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'id', 'name', 'sku', 'category', 'tags', 'description', 'imageUrl', 'gallery',
+          'regularPrice', 'wholesalePrice', 'moq', 'bulkPricingNote', 'sizes', 'colors',
+          'stock', 'featured', 'bestSeller', 'newArrival', 'wholesaleOffer', 'updatedAt'
+        ])
+        && isValidId(data.id)
+        && data.name is string && data.name.size() >= 1 && data.name.size() <= 180
+        && data.sku is string && data.sku.size() >= 1 && data.sku.size() <= 64
+        && data.category is string && data.category.size() >= 1 && data.category.size() <= 80
+        && data.description is string && data.description.size() >= 1 && data.description.size() <= 2000
+        && data.imageUrl is string && data.imageUrl.size() >= 1 && data.imageUrl.size() <= 450000
+        && (!('bulkPricingNote' in data) || (data.bulkPricingNote is string && data.bulkPricingNote.size() <= 240))
+        && (!('tags' in data) || (data.tags is list && data.tags.size() <= 10 && (data.tags.size() == 0 || data.tags[0] is string)))
+        && (!('gallery' in data) || (data.gallery is list && data.gallery.size() <= 8 && (data.gallery.size() == 0 || data.gallery[0] is string)))
+        && (!('sizes' in data) || (data.sizes is list && data.sizes.size() <= 15 && (data.sizes.size() == 0 || data.sizes[0] is string)))
+        && (!('colors' in data) || (data.colors is list && data.colors.size() <= 15 && (data.colors.size() == 0 || data.colors[0] is string)))
+        && data.regularPrice is number && data.regularPrice > 0
+        && data.wholesalePrice is number && data.wholesalePrice > 0
+        && data.moq is number && data.moq >= 1
+        && data.stock is number && data.stock >= 0
+        && data.featured is bool
+        && data.bestSeller is bool
+        && data.newArrival is bool
+        && data.wholesaleOffer is bool
+        && data.updatedAt == request.time;
+    }
+
+    function isValidStoreConfig(data) {
+      return data.keys().hasAll([
+          'brandName', 'logoUrl', 'whatsappNumber', 'whatsappUrl', 'facebookUrl',
+          'heroHeadline', 'heroBannerUrl', 'dhakaShipping', 'outsideDhakaShipping',
+          'tier2Min', 'tier2DiscountPct', 'tier3Min', 'tier3DiscountPct',
+          'tier4Min', 'tier4DiscountPct', 'categories', 'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'brandName', 'logoUrl', 'whatsappNumber', 'whatsappUrl', 'facebookUrl',
+          'promoText', 'heroKicker', 'heroHeadline', 'heroSubheadline', 'heroBannerUrl',
+          'dhakaShipping', 'outsideDhakaShipping',
+          'tier2Min', 'tier2DiscountPct', 'tier3Min', 'tier3DiscountPct',
+          'tier4Min', 'tier4DiscountPct', 'categories', 'updatedAt'
+        ])
+        && data.brandName is string && data.brandName.size() >= 1 && data.brandName.size() <= 80
+        && data.logoUrl is string && data.logoUrl.size() >= 1 && data.logoUrl.size() <= 450000
+        && data.whatsappNumber is string && data.whatsappNumber.size() >= 5 && data.whatsappNumber.size() <= 32
+        && data.whatsappUrl is string && data.whatsappUrl.size() >= 10 && data.whatsappUrl.size() <= 250
+        && data.facebookUrl is string && data.facebookUrl.size() >= 10 && data.facebookUrl.size() <= 400
+        && (!('promoText' in data) || (data.promoText is string && data.promoText.size() <= 240))
+        && (!('heroKicker' in data) || (data.heroKicker is string && data.heroKicker.size() <= 120))
+        && data.heroHeadline is string && data.heroHeadline.size() >= 1 && data.heroHeadline.size() <= 200
+        && (!('heroSubheadline' in data) || (data.heroSubheadline is string && data.heroSubheadline.size() <= 600))
+        && data.heroBannerUrl is string && data.heroBannerUrl.size() >= 1 && data.heroBannerUrl.size() <= 450000
+        && data.dhakaShipping is number && data.dhakaShipping >= 0
+        && data.outsideDhakaShipping is number && data.outsideDhakaShipping >= 0
+        && data.tier2Min is number && data.tier2Min >= 1
+        && data.tier2DiscountPct is number && data.tier2DiscountPct >= 0 && data.tier2DiscountPct <= 90
+        && data.tier3Min is number && data.tier3Min >= 1
+        && data.tier3DiscountPct is number && data.tier3DiscountPct >= 0 && data.tier3DiscountPct <= 90
+        && data.tier4Min is number && data.tier4Min >= 1
+        && data.tier4DiscountPct is number && data.tier4DiscountPct >= 0 && data.tier4DiscountPct <= 90
+        && data.categories is list && data.categories.size() >= 1 && data.categories.size() <= 40 && data.categories[0] is string
+        && data.updatedAt == request.time;
+    }
+
+    function isValidOrder(data) {
+      return data.keys().hasAll([
+          'id', 'createdAt', 'updatedAt', 'customerName', 'phone', 'address',
+          'district', 'city', 'paymentMethod', 'paymentStatus', 'status',
+          'items', 'subtotal', 'discount', 'shipping', 'total'
+        ])
+        && data.keys().hasOnly([
+          'id', 'createdAt', 'updatedAt', 'customerName', 'phone', 'address',
+          'district', 'city', 'notes', 'paymentMethod', 'paymentStatus', 'status',
+          'items', 'subtotal', 'discount', 'shipping', 'total'
+        ])
+        && isValidId(data.id)
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp
+        && data.customerName is string && data.customerName.size() >= 1 && data.customerName.size() <= 120
+        && data.phone is string && data.phone.size() >= 6 && data.phone.size() <= 24
+        && data.address is string && data.address.size() >= 1 && data.address.size() <= 400
+        && data.district is string && data.district.size() >= 1 && data.district.size() <= 80
+        && data.city is string && data.city.size() >= 1 && data.city.size() <= 100
+        && (!('notes' in data) || (data.notes is string && data.notes.size() <= 500))
+        && data.paymentMethod in ['Cash on Delivery', 'bKash', 'Nagad', 'Rocket', 'Bank Transfer']
+        && data.paymentStatus is string && data.paymentStatus.size() >= 1 && data.paymentStatus.size() <= 120
+        && data.status in ['Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Cancelled']
+        && data.items is list && data.items.size() >= 1 && data.items.size() <= 50 && data.items[0] is map
+        && data.subtotal is number && data.subtotal >= 0
+        && data.discount is number && data.discount >= 0
+        && data.shipping is number && data.shipping >= 0
+        && data.total is number && data.total >= 0;
+    }
+
+    function isValidDealerInquiry(data) {
+      return data.keys().hasAll(['id', 'shop', 'name', 'phone', 'district', 'volume', 'category', 'createdAt'])
+        && data.keys().hasOnly(['id', 'shop', 'name', 'phone', 'district', 'volume', 'category', 'notes', 'createdAt'])
+        && isValidId(data.id)
+        && data.shop is string && data.shop.size() >= 1 && data.shop.size() <= 160
+        && data.name is string && data.name.size() >= 1 && data.name.size() <= 120
+        && data.phone is string && data.phone.size() >= 6 && data.phone.size() <= 24
+        && data.district is string && data.district.size() >= 1 && data.district.size() <= 80
+        && data.volume is string && data.volume.size() >= 1 && data.volume.size() <= 60
+        && data.category is string && data.category.size() >= 1 && data.category.size() <= 80
+        && (!('notes' in data) || (data.notes is string && data.notes.size() <= 800))
+        && data.createdAt == request.time;
+    }
+
+    function isValidContactMessage(data) {
+      return data.keys().hasAll(['id', 'name', 'phone', 'msg', 'createdAt'])
+        && data.keys().hasOnly(['id', 'name', 'phone', 'msg', 'createdAt'])
+        && isValidId(data.id)
+        && data.name is string && data.name.size() >= 1 && data.name.size() <= 120
+        && data.phone is string && data.phone.size() >= 6 && data.phone.size() <= 24
+        && data.msg is string && data.msg.size() >= 1 && data.msg.size() <= 1200
+        && data.createdAt == request.time;
+    }
+
+    function isValidAdminUser(data) {
+      return data.keys().hasAll(['uid', 'email', 'addedAt'])
+        && data.keys().hasOnly(['uid', 'email', 'addedAt'])
+        && isValidId(data.uid)
+        && data.email is string && data.email.size() >= 3 && data.email.size() <= 160
+        && data.addedAt == request.time;
+    }
+
+    match /test/connection {
+      allow get: if true;
+    }
+
+    match /products/{productId} {
+      allow get: if isValidId(productId);
+      allow list: if true;
+      allow create: if isAdmin() && isValidId(productId) && isValidProduct(incoming()) && incoming().id == productId;
+      allow update: if isAdmin()
+        && isValidId(productId)
+        && isValidProduct(incoming())
+        && incoming().id == existing().id
+        && incoming().diff(existing()).affectedKeys().hasOnly([
+          'name', 'sku', 'category', 'tags', 'description', 'imageUrl', 'gallery',
+          'regularPrice', 'wholesalePrice', 'moq', 'bulkPricingNote', 'sizes', 'colors',
+          'stock', 'featured', 'bestSeller', 'newArrival', 'wholesaleOffer', 'updatedAt'
+        ]);
+      allow delete: if isAdmin() && isValidId(productId);
+    }
+
+    match /storeConfig/{configId} {
+      allow get: if configId == 'public';
+      allow list: if isAdmin();
+      allow create: if isAdmin() && configId == 'public' && isValidStoreConfig(incoming());
+      allow update: if isAdmin()
+        && configId == 'public'
+        && isValidStoreConfig(incoming())
+        && incoming().diff(existing()).affectedKeys().hasOnly([
+          'brandName', 'logoUrl', 'whatsappNumber', 'whatsappUrl', 'facebookUrl',
+          'promoText', 'heroKicker', 'heroHeadline', 'heroSubheadline', 'heroBannerUrl',
+          'dhakaShipping', 'outsideDhakaShipping',
+          'tier2Min', 'tier2DiscountPct', 'tier3Min', 'tier3DiscountPct',
+          'tier4Min', 'tier4DiscountPct', 'categories', 'updatedAt'
+        ]);
+      allow delete: if false;
+    }
+
+    match /orders/{orderId} {
+      allow get: if isAdmin() && isValidId(orderId);
+      allow list: if isAdmin();
+      allow create: if isValidId(orderId)
+        && isValidOrder(incoming())
+        && incoming().id == orderId
+        && incoming().status == 'Pending'
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+      allow update: if isAdmin()
+        && isValidId(orderId)
+        && isValidOrder(incoming())
+        && incoming().id == existing().id
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly(['status', 'paymentStatus', 'notes', 'updatedAt']);
+      allow delete: if isAdmin() && isValidId(orderId);
+    }
+
+    match /dealers/{dealerId} {
+      allow get: if isAdmin() && isValidId(dealerId);
+      allow list: if isAdmin();
+      allow create: if isValidId(dealerId) && isValidDealerInquiry(incoming()) && incoming().id == dealerId;
+      allow update: if false;
+      allow delete: if isAdmin() && isValidId(dealerId);
+    }
+
+    match /messages/{messageId} {
+      allow get: if isAdmin() && isValidId(messageId);
+      allow list: if isAdmin();
+      allow create: if isValidId(messageId) && isValidContactMessage(incoming()) && incoming().id == messageId;
+      allow update: if false;
+      allow delete: if isAdmin() && isValidId(messageId);
+    }
+
+    match /admins/{uid} {
+      allow get: if isSignedIn() && isValidId(uid) && (request.auth.uid == uid || isAdmin());
+      allow list: if isAdmin();
+      allow create: if isAdmin() && isValidId(uid) && isValidAdminUser(incoming()) && incoming().uid == uid;
+      allow update: if isAdmin() && isValidId(uid) && isValidAdminUser(incoming()) && incoming().uid == existing().uid && incoming().diff(existing()).affectedKeys().hasOnly(['email', 'addedAt']);
+      allow delete: if isAdmin() && isValidId(uid);
+    }
+  }
+}

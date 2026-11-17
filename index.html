@@ -1985,25 +1985,20 @@
         </div>
       </div>
 
-      <!-- Demo Persistence Notice -->
-      <div class="notice-box notice-warning" style="margin-top:16px;">
-        <strong>Local Browser Demo Storage Notice:</strong> All products, categories, orders, settings, and cart data are persisted in <code>localStorage</code> inside this browser only. This single-file demonstration does not provide secure authentication or shared multi-device online synchronization. For live multi-device business operations, a verified backend server and database are required.
+      <!-- Cloud Sync Status Banner -->
+      <div class="notice-box" id="admin-cloud-banner" style="margin-top:16px;border-color:#16a34a;background:#f0fdf4;color:#14532d;">
+        <strong>Real-Time Cloud Sync Active:</strong> Product catalog, prices, categories, logo, banner, WhatsApp/Facebook links, and orders are stored in Cloud Firestore and sync automatically across all customer and admin devices.
       </div>
 
-      <!-- Admin Passcode Gate -->
-      <div id="admin-login-gate" style="max-width:440px;margin:48px auto;background:var(--bg-surface);border:1px solid var(--border-hairline);border-radius:var(--radius-md);padding:28px;">
-        <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-bottom:6px;">Admin Access Gate</h2>
-        <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:16px;">Demo UI lock only (localStorage is not secure server authentication). Default demo passcode: <code class="mono">pabel2026</code></p>
-        <form id="admin-login-form" style="display:flex;flex-direction:column;gap:12px;">
-          <div class="form-group">
-            <label class="form-label" for="admin-passcode-input">Demo Passcode</label>
-            <input type="password" id="admin-passcode-input" class="form-control" placeholder="Enter pabel2026" required />
-          </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <button type="submit" class="btn btn-primary">Unlock Dashboard</button>
-            <button type="button" class="btn btn-outline" id="admin-quick-unlock">Quick Demo Unlock</button>
-          </div>
-        </form>
+      <!-- Admin Google Sign-In Gate -->
+      <div id="admin-login-gate" style="max-width:460px;margin:48px auto;background:var(--bg-surface);border:1px solid var(--border-hairline);border-radius:var(--radius-md);padding:28px;">
+        <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-bottom:6px;">Store Admin Verification</h2>
+        <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:18px;">Sign in with your authorized store administrator Google account to push live updates across all customer devices.</p>
+        <div id="admin-auth-status" style="margin-bottom:16px;font-size:13.5px;"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button type="button" class="btn btn-primary" id="admin-google-signin-btn">Sign in with Google</button>
+          <button type="button" class="btn btn-outline" id="admin-google-signout-btn" style="display:none;">Switch Account</button>
+        </div>
       </div>
 
       <!-- Admin Workspace -->
@@ -2143,19 +2138,76 @@
   <!-- Toast Notification Region -->
   <div class="toast-region" id="toast-region" aria-live="polite"></div>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js';
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
+    import {
+      getFirestore, doc, getDoc, getDocFromServer, setDoc, updateDoc, deleteDoc,
+      collection, onSnapshot, query, orderBy, serverTimestamp, writeBatch
+    } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js';
+
     (() => {
       'use strict';
 
+      const firebaseConfig = {
+        projectId: 'gen-lang-client-0838655207',
+        appId: '1:611847356931:web:5a386f71bde6cdfe46c436',
+        apiKey: 'AIzaSyB6FTdWgyc_EZSA0aKTiTQMbTfCMdVB7sE',
+        authDomain: 'gen-lang-client-0838655207.firebaseapp.com',
+        firestoreDatabaseId: 'ai-studio-pabelsports-3b65e185-50ce-48d0-98e4-a3619f8b97b5',
+        storageBucket: 'gen-lang-client-0838655207.firebasestorage.app',
+        messagingSenderId: '611847356931',
+        measurementId: ''
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+      const auth = getAuth(app);
+      const PRIMARY_ADMIN_EMAIL = 'dilmohammad9011@gmail.com';
+
+      const OperationType = {
+        CREATE: 'create',
+        UPDATE: 'update',
+        DELETE: 'delete',
+        LIST: 'list',
+        GET: 'get',
+        WRITE: 'write'
+      };
+
+      function handleFirestoreError(error, operationType, path) {
+        const errInfo = {
+          error: error instanceof Error ? error.message : String(error),
+          authInfo: {
+            userId: auth.currentUser?.uid || null,
+            email: auth.currentUser?.email || null,
+            emailVerified: auth.currentUser?.emailVerified ?? null,
+            isAnonymous: auth.currentUser?.isAnonymous ?? null,
+            tenantId: auth.currentUser?.tenantId || null,
+            providerInfo: auth.currentUser?.providerData?.map((provider) => ({
+              providerId: provider.providerId,
+              email: provider.email
+            })) || []
+          },
+          operationType,
+          path
+        };
+        console.error('Firestore Error: ', JSON.stringify(errInfo));
+        throw new Error(JSON.stringify(errInfo));
+      }
+
+      async function testConnection() {
+        try {
+          await getDocFromServer(doc(db, 'test', 'connection'));
+        } catch (error) {
+          if (error instanceof Error && error.message.includes('the client is offline')) {
+            console.error('Please check your Firebase configuration.');
+            showToast('Cloud connection offline. Showing cached storefront.', true);
+          }
+        }
+      }
+
       const STORAGE_KEYS = {
-        PRODUCTS: 'pabel_sports_products_v1',
-        CATEGORIES: 'pabel_sports_categories_v1',
-        CART: 'pabel_sports_cart_v1',
-        ORDERS: 'pabel_sports_orders_v1',
-        DEALERS: 'pabel_sports_dealers_v1',
-        MESSAGES: 'pabel_sports_messages_v1',
-        SETTINGS: 'pabel_sports_settings_v1',
-        ADMIN_UNLOCKED: 'pabel_sports_admin_unlocked_v1'
+        CART: 'pabel_sports_cart_v1'
       };
 
       const OFFICIAL_DEFAULTS = {
@@ -2537,6 +2589,11 @@
         messages: [],
         settings: {},
         adminUnlocked: false,
+        adminUser: null,
+        adminCheckDone: false,
+        cloudConfigExists: false,
+        cloudHasProducts: false,
+        adminUnsubs: [],
         adminTab: 'overview',
         editingProductId: null,
         activeCollection: 'all',
@@ -2662,29 +2719,264 @@
         });
       }
 
+      function formatDate(val) {
+        if (!val) return '';
+        if (typeof val.toDate === 'function') {
+          return val.toDate().toLocaleDateString('en-GB');
+        }
+        const d = new Date(val);
+        return Number.isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-GB');
+      }
+
+      async function compressImageFile(file, maxDim = 900, quality = 0.82) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onerror = () => reject(new Error('Failed to read image file.'));
+          reader.onload = () => {
+            const img = new Image();
+            img.onerror = () => resolve(reader.result);
+            img.onload = () => {
+              let { width, height } = img;
+              if (width <= maxDim && height <= maxDim && String(reader.result).length < 300000) {
+                resolve(reader.result);
+                return;
+              }
+              if (width > height && width > maxDim) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              } else if (height > maxDim) {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+              }
+              const canvas = document.createElement('canvas');
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, width, height);
+              const out = canvas.toDataURL('image/jpeg', quality);
+              resolve(out);
+            };
+            img.src = reader.result;
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      function buildCleanProductDoc(p) {
+        return {
+          id: String(p.id).slice(0, 128),
+          name: String(p.name).slice(0, 180),
+          sku: String(p.sku).slice(0, 64),
+          category: String(p.category).slice(0, 80),
+          tags: Array.isArray(p.tags) ? p.tags.map(String).slice(0, 10) : [],
+          description: String(p.description).slice(0, 2000),
+          imageUrl: String(p.imageUrl).slice(0, 450000),
+          gallery: Array.isArray(p.gallery) && p.gallery.length ? p.gallery.map(String).slice(0, 8) : [String(p.imageUrl).slice(0, 450000)],
+          regularPrice: Number(p.regularPrice) || 1,
+          wholesalePrice: Number(p.wholesalePrice) || 1,
+          moq: Math.max(1, Number(p.moq) || 1),
+          bulkPricingNote: String(p.bulkPricingNote || '').slice(0, 240),
+          sizes: Array.isArray(p.sizes) ? p.sizes.map(String).slice(0, 15) : ['M', 'L', 'XL'],
+          colors: Array.isArray(p.colors) ? p.colors.map(String).slice(0, 15) : ['Black'],
+          stock: Math.max(0, Number(p.stock) || 0),
+          featured: Boolean(p.featured),
+          bestSeller: Boolean(p.bestSeller),
+          newArrival: Boolean(p.newArrival),
+          wholesaleOffer: Boolean(p.wholesaleOffer),
+          updatedAt: serverTimestamp()
+        };
+      }
+
+      function buildStoreConfigDoc(settings, categories) {
+        return {
+          brandName: String(settings.brandName || OFFICIAL_DEFAULTS.brandName).slice(0, 80),
+          logoUrl: String(settings.logoUrl || OFFICIAL_DEFAULTS.logoUrl).slice(0, 450000),
+          whatsappNumber: String(settings.whatsappNumber || OFFICIAL_DEFAULTS.whatsappNumber).slice(0, 32),
+          whatsappUrl: String(settings.whatsappUrl || OFFICIAL_DEFAULTS.whatsappUrl).slice(0, 250),
+          facebookUrl: String(settings.facebookUrl || OFFICIAL_DEFAULTS.facebookUrl).slice(0, 400),
+          promoText: String(settings.promoText ?? OFFICIAL_DEFAULTS.promoText).slice(0, 240),
+          heroKicker: String(settings.heroKicker ?? OFFICIAL_DEFAULTS.heroKicker).slice(0, 120),
+          heroHeadline: String(settings.heroHeadline || OFFICIAL_DEFAULTS.heroHeadline).slice(0, 200),
+          heroSubheadline: String(settings.heroSubheadline ?? OFFICIAL_DEFAULTS.heroSubheadline).slice(0, 600),
+          heroBannerUrl: String(settings.heroBannerUrl || OFFICIAL_DEFAULTS.heroBannerUrl).slice(0, 450000),
+          dhakaShipping: Math.max(0, Number(settings.dhakaShipping) || 0),
+          outsideDhakaShipping: Math.max(0, Number(settings.outsideDhakaShipping) || 0),
+          tier2Min: Math.max(1, Number(settings.tier2Min) || 25),
+          tier2DiscountPct: Math.min(90, Math.max(0, Number(settings.tier2DiscountPct) || 0)),
+          tier3Min: Math.max(1, Number(settings.tier3Min) || 50),
+          tier3DiscountPct: Math.min(90, Math.max(0, Number(settings.tier3DiscountPct) || 0)),
+          tier4Min: Math.max(1, Number(settings.tier4Min) || 100),
+          tier4DiscountPct: Math.min(90, Math.max(0, Number(settings.tier4DiscountPct) || 0)),
+          categories: (Array.isArray(categories) && categories.length ? categories : DEFAULT_CATEGORIES).slice(0, 40).map(String),
+          updatedAt: serverTimestamp()
+        };
+      }
+
+      async function seedCloudDefaultsIfEmpty() {
+        try {
+          const configRef = doc(db, 'storeConfig', 'public');
+          const configSnap = await getDoc(configRef);
+          if (!configSnap.exists()) {
+            await setDoc(configRef, buildStoreConfigDoc(OFFICIAL_DEFAULTS, DEFAULT_CATEGORIES));
+          }
+          if (!state.cloudHasProducts) {
+            const batch = writeBatch(db);
+            DEFAULT_PRODUCTS.forEach((prod) => {
+              batch.set(doc(db, 'products', prod.id), buildCleanProductDoc(prod));
+            });
+            await batch.commit();
+            showToast('Initial catalog synced to Cloud Firestore for all devices.');
+          }
+        } catch (error) {
+          handleFirestoreError(error, OperationType.WRITE, 'storeConfig/public');
+        }
+      }
+
+      function attachPublicCloudSync() {
+        onSnapshot(
+          doc(db, 'storeConfig', 'public'),
+          (snap) => {
+            if (snap.exists()) {
+              state.cloudConfigExists = true;
+              const data = snap.data();
+              state.settings = Object.assign({}, OFFICIAL_DEFAULTS, data);
+              if (Array.isArray(data.categories) && data.categories.length) {
+                state.categories = data.categories;
+              }
+              applySettingsUI();
+              syncCatalogUI();
+              if (state.adminUnlocked && state.adminTab === 'categories') {
+                renderAdminTab();
+              } else if (state.adminUnlocked && state.adminTab === 'settings') {
+                renderAdminTab();
+              }
+            }
+          },
+          (error) => {
+            handleFirestoreError(error, OperationType.GET, 'storeConfig/public');
+          }
+        );
+
+        onSnapshot(
+          collection(db, 'products'),
+          (snap) => {
+            if (!snap.empty || state.cloudConfigExists || state.cloudHasProducts) {
+              state.cloudHasProducts = true;
+              state.products = snap.docs.map((d) => ({ ...d.data(), id: d.id }));
+              syncCatalogUI();
+              renderCartDrawer();
+              if (state.pdpProductId && document.getElementById('pdp-modal').classList.contains('open')) {
+                if (state.products.some((p) => p.id === state.pdpProductId)) {
+                  renderPDPContent();
+                } else {
+                  closeModal('pdp-modal');
+                }
+              }
+              if (state.adminUnlocked && (state.adminTab === 'products' || state.adminTab === 'overview')) {
+                renderAdminTab();
+              }
+            }
+          },
+          (error) => {
+            handleFirestoreError(error, OperationType.LIST, 'products');
+          }
+        );
+      }
+
+      function detachAdminCloudSync() {
+        state.adminUnsubs.forEach((unsub) => {
+          try { unsub(); } catch {}
+        });
+        state.adminUnsubs = [];
+      }
+
+      function attachAdminCloudSync() {
+        detachAdminCloudSync();
+
+        const ordersUnsub = onSnapshot(
+          query(collection(db, 'orders'), orderBy('createdAt', 'desc')),
+          (snap) => {
+            state.orders = snap.docs.map((d) => ({ ...d.data(), id: d.id }));
+            if (state.adminUnlocked && ['overview', 'orders', 'customers'].includes(state.adminTab)) {
+              renderAdminTab();
+            }
+          },
+          (error) => {
+            handleFirestoreError(error, OperationType.LIST, 'orders');
+          }
+        );
+
+        const dealersUnsub = onSnapshot(
+          query(collection(db, 'dealers'), orderBy('createdAt', 'desc')),
+          (snap) => {
+            state.dealers = snap.docs.map((d) => ({ ...d.data(), id: d.id }));
+            if (state.adminUnlocked && ['overview', 'customers'].includes(state.adminTab)) {
+              renderAdminTab();
+            }
+          },
+          (error) => {
+            handleFirestoreError(error, OperationType.LIST, 'dealers');
+          }
+        );
+
+        const messagesUnsub = onSnapshot(
+          query(collection(db, 'messages'), orderBy('createdAt', 'desc')),
+          (snap) => {
+            state.messages = snap.docs.map((d) => ({ ...d.data(), id: d.id }));
+          },
+          (error) => {
+            handleFirestoreError(error, OperationType.LIST, 'messages');
+          }
+        );
+
+        state.adminUnsubs.push(ordersUnsub, dealersUnsub, messagesUnsub);
+      }
+
+      function initAuthListener() {
+        onAuthStateChanged(auth, async (user) => {
+          state.adminUser = user;
+          state.adminCheckDone = true;
+
+          if (user) {
+            let authorized = user.email === PRIMARY_ADMIN_EMAIL && user.emailVerified;
+            if (!authorized && user.emailVerified) {
+              try {
+                const adminDoc = await getDoc(doc(db, 'admins', user.uid));
+                authorized = adminDoc.exists();
+              } catch {
+                authorized = false;
+              }
+            }
+            state.adminUnlocked = authorized;
+            if (authorized) {
+              await seedCloudDefaultsIfEmpty();
+              attachAdminCloudSync();
+            } else {
+              detachAdminCloudSync();
+            }
+          } else {
+            state.adminUnlocked = false;
+            state.orders = [];
+            state.dealers = [];
+            state.messages = [];
+            detachAdminCloudSync();
+          }
+
+          if (document.getElementById('admin-shell').classList.contains('active')) {
+            renderAdminGateState();
+          }
+        });
+      }
+
       /* Initialization */
       function initState() {
-        state.categories = readStorage(STORAGE_KEYS.CATEGORIES, DEFAULT_CATEGORIES);
-        state.products = readStorage(STORAGE_KEYS.PRODUCTS, DEFAULT_PRODUCTS);
+        state.categories = DEFAULT_CATEGORIES.slice();
+        state.products = DEFAULT_PRODUCTS.slice();
         state.cart = readStorage(STORAGE_KEYS.CART, []);
-        state.orders = readStorage(STORAGE_KEYS.ORDERS, DEFAULT_ORDERS);
-        state.dealers = readStorage(STORAGE_KEYS.DEALERS, []);
-        state.messages = readStorage(STORAGE_KEYS.MESSAGES, []);
-        state.settings = Object.assign({}, OFFICIAL_DEFAULTS, readStorage(STORAGE_KEYS.SETTINGS, OFFICIAL_DEFAULTS));
-        state.adminUnlocked = readStorage(STORAGE_KEYS.ADMIN_UNLOCKED, false);
-
-        if (!localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
-          writeStorage(STORAGE_KEYS.PRODUCTS, state.products);
-        }
-        if (!localStorage.getItem(STORAGE_KEYS.CATEGORIES)) {
-          writeStorage(STORAGE_KEYS.CATEGORIES, state.categories);
-        }
-        if (!localStorage.getItem(STORAGE_KEYS.ORDERS)) {
-          writeStorage(STORAGE_KEYS.ORDERS, state.orders);
-        }
-        if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
-          writeStorage(STORAGE_KEYS.SETTINGS, state.settings);
-        }
+        state.orders = [];
+        state.dealers = [];
+        state.messages = [];
+        state.settings = Object.assign({}, OFFICIAL_DEFAULTS);
       }
 
       /* Apply Settings to DOM */
@@ -3421,7 +3713,7 @@
         paymentEl.onchange = updateShippingAndPayment;
         updateShippingAndPayment();
 
-        document.getElementById('checkout-form').onsubmit = (e) => {
+        document.getElementById('checkout-form').onsubmit = async (e) => {
           e.preventDefault();
           const name = document.getElementById('co-name').value.trim();
           const phone = document.getElementById('co-phone').value.trim();
@@ -3440,21 +3732,28 @@
             return;
           }
 
+          const submitBtn = e.target.querySelector('button[type="submit"]');
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting Order...';
+          }
+
           const ship = Number(district === 'Dhaka' ? s.dhakaShipping : s.outsideDhakaShipping);
-          const orderId = 'PS-2026-' + String(Math.floor(1000 + Math.random() * 9000));
-          const order = {
+          const orderId = 'PS-2026-' + String(Math.floor(1000 + Math.random() * 9000)) + '-' + String(Date.now()).slice(-3);
+          const orderPayload = {
             id: orderId,
-            createdAt: new Date().toISOString(),
-            customerName: name,
-            phone,
-            address,
-            district,
-            city,
-            notes,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+            customerName: name.slice(0, 120),
+            phone: phone.slice(0, 24),
+            address: address.slice(0, 400),
+            district: district.slice(0, 80),
+            city: city.slice(0, 100),
+            notes: notes.slice(0, 500),
             paymentMethod,
             paymentStatus: paymentMethod === 'Cash on Delivery' ? 'COD Due on Delivery' : 'Pending Payment Verification (No Gateway Connected)',
             status: 'Pending',
-            items: summary.lines.map((l) => ({
+            items: summary.lines.slice(0, 50).map((l) => ({
               productId: l.product.id,
               name: l.product.name,
               sku: l.product.sku,
@@ -3470,23 +3769,21 @@
             total: summary.effectiveSubtotal + ship
           };
 
-          // Deduct stock locally
-          order.items.forEach((oi) => {
-            const prod = state.products.find((p) => p.id === oi.productId);
-            if (prod) {
-              prod.stock = Math.max(0, prod.stock - oi.qty);
+          try {
+            await setDoc(doc(db, 'orders', orderId), orderPayload);
+            const displayOrder = { ...orderPayload, createdAt: new Date().toISOString() };
+            state.cart = [];
+            persistCart();
+            renderOrderReceipt(displayOrder);
+            showToast(`Order ${orderId} submitted to PABEL SPORTS.`);
+          } catch (error) {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Place Order';
             }
-          });
-          writeStorage(STORAGE_KEYS.PRODUCTS, state.products);
-
-          state.orders.unshift(order);
-          writeStorage(STORAGE_KEYS.ORDERS, state.orders);
-
-          state.cart = [];
-          persistCart();
-          renderProductGrid();
-          renderOrderReceipt(order);
-          showToast(`Order ${orderId} recorded successfully.`);
+            showToast('Could not submit order. Please try again or use WhatsApp.', true);
+            handleFirestoreError(error, OperationType.CREATE, `orders/${orderId}`);
+          }
         };
       }
 
@@ -3498,7 +3795,7 @@
         body.innerHTML = `
           <div style="display:flex;flex-direction:column;gap:18px;">
             <div style="padding:20px;border:1px solid var(--border-hairline);border-radius:var(--radius-md);background:var(--bg-canvas);">
-              <div style="font-size:12px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:4px;">Order Recorded (Local Demo)</div>
+              <div style="font-size:12px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:4px;">Order Submitted to Cloud</div>
               <h3 style="font-family:var(--font-display);font-size:28px;font-weight:800;">Order #${escapeHtml(order.id)}</h3>
               <p style="font-size:14px;color:var(--text-secondary);margin-top:4px;">
                 Status: <strong>${escapeHtml(order.status)}</strong> &middot; Payment: <strong>${escapeHtml(order.paymentMethod)}</strong> (${escapeHtml(order.paymentStatus)})
@@ -3561,7 +3858,7 @@
               <div style="text-align:right;">
                 <div style="font-size:18px;font-weight:bold;">INVOICE</div>
                 <div>Order ID: ${escapeHtml(order.id)}</div>
-                <div>Date: ${new Date(order.createdAt).toLocaleDateString('en-GB')}</div>
+                <div>Date: ${escapeHtml(formatDate(order.createdAt))}</div>
               </div>
             </div>
             <div style="margin-bottom:18px;font-size:13px;">
@@ -3623,16 +3920,29 @@
         const gate = document.getElementById('admin-login-gate');
         const workspace = document.getElementById('admin-workspace');
         const logoutBtn = document.getElementById('admin-logout-btn');
+        const authStatus = document.getElementById('admin-auth-status');
+        const signInBtn = document.getElementById('admin-google-signin-btn');
+        const signOutBtn = document.getElementById('admin-google-signout-btn');
 
         if (state.adminUnlocked) {
           gate.style.display = 'none';
           workspace.style.display = 'grid';
           logoutBtn.style.display = 'inline-flex';
+          logoutBtn.textContent = `Sign Out (${state.adminUser?.email || 'Admin'})`;
           renderAdminTab();
         } else {
           gate.style.display = 'block';
           workspace.style.display = 'none';
           logoutBtn.style.display = 'none';
+          if (state.adminUser) {
+            authStatus.innerHTML = `<div class="notice-box notice-warning">Signed in as <strong>${escapeHtml(state.adminUser.email)}</strong>, which is not listed as an authorized store administrator.</div>`;
+            signInBtn.style.display = 'none';
+            signOutBtn.style.display = 'inline-flex';
+          } else {
+            authStatus.innerHTML = '';
+            signInBtn.style.display = 'inline-flex';
+            signOutBtn.style.display = 'none';
+          }
         }
       }
 
@@ -3872,15 +4182,16 @@
           preview.src = imgInput.value.trim();
         };
 
-        document.getElementById('adm-p-file').onchange = (e) => {
+        document.getElementById('adm-p-file').onchange = async (e) => {
           const file = e.target.files[0];
           if (!file) return;
-          const reader = new FileReader();
-          reader.onload = () => {
-            imgInput.value = reader.result;
-            preview.src = reader.result;
-          };
-          reader.readAsDataURL(file);
+          try {
+            const compressed = await compressImageFile(file);
+            imgInput.value = compressed;
+            preview.src = compressed;
+          } catch {
+            showToast('Could not read selected image.', true);
+          }
         };
 
         if (editing) {
@@ -3890,10 +4201,11 @@
           };
         }
 
-        document.getElementById('adm-product-form').onsubmit = (e) => {
+        document.getElementById('adm-product-form').onsubmit = async (e) => {
           e.preventDefault();
-          const payload = {
-            id: editing ? editing.id : 'ps-' + Date.now(),
+          const rawId = editing ? editing.id : 'ps-' + Date.now();
+          const payload = buildCleanProductDoc({
+            id: rawId,
             name: document.getElementById('adm-p-name').value.trim(),
             sku: document.getElementById('adm-p-sku').value.trim(),
             category: document.getElementById('adm-p-category').value,
@@ -3912,33 +4224,38 @@
             bestSeller: document.getElementById('adm-p-bestseller').checked,
             newArrival: document.getElementById('adm-p-new').checked,
             wholesaleOffer: document.getElementById('adm-p-offer').checked
-          };
+          });
 
           if (!payload.name || !payload.sku || !payload.description || payload.regularPrice <= 0 || payload.wholesalePrice <= 0) {
             showToast('Please complete all required product fields with valid prices.', true);
             return;
           }
 
-          if (editing) {
-            const idx = state.products.findIndex((p) => p.id === editing.id);
-            if (idx > -1) state.products[idx] = payload;
+          try {
+            await setDoc(doc(db, 'products', payload.id), payload);
             state.editingProductId = null;
-            showToast('Product updated.');
-          } else {
-            state.products.unshift(payload);
-            showToast('New product added to catalog.');
+            showToast(editing ? 'Product updated across all devices.' : 'New product published across all devices.');
+          } catch (error) {
+            showToast('Failed to save product to Cloud Firestore.', true);
+            handleFirestoreError(error, OperationType.WRITE, `products/${payload.id}`);
           }
-          writeStorage(STORAGE_KEYS.PRODUCTS, state.products);
-          renderAdminProducts(container);
         };
 
         container.querySelectorAll('[data-adm-stock]').forEach((inp) => {
-          inp.onchange = () => {
+          inp.onchange = async () => {
             const prod = state.products.find((p) => p.id === inp.dataset.admStock);
             if (prod) {
-              prod.stock = Math.max(0, parseInt(inp.value, 10) || 0);
-              writeStorage(STORAGE_KEYS.PRODUCTS, state.products);
-              showToast(`Stock updated for ${prod.sku}.`);
+              const newStock = Math.max(0, parseInt(inp.value, 10) || 0);
+              try {
+                await updateDoc(doc(db, 'products', prod.id), {
+                  stock: newStock,
+                  updatedAt: serverTimestamp()
+                });
+                showToast(`Stock synced across all devices for ${prod.sku}.`);
+              } catch (error) {
+                showToast('Failed to update stock.', true);
+                handleFirestoreError(error, OperationType.UPDATE, `products/${prod.id}`);
+              }
             }
           };
         });
@@ -3954,11 +4271,14 @@
         container.querySelectorAll('[data-adm-delete]').forEach((btn) => {
           btn.onclick = () => {
             const id = btn.dataset.admDelete;
-            openConfirm('Delete Product', 'Are you sure you want to remove this product from the catalog?', () => {
-              state.products = state.products.filter((p) => p.id !== id);
-              writeStorage(STORAGE_KEYS.PRODUCTS, state.products);
-              renderAdminProducts(container);
-              showToast('Product deleted.');
+            openConfirm('Delete Product', 'Are you sure you want to remove this product across all devices?', async () => {
+              try {
+                await deleteDoc(doc(db, 'products', id));
+                showToast('Product deleted across all devices.');
+              } catch (error) {
+                showToast('Failed to delete product.', true);
+                handleFirestoreError(error, OperationType.DELETE, `products/${id}`);
+              }
             });
           };
         });
@@ -3994,7 +4314,7 @@
           </div>
         `;
 
-        document.getElementById('adm-cat-form').onsubmit = (e) => {
+        document.getElementById('adm-cat-form').onsubmit = async (e) => {
           e.preventDefault();
           const val = document.getElementById('adm-new-cat').value.trim();
           if (!val) return;
@@ -4002,20 +4322,36 @@
             showToast('Category already exists.', true);
             return;
           }
-          state.categories.push(val);
-          writeStorage(STORAGE_KEYS.CATEGORIES, state.categories);
-          renderAdminCategories(container);
-          showToast('Category added.');
+          if (state.categories.length >= 40) {
+            showToast('Maximum 40 categories supported.', true);
+            return;
+          }
+          const updatedCats = [...state.categories, val];
+          try {
+            await setDoc(doc(db, 'storeConfig', 'public'), buildStoreConfigDoc(state.settings, updatedCats));
+            showToast('Category published to all devices.');
+          } catch (error) {
+            showToast('Failed to save category.', true);
+            handleFirestoreError(error, OperationType.WRITE, 'storeConfig/public');
+          }
         };
 
         container.querySelectorAll('[data-adm-del-cat]').forEach((btn) => {
           btn.onclick = () => {
             const cat = btn.dataset.admDelCat;
-            openConfirm('Remove Category', `Remove "${cat}" from the category list?`, () => {
-              state.categories = state.categories.filter((c) => c !== cat);
-              writeStorage(STORAGE_KEYS.CATEGORIES, state.categories);
-              renderAdminCategories(container);
-              showToast('Category removed.');
+            if (state.categories.length <= 1) {
+              showToast('At least one category must remain.', true);
+              return;
+            }
+            openConfirm('Remove Category', `Remove "${cat}" across all devices?`, async () => {
+              const updatedCats = state.categories.filter((c) => c !== cat);
+              try {
+                await setDoc(doc(db, 'storeConfig', 'public'), buildStoreConfigDoc(state.settings, updatedCats));
+                showToast('Category removed across all devices.');
+              } catch (error) {
+                showToast('Failed to remove category.', true);
+                handleFirestoreError(error, OperationType.WRITE, 'storeConfig/public');
+              }
             });
           };
         });
@@ -4044,14 +4380,14 @@
                     <tr>
                       <td>
                         <strong class="mono">${escapeHtml(o.id)}</strong>
-                        <div style="font-size:11.5px;color:var(--text-muted);">${new Date(o.createdAt).toLocaleDateString('en-GB')}</div>
+                        <div style="font-size:11.5px;color:var(--text-muted);">${escapeHtml(formatDate(o.createdAt))}</div>
                       </td>
                       <td>
                         <strong>${escapeHtml(o.customerName)}</strong>
                         <div style="font-size:12px;color:var(--text-secondary);">${escapeHtml(o.phone)} &middot; ${escapeHtml(o.district)}</div>
                       </td>
                       <td>
-                        ${o.items.map((i) => `<div style="font-size:12.5px;">${escapeHtml(i.name)} (${escapeHtml(i.size)}) &times; ${i.qty}</div>`).join('')}
+                        ${(o.items || []).map((i) => `<div style="font-size:12.5px;">${escapeHtml(i.name)} (${escapeHtml(i.size)}) &times; ${i.qty}</div>`).join('')}
                       </td>
                       <td class="tabular"><strong>${formatBDT(o.total)}</strong></td>
                       <td style="font-size:12.5px;">${escapeHtml(o.paymentMethod)}</td>
@@ -4072,12 +4408,19 @@
         `;
 
         container.querySelectorAll('[data-adm-order-status]').forEach((sel) => {
-          sel.onchange = () => {
+          sel.onchange = async () => {
             const ord = state.orders.find((o) => o.id === sel.dataset.admOrderStatus);
             if (ord) {
-              ord.status = sel.value;
-              writeStorage(STORAGE_KEYS.ORDERS, state.orders);
-              showToast(`Order ${ord.id} updated to ${ord.status}.`);
+              try {
+                await updateDoc(doc(db, 'orders', ord.id), {
+                  status: sel.value,
+                  updatedAt: serverTimestamp()
+                });
+                showToast(`Order ${ord.id} updated to ${sel.value}.`);
+              } catch (error) {
+                showToast('Failed to update order status.', true);
+                handleFirestoreError(error, OperationType.UPDATE, `orders/${ord.id}`);
+              }
             }
           };
         });
@@ -4211,8 +4554,8 @@
               </div>
 
               <div class="form-group full" style="flex-direction:row;gap:12px;flex-wrap:wrap;padding-top:8px;">
-                <button type="submit" class="btn btn-primary">Save All Settings</button>
-                <button type="button" class="btn btn-outline" id="adm-reset-demo-btn" style="color:var(--danger);border-color:var(--danger);">Reset All Demo Data</button>
+                <button type="submit" class="btn btn-primary">Save &amp; Sync Across All Devices</button>
+                <button type="button" class="btn btn-outline" id="adm-reset-demo-btn" style="color:var(--danger);border-color:var(--danger);">Restore Default Cloud Catalog</button>
               </div>
             </form>
           </div>
@@ -4224,15 +4567,16 @@
           logoPrev.src = logoInput.value.trim();
         };
 
-        document.getElementById('set-logo-file').onchange = (e) => {
+        document.getElementById('set-logo-file').onchange = async (e) => {
           const file = e.target.files[0];
           if (!file) return;
-          const reader = new FileReader();
-          reader.onload = () => {
-            logoInput.value = reader.result;
-            logoPrev.src = reader.result;
-          };
-          reader.readAsDataURL(file);
+          try {
+            const compressed = await compressImageFile(file, 512, 0.85);
+            logoInput.value = compressed;
+            logoPrev.src = compressed;
+          } catch {
+            showToast('Could not process logo image.', true);
+          }
         };
 
         document.getElementById('set-reset-logo').onclick = () => {
@@ -4240,9 +4584,9 @@
           logoPrev.src = OFFICIAL_DEFAULTS.logoUrl;
         };
 
-        document.getElementById('adm-settings-form').onsubmit = (e) => {
+        document.getElementById('adm-settings-form').onsubmit = async (e) => {
           e.preventDefault();
-          state.settings = {
+          const nextSettings = {
             ...state.settings,
             logoUrl: logoInput.value.trim() || OFFICIAL_DEFAULTS.logoUrl,
             promoText: document.getElementById('set-promo').value.trim(),
@@ -4257,21 +4601,29 @@
             tier2DiscountPct: Number(document.getElementById('set-t2-pct').value) || 5,
             tier3DiscountPct: Number(document.getElementById('set-t3-pct').value) || 10
           };
-          writeStorage(STORAGE_KEYS.SETTINGS, state.settings);
-          applySettingsUI();
-          showToast('Store settings saved.');
+          try {
+            await setDoc(doc(db, 'storeConfig', 'public'), buildStoreConfigDoc(nextSettings, state.categories));
+            showToast('Store settings synced across all devices.');
+          } catch (error) {
+            showToast('Failed to save store settings.', true);
+            handleFirestoreError(error, OperationType.WRITE, 'storeConfig/public');
+          }
         };
 
         document.getElementById('adm-reset-demo-btn').onclick = () => {
-          openConfirm('Reset Demo Data', 'Restore all products, categories, settings, and orders to the factory defaults?', () => {
-            Object.values(STORAGE_KEYS).forEach((k) => localStorage.removeItem(k));
-            initState();
-            applySettingsUI();
-            syncCatalogUI();
-            renderCartBadge();
-            renderCartDrawer();
-            renderAdminTab();
-            showToast('Demo data restored to defaults.');
+          openConfirm('Restore Default Cloud Catalog', 'Reset cloud products, categories, and store settings back to the PABEL SPORTS starter defaults?', async () => {
+            try {
+              const batch = writeBatch(db);
+              batch.set(doc(db, 'storeConfig', 'public'), buildStoreConfigDoc(OFFICIAL_DEFAULTS, DEFAULT_CATEGORIES));
+              DEFAULT_PRODUCTS.forEach((p) => {
+                batch.set(doc(db, 'products', p.id), buildCleanProductDoc(p));
+              });
+              await batch.commit();
+              showToast('Cloud catalog & settings restored across all devices.');
+            } catch (error) {
+              showToast('Failed to restore cloud defaults.', true);
+              handleFirestoreError(error, OperationType.WRITE, 'storeConfig/public');
+            }
           });
         };
       }
@@ -4430,7 +4782,7 @@
         };
 
         // Dealer form
-        document.getElementById('dealer-form').onsubmit = (e) => {
+        document.getElementById('dealer-form').onsubmit = async (e) => {
           e.preventDefault();
           const shop = document.getElementById('dealer-shop').value.trim();
           const name = document.getElementById('dealer-name').value.trim();
@@ -4440,21 +4792,26 @@
             showToast('Please complete all required dealer registration fields.', true);
             return;
           }
+          const id = 'D-' + Date.now();
           const dealer = {
-            id: 'D-' + Date.now(),
-            shop,
-            name,
-            phone,
-            district,
-            volume: document.getElementById('dealer-volume').value,
-            category: document.getElementById('dealer-category').value,
-            notes: document.getElementById('dealer-notes').value.trim(),
-            createdAt: new Date().toISOString()
+            id,
+            shop: shop.slice(0, 160),
+            name: name.slice(0, 120),
+            phone: phone.slice(0, 24),
+            district: district.slice(0, 80),
+            volume: document.getElementById('dealer-volume').value.slice(0, 60),
+            category: document.getElementById('dealer-category').value.slice(0, 80),
+            notes: document.getElementById('dealer-notes').value.trim().slice(0, 800),
+            createdAt: serverTimestamp()
           };
-          state.dealers.unshift(dealer);
-          writeStorage(STORAGE_KEYS.DEALERS, state.dealers);
-          e.target.reset();
-          showToast('Dealer inquiry submitted! Saved for review in Admin Portal.');
+          try {
+            await setDoc(doc(db, 'dealers', id), dealer);
+            e.target.reset();
+            showToast('Dealer inquiry submitted to PABEL SPORTS!');
+          } catch (error) {
+            showToast('Could not submit application. Please try WhatsApp.', true);
+            handleFirestoreError(error, OperationType.CREATE, `dealers/${id}`);
+          }
         };
 
         document.getElementById('dealer-wa-submit').onclick = () => {
@@ -4475,7 +4832,7 @@
         };
 
         // Contact form
-        document.getElementById('contact-form').onsubmit = (e) => {
+        document.getElementById('contact-form').onsubmit = async (e) => {
           e.preventDefault();
           const name = document.getElementById('contact-name').value.trim();
           const phone = document.getElementById('contact-phone').value.trim();
@@ -4484,10 +4841,21 @@
             showToast('Please enter your name, phone, and message.', true);
             return;
           }
-          state.messages.unshift({ name, phone, msg, createdAt: new Date().toISOString() });
-          writeStorage(STORAGE_KEYS.MESSAGES, state.messages);
-          e.target.reset();
-          showToast('Message saved. For fastest reply, message us on WhatsApp.');
+          const id = 'M-' + Date.now();
+          try {
+            await setDoc(doc(db, 'messages', id), {
+              id,
+              name: name.slice(0, 120),
+              phone: phone.slice(0, 24),
+              msg: msg.slice(0, 1200),
+              createdAt: serverTimestamp()
+            });
+            e.target.reset();
+            showToast('Message sent to PABEL SPORTS.');
+          } catch (error) {
+            showToast('Could not send message. Please try WhatsApp.', true);
+            handleFirestoreError(error, OperationType.CREATE, `messages/${id}`);
+          }
         };
 
         document.getElementById('contact-wa-send').onclick = () => {
@@ -4586,30 +4954,22 @@
           toggleAdminView(false);
         };
 
-        document.getElementById('admin-login-form').onsubmit = (e) => {
-          e.preventDefault();
-          const code = document.getElementById('admin-passcode-input').value.trim();
-          if (code === 'pabel2026') {
-            state.adminUnlocked = true;
-            writeStorage(STORAGE_KEYS.ADMIN_UNLOCKED, true);
-            renderAdminGateState();
-            showToast('Admin dashboard unlocked (demo mode).');
-          } else {
-            showToast('Incorrect demo passcode. Use pabel2026.', true);
+        document.getElementById('admin-google-signin-btn').onclick = async () => {
+          try {
+            const provider = new GoogleAuthProvider();
+            await signInWithPopup(auth, provider);
+          } catch (error) {
+            showToast('Google Sign-In failed or was cancelled.', true);
           }
         };
 
-        document.getElementById('admin-quick-unlock').onclick = () => {
-          state.adminUnlocked = true;
-          writeStorage(STORAGE_KEYS.ADMIN_UNLOCKED, true);
-          renderAdminGateState();
-          showToast('Admin dashboard unlocked.');
+        document.getElementById('admin-google-signout-btn').onclick = async () => {
+          await signOut(auth);
         };
 
-        document.getElementById('admin-logout-btn').onclick = () => {
-          state.adminUnlocked = false;
-          writeStorage(STORAGE_KEYS.ADMIN_UNLOCKED, false);
-          renderAdminGateState();
+        document.getElementById('admin-logout-btn').onclick = async () => {
+          await signOut(auth);
+          showToast('Signed out of Admin Dashboard.');
         };
       }
 
@@ -4622,6 +4982,9 @@
       bindEvents();
       attachImageFallback(document.getElementById('hero-banner-img'));
       document.getElementById('footer-year').textContent = new Date().getFullYear();
+      testConnection();
+      attachPublicCloudSync();
+      initAuthListener();
     })();
   </script>
 </body>

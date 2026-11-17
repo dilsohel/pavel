@@ -1,0 +1,152 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Sportswear catalog item with retail and wholesale BDT pricing.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 180 },
+        "sku": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "category": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "tags": { "type": "array" },
+        "description": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "imageUrl": { "type": "string", "minLength": 1, "maxLength": 450000 },
+        "gallery": { "type": "array" },
+        "regularPrice": { "type": "number" },
+        "wholesalePrice": { "type": "number" },
+        "moq": { "type": "number" },
+        "bulkPricingNote": { "type": "string", "maxLength": 240 },
+        "sizes": { "type": "array" },
+        "colors": { "type": "array" },
+        "stock": { "type": "number" },
+        "featured": { "type": "boolean" },
+        "bestSeller": { "type": "boolean" },
+        "newArrival": { "type": "boolean" },
+        "wholesaleOffer": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "sku", "category", "description", "imageUrl", "regularPrice", "wholesalePrice", "moq", "stock", "featured", "bestSeller", "newArrival", "wholesaleOffer", "updatedAt"]
+    },
+    "StoreConfig": {
+      "title": "StoreConfig",
+      "description": "Public storefront configuration, branding, logo, banner, categories, and wholesale tier settings.",
+      "type": "object",
+      "properties": {
+        "brandName": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "logoUrl": { "type": "string", "minLength": 1, "maxLength": 450000 },
+        "whatsappNumber": { "type": "string", "minLength": 5, "maxLength": 32 },
+        "whatsappUrl": { "type": "string", "minLength": 10, "maxLength": 250 },
+        "facebookUrl": { "type": "string", "minLength": 10, "maxLength": 400 },
+        "promoText": { "type": "string", "maxLength": 240 },
+        "heroKicker": { "type": "string", "maxLength": 120 },
+        "heroHeadline": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "heroSubheadline": { "type": "string", "maxLength": 600 },
+        "heroBannerUrl": { "type": "string", "minLength": 1, "maxLength": 450000 },
+        "dhakaShipping": { "type": "number" },
+        "outsideDhakaShipping": { "type": "number" },
+        "tier2Min": { "type": "number" },
+        "tier2DiscountPct": { "type": "number" },
+        "tier3Min": { "type": "number" },
+        "tier3DiscountPct": { "type": "number" },
+        "tier4Min": { "type": "number" },
+        "tier4DiscountPct": { "type": "number" },
+        "categories": { "type": "array" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["brandName", "logoUrl", "whatsappNumber", "whatsappUrl", "facebookUrl", "heroHeadline", "heroBannerUrl", "dhakaShipping", "outsideDhakaShipping", "tier2Min", "tier2DiscountPct", "tier3Min", "tier3DiscountPct", "tier4Min", "tier4DiscountPct", "categories", "updatedAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer retail or wholesale order containing PII and itemized cart snapshot.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "customerName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "phone": { "type": "string", "minLength": 6, "maxLength": 24 },
+        "address": { "type": "string", "minLength": 1, "maxLength": 400 },
+        "district": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "city": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "notes": { "type": "string", "maxLength": 500 },
+        "paymentMethod": { "type": "string", "enum": ["Cash on Delivery", "bKash", "Nagad", "Rocket", "Bank Transfer"] },
+        "paymentStatus": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "status": { "type": "string", "enum": ["Pending", "Confirmed", "Processing", "Shipped", "Delivered", "Cancelled"] },
+        "items": { "type": "array" },
+        "subtotal": { "type": "number" },
+        "discount": { "type": "number" },
+        "shipping": { "type": "number" },
+        "total": { "type": "number" }
+      },
+      "required": ["id", "createdAt", "updatedAt", "customerName", "phone", "address", "district", "city", "paymentMethod", "paymentStatus", "status", "items", "subtotal", "discount", "shipping", "total"]
+    },
+    "DealerInquiry": {
+      "title": "DealerInquiry",
+      "description": "B2B wholesale dealer application submitted from the wholesale portal.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "shop": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "phone": { "type": "string", "minLength": 6, "maxLength": 24 },
+        "district": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "volume": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "category": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "notes": { "type": "string", "maxLength": 800 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "shop", "name", "phone", "district", "volume", "category", "createdAt"]
+    },
+    "ContactMessage": {
+      "title": "ContactMessage",
+      "description": "Customer inquiry message submitted from the contact section.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "phone": { "type": "string", "minLength": 6, "maxLength": 24 },
+        "msg": { "type": "string", "minLength": 1, "maxLength": 1200 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "phone", "msg", "createdAt"]
+    },
+    "AdminUser": {
+      "title": "AdminUser",
+      "description": "Authorized store administrator record keyed by Firebase Auth UID.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "email": { "type": "string", "minLength": 3, "maxLength": 160 },
+        "addedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "addedAt"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Publicly readable sportswear catalog synced in real time across all devices; admin-only writes."
+    },
+    "/storeConfig/{configId}": {
+      "schema": { "$ref": "#/entities/StoreConfig" },
+      "description": "Public storefront branding, banner, logo, categories, and wholesale tier settings; admin-only writes."
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Customer orders containing PII; create-only for customers, read/update/delete restricted to admins."
+    },
+    "/dealers/{dealerId}": {
+      "schema": { "$ref": "#/entities/DealerInquiry" },
+      "description": "Wholesale dealer applications containing PII; create-only for applicants, read/delete restricted to admins."
+    },
+    "/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/ContactMessage" },
+      "description": "Contact inquiries containing PII; create-only for visitors, read/delete restricted to admins."
+    },
+    "/admins/{uid}": {
+      "schema": { "$ref": "#/entities/AdminUser" },
+      "description": "Store administrator allowlist."
+    }
+  }
+}
