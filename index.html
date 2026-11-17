@@ -2064,7 +2064,7 @@
       <!-- Admin Password-Only Sign-In Gate -->
       <div id="admin-login-gate" style="max-width:460px;margin:48px auto;background:var(--bg-surface);border:1px solid var(--border-hairline);border-radius:var(--radius-md);padding:28px;">
         <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-bottom:6px;">Admin Sign In</h2>
-        <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:18px;">Enter the store administrator password to unlock the PABEL SPORTS dashboard.</p>
+        <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:18px;">Enter your administrator password to unlock the PABEL SPORTS dashboard.</p>
         <div id="admin-auth-status" style="margin-bottom:16px;font-size:13.5px;"></div>
         <form id="admin-pass-form" style="display:flex;flex-direction:column;gap:12px;">
           <div class="form-group">
@@ -2075,9 +2075,10 @@
             </div>
           </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-            <button type="submit" class="btn btn-primary" id="admin-pass-submit-btn">Sign In to Admin</button>
-            <button type="button" class="btn btn-outline" id="admin-google-signin-btn" style="display:none;">Authorize Cloud Sync (Google)</button>
-            <button type="button" class="btn btn-outline btn-sm" id="admin-google-signout-btn" style="display:none;">Sign Out Cloud Session</button>
+            <button type="submit" class="btn btn-primary" id="admin-pass-submit-btn">Sign In</button>
+            <button type="button" class="btn btn-outline btn-sm" id="admin-verify-refresh-btn" style="display:none;">I Have Verified — Refresh</button>
+            <button type="button" class="btn btn-outline btn-sm" id="admin-verify-resend-btn" style="display:none;">Resend Verification</button>
+            <button type="button" class="btn btn-outline btn-sm" id="admin-cloud-signout-btn" style="display:none;">Sign Out Session</button>
           </div>
         </form>
       </div>
@@ -2221,7 +2222,7 @@
 
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js';
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
     import {
       getFirestore, doc, getDoc, getDocFromServer, setDoc, updateDoc, deleteDoc,
       collection, onSnapshot, query, orderBy, serverTimestamp, writeBatch
@@ -2684,7 +2685,7 @@
         lastNotificationDispatch: null,
         adminPassVerified: false,
         adminCloudAuthorized: false,
-        adminCloudNeedsStep: false,
+        adminAuthNotice: '',
         adminUnlocked: false,
         adminUser: null,
         adminCheckDone: false,
@@ -3163,7 +3164,7 @@
             }
             state.adminCloudAuthorized = authorized;
             if (authorized) {
-              state.adminCloudNeedsStep = false;
+              state.adminAuthNotice = '';
               await seedCloudDefaultsIfEmpty();
               attachAdminCloudSync();
             } else {
@@ -4159,8 +4160,9 @@
         const logoutBtn = document.getElementById('admin-logout-btn');
         const authStatus = document.getElementById('admin-auth-status');
         const passSubmitBtn = document.getElementById('admin-pass-submit-btn');
-        const googleSignInBtn = document.getElementById('admin-google-signin-btn');
-        const signOutBtn = document.getElementById('admin-google-signout-btn');
+        const verifyRefreshBtn = document.getElementById('admin-verify-refresh-btn');
+        const verifyResendBtn = document.getElementById('admin-verify-resend-btn');
+        const signOutBtn = document.getElementById('admin-cloud-signout-btn');
 
         syncAdminUnlockedFlag();
 
@@ -4175,23 +4177,32 @@
           workspace.style.display = 'none';
           logoutBtn.style.display = 'none';
           passSubmitBtn.style.display = 'inline-flex';
+          verifyRefreshBtn.style.display = 'none';
+          verifyResendBtn.style.display = 'none';
+          signOutBtn.style.display = 'none';
 
-          if (state.adminUser && !state.adminCloudAuthorized) {
-            authStatus.innerHTML = `<div class="notice-box notice-warning">Cloud session is signed in as <strong>${escapeHtml(state.adminUser.email || 'unknown')}</strong>, which is not authorized (or email unverified) for live Firestore admin writes.</div>`;
-            googleSignInBtn.style.display = state.adminPassVerified ? 'inline-flex' : 'none';
-            signOutBtn.style.display = 'inline-flex';
-          } else if (state.adminPassVerified && !state.adminCloudAuthorized) {
-            authStatus.innerHTML = `<div class="notice-box notice-success">Password verified. Complete the one-time Cloud Sync authorization with your Google admin account (<code>${escapeHtml(PRIMARY_ADMIN_EMAIL)}</code>) to enable live database updates on this browser.</div>`;
-            googleSignInBtn.style.display = 'inline-flex';
-            signOutBtn.style.display = 'none';
+          if (state.adminAuthNotice) {
+            authStatus.innerHTML = `<div class="notice-box notice-warning">${state.adminAuthNotice}</div>`;
+            if (state.adminUser && !state.adminUser.emailVerified) {
+              verifyRefreshBtn.style.display = 'inline-flex';
+              verifyResendBtn.style.display = 'inline-flex';
+              signOutBtn.style.display = 'inline-flex';
+            }
+          } else if (state.adminUser && !state.adminCloudAuthorized) {
+            if (state.adminUser.email === PRIMARY_ADMIN_EMAIL && !state.adminUser.emailVerified) {
+              authStatus.innerHTML = `<div class="notice-box notice-warning">Email verification pending for <strong>${escapeHtml(PRIMARY_ADMIN_EMAIL)}</strong>. Check your inbox and click the verification link once, then press <strong>I Have Verified — Refresh</strong>.</div>`;
+              verifyRefreshBtn.style.display = 'inline-flex';
+              verifyResendBtn.style.display = 'inline-flex';
+              signOutBtn.style.display = 'inline-flex';
+            } else {
+              authStatus.innerHTML = `<div class="notice-box notice-warning">Current session (<strong>${escapeHtml(state.adminUser.email || 'unknown')}</strong>) is not an authorized administrator.</div>`;
+              signOutBtn.style.display = 'inline-flex';
+            }
           } else if (state.adminCloudAuthorized) {
-            authStatus.innerHTML = `<div class="notice-box">Cloud session ready (${escapeHtml(state.adminUser?.email || PRIMARY_ADMIN_EMAIL)}). Enter your admin password to unlock.</div>`;
-            googleSignInBtn.style.display = 'none';
+            authStatus.innerHTML = `<div class="notice-box">Enter your admin password to unlock.</div>`;
             signOutBtn.style.display = 'inline-flex';
           } else {
             authStatus.innerHTML = '';
-            googleSignInBtn.style.display = 'none';
-            signOutBtn.style.display = 'none';
           }
         }
       }
@@ -5571,6 +5582,7 @@
           const submitBtn = document.getElementById('admin-pass-submit-btn');
           const ok = await verifyAdminPassword(entered);
           if (!ok) {
+            state.adminAuthNotice = '';
             showToast('Incorrect admin password.', true);
             passInput.focus();
             passInput.select();
@@ -5578,6 +5590,7 @@
           }
 
           state.adminPassVerified = true;
+          state.adminAuthNotice = '';
           try {
             sessionStorage.setItem(STORAGE_KEYS.ADMIN_PASS_SESSION, '1');
           } catch {}
@@ -5593,43 +5606,86 @@
           submitBtn.disabled = true;
           submitBtn.textContent = 'Signing In...';
           try {
-            const cred = await signInWithEmailAndPassword(auth, PRIMARY_ADMIN_EMAIL, entered);
-            if (!cred.user.emailVerified) {
-              state.adminCloudNeedsStep = true;
+            let cred;
+            try {
+              cred = await signInWithEmailAndPassword(auth, PRIMARY_ADMIN_EMAIL, entered);
+            } catch (signInErr) {
+              if (signInErr && (signInErr.code === 'auth/user-not-found' || signInErr.code === 'auth/invalid-credential')) {
+                cred = await createUserWithEmailAndPassword(auth, PRIMARY_ADMIN_EMAIL, entered);
+              } else {
+                throw signInErr;
+              }
+            }
+
+            if (cred && cred.user && !cred.user.emailVerified) {
+              try {
+                await sendEmailVerification(cred.user);
+              } catch {}
+              state.adminAuthNotice = `Password accepted. A one-time verification link was sent to <strong>${escapeHtml(PRIMARY_ADMIN_EMAIL)}</strong>. Click that link, then click <strong>I Have Verified — Refresh</strong>.`;
               renderAdminGateState();
-              showToast('Password accepted. Please authorize Cloud Sync with Google once.', false);
+              showToast('Verification link sent to admin email.');
             } else {
               showToast('Admin Dashboard unlocked.');
             }
-          } catch {
-            state.adminCloudNeedsStep = true;
+          } catch (err) {
+            const code = err && err.code ? err.code : '';
+            if (code === 'auth/operation-not-allowed') {
+              state.adminAuthNotice = `Enable <strong>Email/Password</strong> in Firebase Console (Project <code>gen-lang-client-0838655207</code> &rarr; Authentication &rarr; Sign-in method &rarr; Email/Password &rarr; Enable), then enter your password again.`;
+            } else if (code === 'auth/email-already-in-use') {
+              state.adminAuthNotice = `An older account for <code>${escapeHtml(PRIMARY_ADMIN_EMAIL)}</code> already exists without this password. In Firebase Console &rarr; Authentication &rarr; Users, remove that user or set its password to <code>pavel0123</code>, then sign in again.`;
+            } else {
+              state.adminAuthNotice = escapeHtml(err && err.message ? err.message : 'Unable to complete admin sign-in.');
+            }
             renderAdminGateState();
-            showToast('Password accepted. Click "Authorize Cloud Sync (Google)" once on this device.');
+            showToast('Complete the Firebase Email/Password setup step shown above.', true);
           } finally {
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Sign In to Admin';
+            submitBtn.textContent = 'Sign In';
           }
         };
 
-        document.getElementById('admin-google-signin-btn').onclick = async () => {
+        document.getElementById('admin-verify-refresh-btn').onclick = async () => {
+          if (!auth.currentUser) return;
           try {
-            const provider = new GoogleAuthProvider();
-            await signInWithPopup(auth, provider);
-            showToast('Cloud Admin Sync authorized.');
-          } catch (error) {
-            showToast('Google Cloud authorization failed or was cancelled.', true);
+            await auth.currentUser.reload();
+            await auth.currentUser.getIdToken(true);
+            if (auth.currentUser.emailVerified) {
+              state.adminCloudAuthorized = true;
+              state.adminAuthNotice = '';
+              await seedCloudDefaultsIfEmpty();
+              attachAdminCloudSync();
+              syncAdminUnlockedFlag();
+              renderAdminGateState();
+              showToast('Email verified. Admin Dashboard unlocked.');
+            } else {
+              showToast('Email is not verified yet. Please click the link in your inbox.', true);
+            }
+          } catch {
+            showToast('Could not refresh verification status.', true);
           }
         };
 
-        document.getElementById('admin-google-signout-btn').onclick = async () => {
+        document.getElementById('admin-verify-resend-btn').onclick = async () => {
+          if (!auth.currentUser) return;
+          try {
+            await sendEmailVerification(auth.currentUser);
+            showToast(`Verification email resent to ${PRIMARY_ADMIN_EMAIL}.`);
+          } catch {
+            showToast('Please wait a moment before resending verification email.', true);
+          }
+        };
+
+        document.getElementById('admin-cloud-signout-btn').onclick = async () => {
           state.adminPassVerified = false;
+          state.adminAuthNotice = '';
           try { sessionStorage.removeItem(STORAGE_KEYS.ADMIN_PASS_SESSION); } catch {}
           await signOut(auth);
-          showToast('Signed out of Cloud Admin session.');
+          showToast('Signed out of Admin session.');
         };
 
         document.getElementById('admin-logout-btn').onclick = () => {
           state.adminPassVerified = false;
+          state.adminAuthNotice = '';
           try { sessionStorage.removeItem(STORAGE_KEYS.ADMIN_PASS_SESSION); } catch {}
           syncAdminUnlockedFlag();
           renderAdminGateState();
